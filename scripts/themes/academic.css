@@ -1,0 +1,59 @@
+/* Academic / 论文风格：衬线、严谨 */
+body { background: #fdfdf9; color: #1a1a1a; }
+.markdown-body {
+  color: #1a1a1a;
+  font-family: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "Source Han Sans SC", "Inter", Georgia, serif;
+  font-size: 17px;
+  line-height: 1.85;
+}
+
+a { color: #8b1a1a; text-decoration: underline; }
+
+h1 {
+  text-align: center;
+  font-size: 1.9em;
+  margin: 1em 0 1.5em;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+h2 { font-size: 1.4em; border-bottom: 1px solid #c0c0a8; padding-bottom: .25em; }
+h3 { font-size: 1.15em; }
+h4 { font-style: italic; }
+
+p { text-indent: 0; }
+
+blockquote {
+  color: #444;
+  border-left-color: #8b1a1a;
+  font-style: italic;
+  background: #faf6e9;
+  padding: .6em 1em;
+}
+
+:not(pre) > code {
+  background: #f0ead6;
+  color: #5a3030;
+  font-size: .92em;
+}
+pre, .shiki {
+  background: #f6f1e1 !important;
+  border: 1px solid #d8cfa9;
+}
+
+table {
+  border-color: #1a1a1a;
+  border-top: 2px solid #1a1a1a;
+  border-bottom: 2px solid #1a1a1a;
+}
+th { border-bottom: 1px solid #1a1a1a; background: transparent; }
+th, td { border-left: none; border-right: none; }
+
+hr { background: #c0c0a8; }
+
+.footnotes { border-top: 1px solid #c0c0a8; font-size: .88em; }
+
+.tip    { background: #faf6e9; border-left-color: #8b1a1a; }
+.warning{ background: #fdf6ec; border-left-color: #c08e1a; }
+.danger { background: #fbeae5; border-left-color: #8b1a1a; }
+.info   { background: #f0ead6; border-left-color: #555; }
+.note   { background: #f0ead6; border-left-color: #555; }

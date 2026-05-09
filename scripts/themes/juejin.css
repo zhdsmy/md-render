@@ -1,0 +1,44 @@
+/* 掘金风格：偏蓝、阅读友好 */
+body { background: #ffffff; color: #252933; }
+.markdown-body { color: #252933; line-height: 1.85; }
+
+a { color: #1e80ff; }
+
+h1 { font-size: 1.75em; border-bottom: 2px solid #1e80ff; padding-bottom: .3em; display: inline-block; }
+h2 {
+  font-size: 1.4em;
+  padding-left: 12px;
+  border-left: 4px solid #1e80ff;
+  margin-top: 2em;
+}
+h3 { color: #1e80ff; }
+
+blockquote {
+  color: #515767;
+  border-left-color: #1e80ff;
+  background: #f7f8fa;
+  padding: .8em 1em;
+  border-radius: 0 4px 4px 0;
+}
+
+:not(pre) > code {
+  background: #f2f3f5;
+  color: #d63384;
+  border: 1px solid #ebedf0;
+}
+pre, .shiki { background: #f5f6f8 !important; border: 1px solid #ebedf0; }
+
+table { border-color: #ebedf0; }
+th { background: #f7f8fa; color: #1e80ff; }
+th, td { border-color: #ebedf0; }
+tr:hover { background: #f7f8fa; }
+
+hr { background: #ebedf0; }
+
+.footnotes { border-top-color: #ebedf0; }
+
+.tip    { background: #e6f4ff; border-left-color: #1e80ff; }
+.warning{ background: #fffbe6; border-left-color: #faad14; }
+.danger { background: #fff1f0; border-left-color: #ff4d4f; }
+.info   { background: #e6f4ff; border-left-color: #1e80ff; }
+.note   { background: #f7f8fa; border-left-color: #8a919f; }

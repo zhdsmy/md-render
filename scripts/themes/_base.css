@@ -1,0 +1,282 @@
+/* === md-render base styles ===
+ * 字体由 render.js 写入系统字体 fallback 变量。
+ * 主题文件只负责颜色、间距、装饰。
+ */
+
+:root {
+  --md-font-cn: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Heiti SC", sans-serif;
+  --md-font-en: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --md-font-mono: "SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+  --md-font-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--md-font-en), var(--md-font-cn), var(--md-font-emoji);
+  font-size: 16px;
+  line-height: 1.75;
+  word-wrap: break-word;
+}
+
+.markdown-body {
+  padding: 32px 64px;
+  max-width: none;
+  margin: 0;
+}
+
+/* Twemoji */
+img.emoji {
+  height: 1.1em;
+  width: 1.1em;
+  margin: 0 .05em 0 .1em;
+  vertical-align: -0.18em;
+  display: inline-block;
+}
+
+/* 标题 */
+h1, h2, h3, h4, h5, h6 {
+  margin: 1.6em 0 .8em;
+  line-height: 1.3;
+  font-weight: 700;
+}
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.25em; }
+h4 { font-size: 1em; }
+h5 { font-size: .9em; }
+h6 { font-size: .85em; opacity: .8; }
+
+/* 段落 */
+p { margin: 0 0 1em; }
+
+/* 链接 */
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* 列表 */
+ul, ol { padding-left: 2em; margin: 0 0 1em; }
+li + li { margin-top: .25em; }
+li > input[type="checkbox"] { margin-right: .4em; }
+
+/* 引用 */
+blockquote {
+  margin: 1em 0;
+  padding: .4em 1em;
+  border-left: 4px solid;
+  font-style: normal;
+}
+
+/* 代码 */
+code, pre, kbd, samp { font-family: var(--md-font-mono); }
+:not(pre) > code {
+  padding: .2em .4em;
+  border-radius: 4px;
+  font-size: .9em;
+}
+pre {
+  margin: 1em 0;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: .9em;
+  line-height: 1.55;
+}
+pre code { padding: 0; background: transparent !important; font-size: 1em; }
+
+/* shiki 兼容 */
+.shiki {
+  margin: 1em 0;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: .9em;
+  line-height: 1.55;
+  font-family: var(--md-font-mono);
+}
+.shiki code { font-family: inherit; }
+.soft-wrap-marker {
+  display: inline-block;
+  margin-left: .35em;
+  color: #8c959f !important;
+  font-weight: 700;
+  opacity: .9;
+  user-select: none;
+}
+
+/* 表格 */
+table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: .84em;
+  line-height: 1.55;
+}
+th, td {
+  padding: 6px 10px;
+  border: 1px solid;
+}
+th { font-weight: 600; }
+
+/* 水平线 */
+hr {
+  border: 0;
+  height: 1px;
+  margin: 2em 0;
+}
+
+/* 图片 */
+img:not(.emoji) {
+  max-width: 100%;
+  border-radius: 6px;
+  display: block;
+  margin: 1em auto;
+}
+
+/* 任务列表 */
+.task-list-item { list-style-type: none; }
+.task-list-item input { margin: 0 .4em 0 -1.4em; }
+
+/* 数学公式 */
+.katex { font-size: 1em; }
+.katex-display {
+  margin: 1em 0;
+  padding: .25em 0 .45em;
+  line-height: 1.35;
+  overflow-x: auto;
+  overflow-y: visible;
+  break-inside: avoid;
+}
+.katex-display > .katex {
+  padding-bottom: .15em;
+}
+.katex-html {
+  padding-bottom: .08em;
+}
+
+/* mermaid 容器 */
+.mermaid {
+  text-align: center;
+  margin: 1.2em 0;
+  padding-bottom: .75em;
+  overflow-x: auto;
+  background: transparent !important;
+}
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+/* 预渲染模式下，mermaid SVG 被包在 div.mermaid-svg 里（非 .mermaid），上面的选择器匹配不到。
+ * 必须补一组同等规则，否则 SVG 会按它自带的 height 属性占位 + preserveAspectRatio="xMinYMin meet"
+ * 保持 viewBox 比例绘制，导致 SVG 盒子和图形之间出现大段留白（journey 图尤为明显）。 */
+.mermaid-svg {
+  text-align: center;
+  margin: 1.2em 0;
+  overflow-x: auto;
+}
+.mermaid-svg svg {
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+/* Mermaid flowchart 节点标签 line-height 修正：
+ * mermaid 用 <foreignObject> 包 <div> 承载节点文字，默认 div 没设 line-height，浏览器
+ * 对 CJK 字体（PingFang 等）的实际行高 ≈ 1.55×font-size，超过 foreignObject 预留的 1.5×
+ * 高度，多行节点底部 descender 会被裁。把 shell（mermaid 预渲染环境）与最终输出都统一设成
+ * line-height: 1.6，mermaid 量出的 foreignObject height 与最终实际渲染行高保持一致，且
+ * 单/多行节点底部都有足够缓冲。 */
+.mermaid foreignObject > div,
+.mermaid-svg foreignObject > div,
+.mermaid .nodeLabel,
+.mermaid-svg .nodeLabel,
+.mermaid .edgeLabel,
+.mermaid-svg .edgeLabel {
+  line-height: 1.6 !important;
+}
+.mermaid .tick text {
+  font-size: 10px !important;
+}
+
+/* 脚注 */
+.footnotes {
+  font-size: .9em;
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: 1px solid;
+}
+
+/* 提示容器 (markdown-it-container) */
+.tip, .warning, .danger, .info, .note {
+  margin: 1em 0;
+  padding: 12px 16px;
+  border-left: 4px solid;
+  border-radius: 4px;
+}
+
+/* 目录 (TOC) — [[toc]] 或 frontmatter toc: true 触发 */
+.md-toc {
+  margin: 1.2em 0 1.6em;
+  padding: 12px 16px 12px 20px;
+  border: 1px solid;
+  border-radius: 6px;
+  font-size: .95em;
+  line-height: 1.6;
+  border-color: rgba(125, 125, 125, 0.25);
+  background: rgba(125, 125, 125, 0.04);
+}
+.md-toc .md-toc-title {
+  margin: 0 0 .4em;
+  font-weight: 700;
+  font-size: 1em;
+}
+.md-toc ul {
+  margin: 0;
+  padding-left: 1.4em;
+  list-style: disc;
+}
+.md-toc > ul {
+  padding-left: 1.2em;
+}
+.md-toc li + li {
+  margin-top: .15em;
+}
+.md-toc a {
+  text-decoration: none;
+}
+
+/* 折叠块 (:::details ...) */
+.md-details {
+  margin: 1em 0;
+  padding: 8px 14px;
+  border: 1px solid rgba(125, 125, 125, 0.25);
+  border-radius: 6px;
+  background: rgba(125, 125, 125, 0.04);
+}
+.md-details > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 4px 0;
+  outline: none;
+  list-style-position: inside;
+}
+.md-details[open] > summary {
+  margin-bottom: .6em;
+  border-bottom: 1px dashed rgba(125, 125, 125, 0.3);
+}
+
+/* GitHub Alert — 复用五套容器配色，仅调整标题字号/间距统一性 */
+.github-alert .custom-block-title {
+  margin: 0 0 .4em;
+  font-size: .95em;
+}
