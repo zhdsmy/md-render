@@ -1,6 +1,7 @@
 ---
 name: md-render
-description: This skill should be used when the user asks to render or convert Markdown content into HTML, bitmap images (PNG, AVIF, JPEG XL), or single-page PDF. It is optimized for handling AI-generated Markdown output and supports GFM tables, task lists, footnotes, definition lists, code highlighting (Shiki), Mermaid diagrams, KaTeX math formulas, custom containers (tip/warning/danger/info/note/details), GitHub-style alerts, table of contents, and emoji (Twemoji). Five built-in themes are available (github, github-dark, juejin, wechat, academic), with system font defaults and optional custom font-family overrides. Trigger phrases include "把 Markdown 转成 HTML/图片/PDF", "渲染 markdown", "导出长图", "生成微信公众号文章", "Markdown to PNG/AVIF/JXL", and similar.
+description: "当用户需要将 Markdown 渲染或转换为 HTML、位图图片（PNG、AVIF、JPEG XL）或单页 PDF 时使用本 Skill。它针对 AI 生成的 Markdown 内容做了优化，支持 GFM 表格、任务列表、脚注、定义列表、代码高亮（Shiki）、Mermaid 图表、KaTeX 数学公式、自定义容器（tip/warning/danger/info/note/details）、GitHub 风格提示块、目录和 emoji（Twemoji）。内置五套主题（github、github-dark、juejin、wechat、academic），默认使用系统字体，也支持自定义字体族。触发语包括“把 Markdown 转成 HTML/图片/PDF”、“渲染 markdown”、“导出长图”、“生成微信公众号文章”、“Markdown to PNG/AVIF/JXL”等类似需求。"
+version: 1.0.0
 agent_created: true
 ---
 
