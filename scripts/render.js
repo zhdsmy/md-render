@@ -236,8 +236,14 @@ if (args['no-downsample']) {
 // 这里先按文件名兜底初始化，等下面剥离 frontmatter 后若能解析出 title 再按优先级覆盖。
 let docTitle = args.title || path.basename(inputPath, path.extname(inputPath));
 
-// 默认截图宽度 900；--width 显式覆盖，并在启动阶段校验，避免非法值拖到 Puppeteer 阶段才失败。
-const viewportWidth = readPositiveIntegerArg('width', 900);
+// 默认截图宽度 900；--width 显式覆盖，并在启动阶段校验，避免非法值拖到 Puppeteer 阶段才失败。最小宽度限制为 375。
+const viewportWidth = Math.max(375, readPositiveIntegerArg('width', 900));
+
+// 计算动态左右留白：≥900px 时为 64px，≤375px 时为 16px，中间线性插值。推荐 375px 作为标准移动端最小宽度基准。
+const minResponsiveWidth = 375;
+const paddingScale = Math.max(0, Math.min(1, (viewportWidth - minResponsiveWidth) / (900 - minResponsiveWidth)));
+const bodyPadX = Math.round(16 + paddingScale * (64 - 16));
+
 // 默认关闭超采样，避免普通 PNG/AVIF/JXL 输出额外依赖 ImageMagick；需要高清中间产物时显式传 --supersample > 1。
 const pngSupersample = readPositiveIntegerArg('supersample', 1);
 
@@ -662,7 +668,6 @@ function computeAutoWrapColumn() {
   const rootPx = 16;
   const codeFontPx = rootPx * 0.9 * 0.82;
   const charPx = codeFontPx * 0.58;
-  const bodyPadX = 64;                        // 与 _base.css padding: 32px 64px 对齐
   const preInnerPad = 16 * 2;
   const usablePx = Math.max(120, viewportWidth - bodyPadX * 2 - preInnerPad);
   const col = Math.floor(usablePx / charPx) - 2;
@@ -1209,9 +1214,9 @@ function buildHtml(bodyHtml, opts = {}) {
 
   // 系统字体 fallback 链从模块顶层 SYS_FONT_* 读取，预渲染与最终渲染共用同一套字体栈。
   const overrides = [
-    `--md-font-en: ${args['font-en']   || SYS_FONT_EN};`,
-    `--md-font-cn: ${args['font-cn']   || SYS_FONT_CN};`,
-    `--md-font-mono: ${args['font-mono'] || SYS_FONT_MONO};`,
+    `--md-font-en: ${args['font-en'] ? args['font-en'] + ', ' + SYS_FONT_EN : SYS_FONT_EN};`,
+    `--md-font-cn: ${args['font-cn'] ? args['font-cn'] + ', ' + SYS_FONT_CN : SYS_FONT_CN};`,
+    `--md-font-mono: ${args['font-mono'] ? args['font-mono'] + ', ' + SYS_FONT_MONO : SYS_FONT_MONO};`,
   ];
   const overrideCss = `:root{${overrides.join('')}}`;
 
@@ -1347,12 +1352,13 @@ body.${outputClass} .mermaid-svg {
   // 顶部/底部安全区：PDF 页纸张 margin=0（见 renderSinglePagePdf），若仅依赖 _base.css 里
   // `.markdown-body { padding: 32px 64px }` 的 32px 顶距，首页首个元素（如 frontmatter 被解析
   // 出的 `<hr>` 或一级标题）视觉上会紧贴纸张边缘，观感上像"被截断"。这里把位图/pdf 下
-  // `.markdown-body` 的上下 padding 提升到 64px，让正文四周呼吸更一致。横向 padding 维持 64px，
-  // 不影响 --width / 代码硬换行等已有计算（见 bodyPadX = 64 常量）。
+  // `.markdown-body` 的上下 padding 提升到 64px，让正文四周呼吸更一致。横向 padding 则应用动态计算的 bodyPadX。
   const captureCss = (BITMAP_FORMATS.has(format) || format === 'pdf') ? `
 body.${outputClass} .markdown-body {
   padding-top: 64px;
   padding-bottom: 64px;
+  padding-left: ${bodyPadX}px;
+  padding-right: ${bodyPadX}px;
 }
 body.${outputClass} pre,
 body.${outputClass} .shiki,

@@ -136,11 +136,11 @@ stdin 也可作为输入：`cat foo.md | node render.js --in - --out out.png`
   - `_base.css` 补了 `.mermaid-svg svg { max-width:100%; height:auto; }`，让容器高度随 viewBox aspect 自适应——这是**根本修复**（所有 mermaid 图受益）。
   - 预渲染阶段把 SVG 临时挂到 puppeteer DOM、隐藏 `.task-line` 装饰虚线后调 `getBBox()` 量紧凑 bbox，再用 `fixJourneySvg()` 把 viewBox 收紧到 content + 12px padding，并按比例同步 `<svg height>` / `style height`——进一步消除 viewBox 两侧 + 底部 task-line 延伸带来的冗余空间。
 - 位图/PDF 输出前会等待 `document.fonts.ready` + Mermaid `[data-processed]` + 300ms buffer，三重保障。
-- 默认渲染视口宽度 900px；Chromium 的 `deviceScaleFactor` 保持 1（避免超长页 + 2x 时的底部重复 bug）。
+- 默认渲染视口宽度 900px（最小限制为 375px）；Chromium 的 `deviceScaleFactor` 保持 1（避免超长页 + 2x 时的底部重复 bug）。
 - 位图高清输出**不走浏览器截图**，而是先生成单页连续 PDF，再用 `pdftoppm` 以 `96 * supersample` DPI 栅格化为中间 PNG。默认 `--supersample 1` 直接输出目标像素宽、无需 ImageMagick；显式 `--supersample > 1` 时才生成高清中间图，并通过 ImageMagick `LanczosSharp + unsharp` 文字锐化优先下采样回 `--width` 指定的最终像素宽。PNG 直接输出；AVIF/JPEG XL 会从最终 PNG 中间产物转码。默认位图流程只依赖 Poppler（`brew install poppler`），AVIF 额外依赖 libavif（`brew install libavif`），JPEG XL 额外依赖 `jpeg-xl`（`brew install jpeg-xl`），高清超采样才依赖 ImageMagick（`brew install imagemagick`）。
 - PNG 默认不再运行 `oxipng`，避免普通流程依赖额外二进制。需要更小 PNG 体积时显式传 `--optimize-png`，会执行 `oxipng -o max --strip safe` 做**严格无损**重压（仅重排 IDAT + 删冗余元数据，不改动任何像素），通常再省 10%-30% 体积；`oxipng` 未安装或执行失败都只打 warning 跳过，不影响主流程。
 - PDF 不使用 A4 分页，而是以 `--width` 作为页宽、按实际内容高度生成**单页 PDF**（类似长图），零边距；这样可以与位图输出保持一致的版面和硬换行位置，避免 A4 窄页导致代码/表格出现额外的软换行。
-- `.markdown-body` 默认上下 32px、左右 16px 的窄留白（位图/PDF 全宽布局）。
+- `.markdown-body` 默认上下留白 64px，左右留白根据视口宽度响应式缩放（≥900px 时 64px，≤375px 时 16px），保证多端阅读体验一致。
 - 位图/PDF 的代码硬换行**不再静态估算字符宽度**：第一遍渲染加载到 Puppeteer 后，会通过 DOM 实测 `pre` 内宽和当前等宽字体下一个字符的真实宽度（取实测内宽的 94%作为安全余量，避免 PDF 子集嵌入字体时实际字宽轻微偏大触发 CSS 二次软换行），得到列数后重做 Shiki 高亮 + buildHtml 并 reload，再生成 PDF/位图。这样切换 `--font-mono` 不会让换行位置失准。`--wrap-code-column` 显式数字仍然优先；`0` 或保留默认 `auto` 触发实测。
 - `findWrapIndex` 仅在最后 12 字符内回溯断点，断点优先级分三档（空格/制表 > `,;)]}` > `.:|>`），避免在更早的弱断点处提前换行而浪费右侧空间。
 

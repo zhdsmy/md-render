@@ -16,7 +16,7 @@ node render.js --in <input> --out <output> [options]
 | `--out <path>` | 输出文件 | 必填 |
 | `--format html\|png\|avif\|jxl\|pdf` | 显式指定格式，否则按后缀推断 | 自动 |
 | `--theme <name>` | github / github-dark / juejin / wechat / academic | github |
-| `--width <px>` | 位图/PDF 的视口宽度（也是 PDF 页宽，也是默认最终位图像素宽） | 900 |
+| `--width <px>` | 位图/PDF 的视口宽度（也是 PDF 页宽，也是默认最终位图像素宽）。最小限制为 375 | 900 |
 | `--safe` | 不可信输入安全模式：禁用 Markdown 原始 HTML、拦截 `javascript:` / `data:` 等高风险链接或图片协议、Mermaid 使用 `strict`，并强化 HTML CSP / referrer / 外链属性 | false |
 | `--standalone` | **仅 HTML 输出生效**：把 KaTeX / Mermaid / Twemoji 等资源内联，可信模式下把本地图片转成 data URL，生成零依赖 HTML；位图/PDF 始终走内联，不需要传该参数 | false |
 | `--check-env` | 仅检查 Node 包、Chrome、`pdftoppm`、`avifenc`、`cjxl`、`magick`、`oxipng` 和主题文件，不执行渲染；其中 `avifenc` 仅 AVIF 需要，`cjxl` 仅 JPEG XL 需要，`magick` / `oxipng` 默认流程不需要 | false |
