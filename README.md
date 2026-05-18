@@ -2,7 +2,7 @@
 
 **English** | [简体中文](README.zh-CN.md)
 
-`md-render` is a Markdown rendering skill and CLI tool for converting Markdown documents into **HTML**, **bitmap images**, or **single-page PDF** files.
+`md-render` is a Markdown rendering skill and CLI tool for converting Markdown documents into **HTML**, **bitmap images**, or **single-page / paged PDF** files.
 
 It supports **PNG**, **AVIF**, and **JPEG XL** image output.
 
@@ -113,6 +113,9 @@ node render.js \
   [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image|cozy-note] \
   [--theme github|github-dark|juejin|wechat|academic|animal-island] \
   [--width 900] \
+  [--pdf-mode single-page|paged] \
+  [--page-size A4|Letter] \
+  [--margin 16mm] \
   [--safe] \
   [--standalone] \
   [--check-env]
@@ -164,6 +167,12 @@ Generate a document-style PDF:
 
 ```bash
 node render.js --in input.md --out output.pdf --profile academic-pdf
+```
+
+Generate a paged A4 PDF:
+
+```bash
+node render.js --in input.md --out output.pdf --profile academic-pdf --pdf-mode paged --page-size A4 --margin 16mm
 ```
 
 ## Themes

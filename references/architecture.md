@@ -20,7 +20,7 @@ Markdown
 - `png`
 - `avif`
 - `jxl`
-- `pdf`，单页连续 PDF，不做 A4 分页。
+- `pdf`，默认单页连续 PDF，也支持 `--pdf-mode paged` 输出 A4/Letter 分页 PDF。
 
 ## 主要依赖
 
@@ -151,10 +151,9 @@ HTML 输出保留宽代码块横向滚动，方便阅读和复制。
 
 PDF 输出：
 
-- 单页连续 PDF。
-- 页宽等于 `--width`。
-- 页高等于实际内容高度。
-- 零页边距。
+- 默认 `--pdf-mode single-page`：单页连续 PDF，页宽等于 `--width`，页高等于实际内容高度，零页边距。
+- `--pdf-mode paged`：浏览器标准分页 PDF，`--page-size A4|Letter` 控制纸张尺寸，`--margin` 控制四边统一页边距。
+- 分页 PDF 下，布局视口按纸张宽度减页边距估算，代码块自动换行会按实际可用正文宽度重新探测。
 
 位图输出不走浏览器截图，而是：
 

@@ -96,6 +96,8 @@ try {
   const cozyNoteHtml = path.join(tmp, 'cozy-note.html');
   const academicHtml = path.join(tmp, 'academic.html');
   const academicFontOverrideHtml = path.join(tmp, 'academic-font-override.html');
+  const singlePagePdf = path.join(tmp, 'single-page.pdf');
+  const pagedPdf = path.join(tmp, 'paged.pdf');
   const png = path.join(tmp, 'out.png');
   const avif = path.join(tmp, 'out.avif');
   const jxl = path.join(tmp, 'out.jxl');
@@ -190,6 +192,9 @@ server.listen(0, '127.0.0.1', () => {
   expectFail('removed input alias validation', ['--input', input, '--out', safeHtml], 'unknown option(s): --input');
   expectFail('missing value validation', ['--in', input, '--out', safeHtml, '--width', '--safe'], '--width requires a value');
   expectFail('unknown profile validation', ['--in', input, '--out', profileHtml, '--profile', 'unknown-profile'], '--profile must be one of:');
+  expectFail('unknown pdf mode validation', ['--in', input, '--out', singlePagePdf, '--pdf-mode', 'booklet'], '--pdf-mode must be single-page or paged.');
+  expectFail('unknown page size validation', ['--in', input, '--out', singlePagePdf, '--page-size', 'A5'], '--page-size must be one of: A4, Letter.');
+  expectFail('invalid pdf margin validation', ['--in', input, '--out', singlePagePdf, '--margin', 'wide'], '--margin must be a CSS length');
 
   run('profile suffix overrides default format', ['--in', profileSimpleInput, '--out', profileHtml, '--profile', 'wechat-long']);
   const profiled = read(profileHtml);
@@ -236,6 +241,12 @@ server.listen(0, '127.0.0.1', () => {
   assert.ok(explicitOverrideIndex > academicThemeFontIndex, 'explicit font override should be emitted after academic theme CSS');
   assertIncludes(academicFontOverride, '--md-font-cn: "PingFang SC"', 'explicit Chinese font should be written to CSS variables');
   assertIncludes(academicFontOverride, '--md-font-en: Arial', 'explicit English font should be written to CSS variables');
+
+  run('single-page pdf render', ['--in', profileSimpleInput, '--out', singlePagePdf, '--format', 'pdf'], { timeout: 180000 });
+  assertNonEmpty(singlePagePdf, 'single-page PDF output');
+
+  run('paged pdf render', ['--in', profileSimpleInput, '--out', pagedPdf, '--format', 'pdf', '--pdf-mode', 'paged', '--page-size', 'A4', '--margin', '16mm'], { timeout: 180000 });
+  assertNonEmpty(pagedPdf, 'paged PDF output');
 
   run('safe html', ['--in', input, '--out', safeHtml, '--safe']);
   const safe = read(safeHtml);

@@ -25,6 +25,9 @@
  *   --wrap-code-column <n|auto|0>
  *                        hard-wrap long code lines for bitmap/pdf with a visible marker
  *                        (default: auto; 0 disables)
+ *   --pdf-mode <mode>    single-page | paged (PDF only; default: single-page)
+ *   --page-size <size>   A4 | Letter (paged PDF only; default: A4)
+ *   --margin <length>    uniform paged PDF margin, e.g. 16mm, 0.75in (default: 16mm)
  *   --optimize-png       (PNG only) run optional oxipng lossless recompression
  *
  * Style advanced options:
@@ -153,12 +156,13 @@ if (args.help || args.h) {
 
 const KNOWN_ARGS = new Set([
   '_', 'h', 'help', 'in', 'out', 'format', 'profile', 'theme', 'width', 'safe', 'standalone', 'check-env',
-  'supersample', 'wrap-code-column', 'optimize-png',
+  'supersample', 'wrap-code-column', 'pdf-mode', 'page-size', 'margin', 'optimize-png',
   'title', 'font-cn', 'font-en', 'font-mono', 'shiki-theme',
   'chrome', 'keep-tmp', 'trusted', 'no-prerender-mermaid', 'no-downsample',
 ]);
 const VALUE_ARGS = new Set([
   'in', 'out', 'format', 'profile', 'theme', 'width', 'supersample', 'wrap-code-column',
+  'pdf-mode', 'page-size', 'margin',
   'title', 'font-cn', 'font-en', 'font-mono', 'shiki-theme', 'chrome',
 ]);
 const SUPPORTED_FORMATS = new Set(['html', 'png', 'pdf', 'avif', 'jxl']);
@@ -166,6 +170,12 @@ const BITMAP_FORMATS = new Set(['png', 'avif', 'jxl']);
 const AVIF_MAX_CELL_SIZE = 65536;
 const AVIF_MIN_GRID_CELL_SIZE = 64;
 const SUPPORTED_THEMES = new Set(['github', 'github-dark', 'juejin', 'wechat', 'academic', 'animal-island']);
+const SUPPORTED_PDF_MODES = new Set(['single-page', 'paged']);
+const SUPPORTED_PAGE_SIZES = new Set(['A4', 'Letter']);
+const PAGE_SIZE_MM = Object.freeze({
+  A4: { width: 210, height: 297 },
+  Letter: { width: 215.9, height: 279.4 },
+});
 const PROFILES = Object.freeze({
   'github-doc': {
     format: 'html',
@@ -232,6 +242,23 @@ function readPositiveIntegerArg(name, defaultValue) {
   return n;
 }
 
+function cssLengthToPx(raw, argName) {
+  const s = String(raw || '').trim();
+  const m = s.match(/^(\d+(?:\.\d+)?)(px|mm|cm|in|pt)?$/i);
+  if (!m) failUsage(`--${argName} must be a CSS length such as 16mm, 0.75in, 48px, or 0.`);
+  const value = Number(m[1]);
+  if (!Number.isFinite(value)) failUsage(`--${argName} must be a valid CSS length.`);
+  const unit = (m[2] || 'px').toLowerCase();
+  const factors = {
+    px: 1,
+    mm: 96 / 25.4,
+    cm: 96 / 2.54,
+    in: 96,
+    pt: 96 / 72,
+  };
+  return value * factors[unit];
+}
+
 function validateArgs() {
   const unknown = Object.keys(args).filter(key => !KNOWN_ARGS.has(key));
   if (unknown.length) failUsage(`unknown option(s): ${unknown.map(key => `--${key}`).join(', ')}`);
@@ -246,6 +273,13 @@ function validateArgs() {
   if (args.theme !== undefined && !SUPPORTED_THEMES.has(args.theme)) {
     failUsage('--theme must be one of: github, github-dark, juejin, wechat, academic, animal-island.');
   }
+  if (args['pdf-mode'] !== undefined && !SUPPORTED_PDF_MODES.has(args['pdf-mode'])) {
+    failUsage('--pdf-mode must be single-page or paged.');
+  }
+  if (args['page-size'] !== undefined && !SUPPORTED_PAGE_SIZES.has(args['page-size'])) {
+    failUsage('--page-size must be one of: A4, Letter.');
+  }
+  if (args.margin !== undefined) cssLengthToPx(args.margin, 'margin');
   const wrap = args['wrap-code-column'];
   if (wrap !== undefined && wrap !== 'auto') {
     const n = Number(wrap);
@@ -295,17 +329,33 @@ if (format !== 'html' && args.standalone) {
 if (args['no-downsample']) {
   console.warn('[md-render] WARN: --no-downsample is a legacy bitmap escape hatch; prefer a larger --width for Retina bitmap output.');
 }
+const pdfMode = args['pdf-mode'] || 'single-page';
+const pageSize = args['page-size'] || 'A4';
+const pdfMargin = args.margin || '16mm';
+if (format !== 'pdf' && (args['pdf-mode'] || args['page-size'] || args.margin)) {
+  console.warn('[md-render] WARN: --pdf-mode, --page-size, and --margin only affect PDF output.');
+}
 // docTitle 优先级：--title CLI > frontmatter.title（若存在）> 输入文件名（不含扩展名）。
 // 这里先按文件名兜底初始化，等下面剥离 frontmatter 后若能解析出 title 再按优先级覆盖。
 let docTitle = args.title || path.basename(inputPath, path.extname(inputPath));
 
 // 默认截图宽度 900；--width 显式覆盖，并在启动阶段校验，避免非法值拖到 Puppeteer 阶段才失败。最小宽度限制为 375。
 const viewportWidth = Math.max(375, readPositiveIntegerArg('width', 900));
+const pagedPdfContentWidth = (() => {
+  if (format !== 'pdf' || pdfMode !== 'paged') return null;
+  const page = PAGE_SIZE_MM[pageSize];
+  const pageWidthPx = page.width * (96 / 25.4);
+  const contentWidth = pageWidthPx - cssLengthToPx(pdfMargin, 'margin') * 2;
+  return Math.max(375, Math.round(contentWidth));
+})();
+const layoutViewportWidth = pagedPdfContentWidth || viewportWidth;
 
 // 计算动态左右留白：≥900px 时为 64px，≤375px 时为 16px，中间线性插值。推荐 375px 作为标准移动端最小宽度基准。
 const minResponsiveWidth = 375;
-const paddingScale = Math.max(0, Math.min(1, (viewportWidth - minResponsiveWidth) / (900 - minResponsiveWidth)));
-const bodyPadX = Math.round(16 + paddingScale * (64 - 16));
+const paddingScale = Math.max(0, Math.min(1, (layoutViewportWidth - minResponsiveWidth) / (900 - minResponsiveWidth)));
+const bodyPadX = (format === 'pdf' && pdfMode === 'paged')
+  ? 0
+  : Math.round(16 + paddingScale * (64 - 16));
 
 // 默认关闭超采样，避免普通 PNG/AVIF/JXL 输出额外依赖 ImageMagick；需要高清中间产物时显式传 --supersample > 1。
 const pngSupersample = readPositiveIntegerArg('supersample', 1);
@@ -732,7 +782,7 @@ function computeAutoWrapColumn() {
   const codeFontPx = rootPx * 0.9 * 0.82;
   const charPx = codeFontPx * 0.58;
   const preInnerPad = 16 * 2;
-  const usablePx = Math.max(120, viewportWidth - bodyPadX * 2 - preInnerPad);
+  const usablePx = Math.max(120, layoutViewportWidth - bodyPadX * 2 - preInnerPad);
   const col = Math.floor(usablePx / charPx) - 2;
   return Math.max(40, col);
 }
@@ -1415,14 +1465,17 @@ body.${outputClass} .mermaid-svg {
   // pre 容器需要额外禁止横向滚动（overflow-x: hidden）并设置字号；
   // 其余 white-space / word-break / overflow-wrap 规则对外层与内层一致，合并到同一组选择器。
   //
-  // 顶部/底部安全区：PDF 页纸张 margin=0（见 renderSinglePagePdf），若仅依赖 _base.css 里
+  // 顶部/底部安全区：单页 PDF 页纸张 margin=0（见 renderSinglePagePdf），若仅依赖 _base.css 里
   // `.markdown-body { padding: 32px 64px }` 的 32px 顶距，首页首个元素（如 frontmatter 被解析
   // 出的 `<hr>` 或一级标题）视觉上会紧贴纸张边缘，观感上像"被截断"。这里把位图/pdf 下
-  // `.markdown-body` 的上下 padding 提升到 64px，让正文四周呼吸更一致。横向 padding 则应用动态计算的 bodyPadX。
+  // `.markdown-body` 的上下 padding 提升到 64px，让正文四周呼吸更一致。分页 PDF 由 page
+  // margin 提供安全区，因此正文 padding 归零。横向 padding 则应用动态计算的 bodyPadX。
+  const capturePadTop = (format === 'pdf' && pdfMode === 'paged') ? 0 : 64;
+  const capturePadBottom = capturePadTop;
   const captureCss = (BITMAP_FORMATS.has(format) || format === 'pdf') ? `
 body.${outputClass} .markdown-body {
-  padding-top: 64px;
-  padding-bottom: 64px;
+  padding-top: ${capturePadTop}px;
+  padding-bottom: ${capturePadBottom}px;
   padding-left: ${bodyPadX}px;
   padding-right: ${bodyPadX}px;
 }
@@ -1441,7 +1494,36 @@ body.${outputClass} .shiki {
   overflow-x: hidden;
 }
 ` : '';
-  const formatCss = `${htmlResponsiveCss}${captureCss}`;
+  const pagedPdfCss = (format === 'pdf' && pdfMode === 'paged') ? `
+body.${outputClass} {
+  background: transparent;
+}
+body.${outputClass} h1,
+body.${outputClass} h2,
+body.${outputClass} h3,
+body.${outputClass} h4,
+body.${outputClass} h5,
+body.${outputClass} h6 {
+  break-after: avoid-page;
+}
+body.${outputClass} pre,
+body.${outputClass} .shiki,
+body.${outputClass} blockquote,
+body.${outputClass} img,
+body.${outputClass} .katex-display,
+body.${outputClass} .mermaid,
+body.${outputClass} .mermaid-svg,
+body.${outputClass} .tip,
+body.${outputClass} .warning,
+body.${outputClass} .danger,
+body.${outputClass} .info,
+body.${outputClass} .note,
+body.${outputClass} .md-toc,
+body.${outputClass} .md-details {
+  break-inside: avoid-page;
+}
+` : '';
+  const formatCss = `${htmlResponsiveCss}${captureCss}${pagedPdfCss}`;
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -1588,7 +1670,7 @@ async function prerenderMermaid(bodyHtml) {
     page = await browser.newPage();
     // 视口宽度对 gantt / flowchart 自适应宽度没有实质影响（mermaid 内部按 SVG 内在布局），
     // 但设一个接近最终输出的宽度有助于 wrap 决策保持一致
-    await page.setViewport({ width: viewportWidth, height: 800, deviceScaleFactor: 1 });
+    await page.setViewport({ width: layoutViewportWidth, height: 800, deviceScaleFactor: 1 });
 
     // 空壳页：仅加载 mermaid + initialize，暴露 __renderAll 把所有源码批量渲染为 SVG
     // 复用与最终输出一致的 mermaidTheme / themeVariables / CSS 字体变量，
@@ -1890,7 +1972,7 @@ function fixJourneySvg(svg, bbox) {
     const page = await browser.newPage();
     // Chromium 里 deviceScaleFactor 保持 1（避免超长页底部重复渲染 bug）；
     // 位图通过「先生成 PDF → 再用 pdftoppm 栅格化」来获得高清输出，不再走浏览器直接截图。
-    await page.setViewport({ width: viewportWidth, height: 1200, deviceScaleFactor: 1 });
+    await page.setViewport({ width: layoutViewportWidth, height: 1200, deviceScaleFactor: 1 });
 
     async function loadHtml(htmlContent) {
       const tmpFile = path.join(os.tmpdir(), `md-render-${Date.now()}-${Math.random().toString(36).slice(2,7)}.html`);
@@ -2006,6 +2088,7 @@ function fixJourneySvg(svg, bbox) {
 
     // 统一先构造单页连续 PDF：页宽 = viewportWidth，页高 = 实际内容高度
     async function renderSinglePagePdf(pdfPath) {
+      fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
       const contentHeight = await page.evaluate(() => Math.max(
         document.body.scrollHeight,
         document.documentElement.scrollHeight
@@ -2019,6 +2102,23 @@ function fixJourneySvg(svg, bbox) {
         pageRanges: '1',
       });
       return contentHeight;
+    }
+
+    async function renderPagedPdf(pdfPath) {
+      fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
+      await page.emulateMediaType('print');
+      await page.pdf({
+        path: pdfPath,
+        format: pageSize,
+        printBackground: true,
+        margin: {
+          top: pdfMargin,
+          bottom: pdfMargin,
+          left: pdfMargin,
+          right: pdfMargin,
+        },
+      });
+      await page.emulateMediaType('screen');
     }
 
     if (BITMAP_FORMATS.has(format)) {
@@ -2206,7 +2306,8 @@ function fixJourneySvg(svg, bbox) {
 
       console.log(`[md-render] ${bitmapLabel} written: ${outputPath}`);
     } else if (format === 'pdf') {
-      await renderSinglePagePdf(outputPath);
+      if (pdfMode === 'paged') await renderPagedPdf(outputPath);
+      else await renderSinglePagePdf(outputPath);
       console.log(`[md-render] PDF written: ${outputPath}`);
     }
 

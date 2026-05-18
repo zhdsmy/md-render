@@ -30,6 +30,9 @@ node render.js --in <input> --out <output> [options]
 |---|---|---|
 | `--supersample <n>` | 位图内部超采样倍数：`1` = 关闭超采样（无需 `magick`）；`>1` 时 `pdftoppm` 先以 `width × n` 像素栅格化为中间 PNG，再用 ImageMagick 文字锐化优先下采样回 `width`；AVIF/JPEG XL 会从最终 PNG 中间产物转码 | 1 |
 | `--wrap-code-column <n\|auto\|0>` | 位图/PDF 长代码硬换行列宽。`auto` = 在浏览器里实测当前字体下的真实宽度；显式数字优先；`0` 关闭硬换行 | auto |
+| `--pdf-mode single-page\|paged` | 仅 PDF 生效。`single-page` = 单页连续 PDF；`paged` = A4/Letter 分页 PDF | single-page |
+| `--page-size A4\|Letter` | 分页 PDF 的纸张尺寸，仅 `--pdf-mode paged` 生效 | A4 |
+| `--margin <length>` | 分页 PDF 四边统一页边距，例如 `16mm`、`0.75in`、`48px` | 16mm |
 | `--optimize-png` | 仅 PNG 生效：显式启用可选的 `oxipng` 无损重压以减小体积 | false |
 
 ### 样式高级参数
@@ -107,7 +110,15 @@ $NODE render.js --in /tmp/article.md --out /tmp/article.png --profile wechat-lon
 $NODE render.js --in doc.md --out doc.pdf --theme github
 ```
 
-> 注：本工具的 PDF 输出是单页连续 PDF（按 `--width` 为页宽、实际内容高度为页高），排版与位图输出保持一致，不走 A4 分页。
+> 注：默认 PDF 输出是单页连续 PDF（按 `--width` 为页宽、实际内容高度为页高），排版与位图输出保持一致；需要 A4/Letter 分页时使用 `--pdf-mode paged`。
+
+### 2.1 技术文档 → 分页 PDF（A4 / 打印 / 归档）
+
+```bash
+$NODE render.js --in doc.md --out doc-a4.pdf --theme github --pdf-mode paged --page-size A4 --margin 16mm
+```
+
+`--pdf-mode paged` 会使用浏览器标准分页 PDF。此时 `--page-size` 与 `--margin` 决定正文可用宽度，代码块仍会按实际可用宽度自动硬换行。
 
 ### 3. 暗色演示稿截图
 

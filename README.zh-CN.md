@@ -2,7 +2,7 @@
 
 [English](README.md) | **简体中文**
 
-`md-render` 是一个 Markdown 渲染 skill 和 CLI 工具，可将 Markdown 文档转换为 **HTML**、**位图图片** 或 **单页 PDF**。
+`md-render` 是一个 Markdown 渲染 skill 和 CLI 工具，可将 Markdown 文档转换为 **HTML**、**位图图片** 或 **单页 / 分页 PDF**。
 
 图片输出支持 **PNG**、**AVIF** 和 **JPEG XL**。
 
@@ -113,6 +113,9 @@ node render.js \
   [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image|cozy-note] \
   [--theme github|github-dark|juejin|wechat|academic|animal-island] \
   [--width 900] \
+  [--pdf-mode single-page|paged] \
+  [--page-size A4|Letter] \
+  [--margin 16mm] \
   [--safe] \
   [--standalone] \
   [--check-env]
@@ -164,6 +167,12 @@ node render.js --in input.md --out output.jxl --theme github --width 900
 
 ```bash
 node render.js --in input.md --out output.pdf --profile academic-pdf
+```
+
+生成 A4 分页 PDF：
+
+```bash
+node render.js --in input.md --out output.pdf --profile academic-pdf --pdf-mode paged --page-size A4 --margin 16mm
 ```
 
 ## 主题

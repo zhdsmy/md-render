@@ -1,13 +1,13 @@
 ---
 name: md-render
-description: "当用户需要将 Markdown 渲染或转换为 HTML、位图图片（PNG、AVIF、JPEG XL）或单页 PDF 时使用本 Skill。适合 AI 生成内容、技术文档、长图分享、微信公众号文章、研究笔记、代码块、Mermaid 图表、KaTeX 数学公式、GitHub Alert、目录、emoji 和自定义提示块。内置 github、github-dark、juejin、wechat、academic、animal-island 主题，支持安全模式、standalone HTML、自定义字体和位图/PDF 调优。"
+description: "当用户需要将 Markdown 渲染或转换为 HTML、位图图片（PNG、AVIF、JPEG XL）或 PDF（单页长图式或 A4/Letter 分页）时使用本 Skill。适合 AI 生成内容、技术文档、长图分享、微信公众号文章、研究笔记、代码块、Mermaid 图表、KaTeX 数学公式、GitHub Alert、目录、emoji 和自定义提示块。内置 github、github-dark、juejin、wechat、academic、animal-island 主题，支持安全模式、standalone HTML、自定义字体和位图/PDF 调优。"
 version: 1.0.0
 agent_created: true
 ---
 
 # md-render
 
-把 Markdown 渲染成 **HTML / PNG / AVIF / JPEG XL / 单页 PDF**。优先用于高保真视觉输出、长图、离线 HTML 和技术文档截图。
+把 Markdown 渲染成 **HTML / PNG / AVIF / JPEG XL / PDF**。优先用于高保真视觉输出、长图、离线 HTML、技术文档截图和分页报告。
 
 ## 何时使用
 
@@ -20,7 +20,6 @@ agent_created: true
 
 - 仅需纯文本：直接写文件。
 - 需要可编辑 Word、PPT、EPUB、ODT、LaTeX：优先使用对应文档/演示/通用转换工具。
-- 需要多页 A4 排版：当前 PDF 是单页连续 PDF，不是分页打印 PDF。
 
 ## 快速决策
 
@@ -48,6 +47,9 @@ node render.js \
   [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image|cozy-note] \
   [--theme github|github-dark|juejin|wechat|academic|animal-island] \
   [--width 900] \
+  [--pdf-mode single-page|paged] \
+  [--page-size A4|Letter] \
+  [--margin 16mm] \
   [--safe] \
   [--standalone] \
   [--check-env]
@@ -91,6 +93,9 @@ node render.js --in input.md --out note.png --profile cozy-note
 - `--width <px>`：位图/PDF 视口宽度，也是最终位图宽度；最小 375，默认 900。
 - `--supersample <n>`：位图超采样，默认 1；大于 1 需要 ImageMagick。
 - `--wrap-code-column auto|0|<n>`：位图/PDF 长代码硬换行；默认 auto，`0` 关闭。
+- `--pdf-mode single-page|paged`：PDF 输出模式；默认 `single-page` 为长图式单页 PDF，`paged` 为 A4/Letter 分页 PDF。
+- `--page-size A4|Letter`：分页 PDF 的纸张尺寸，默认 A4。
+- `--margin <length>`：分页 PDF 四边统一页边距，默认 `16mm`。
 - `--optimize-png`：用 `oxipng` 做可选无损压缩。
 - `--title`、`--font-cn`、`--font-en`、`--font-mono`、`--shiki-theme`：样式覆盖。
 - `--chrome`、`--keep-tmp`、`--trusted`、`--no-prerender-mermaid`、`--no-downsample`：调试/兼容参数，普通任务少用。
@@ -102,6 +107,7 @@ node render.js --in input.md --out note.png --profile cozy-note
 | 默认 HTML | KaTeX / Mermaid / Twemoji 走 jsdelivr CDN | 有网络的轻量预览 |
 | `--standalone` HTML | CSS、Mermaid、Twemoji、数学公式等内联 | 离线、微信内置浏览器、跨设备分发 |
 | 位图 / PDF | 始终使用内联资源 | 稳定截图，避免外部资源超时 |
+| `--pdf-mode paged` | A4/Letter 分页 PDF | 打印、归档、正式报告 |
 
 ## 支持语法
 
