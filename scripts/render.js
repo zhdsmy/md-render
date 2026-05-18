@@ -1276,7 +1276,10 @@ function buildHtml(bodyHtml, opts = {}) {
     `--md-font-cn: ${args['font-cn'] ? args['font-cn'] + ', ' + SYS_FONT_CN : SYS_FONT_CN};`,
     `--md-font-mono: ${args['font-mono'] ? args['font-mono'] + ', ' + SYS_FONT_MONO : SYS_FONT_MONO};`,
   ];
-  const overrideCss = `:root{${overrides.join('')}}`;
+  const explicitBodyFontOverride = (args['font-en'] || args['font-cn'])
+    ? '.markdown-body{font-family:var(--md-font-en),var(--md-font-cn),var(--md-font-emoji);}'
+    : '';
+  const overrideCss = `:root{${overrides.join('')}}${explicitBodyFontOverride}`;
 
   const isDark = theme.includes('dark');
   const mermaidTheme = isDark ? 'dark' : 'default';

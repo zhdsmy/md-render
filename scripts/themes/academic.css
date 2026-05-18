@@ -7,22 +7,29 @@ body { background: #fdfdf9; color: #1a1a1a; }
   line-height: 1.85;
 }
 
-a { color: #8b1a1a; text-decoration: underline; }
+.markdown-body a {
+  color: #8b1a1a;
+  text-decoration: underline;
+}
 
-h1 {
+.markdown-body h1 {
   text-align: center;
   font-size: 1.9em;
   margin: 1em 0 1.5em;
   font-weight: 700;
   letter-spacing: .02em;
 }
-h2 { font-size: 1.4em; border-bottom: 1px solid #c0c0a8; padding-bottom: .25em; }
-h3 { font-size: 1.15em; }
-h4 { font-style: italic; }
+.markdown-body h2 {
+  font-size: 1.4em;
+  border-bottom: 1px solid #c0c0a8;
+  padding-bottom: .25em;
+}
+.markdown-body h3 { font-size: 1.15em; }
+.markdown-body h4 { font-style: italic; }
 
-p { text-indent: 0; }
+.markdown-body p { text-indent: 0; }
 
-blockquote {
+.markdown-body blockquote {
   color: #444;
   border-left-color: #8b1a1a;
   font-style: italic;
@@ -30,30 +37,41 @@ blockquote {
   padding: .6em 1em;
 }
 
-:not(pre) > code {
+.markdown-body :not(pre) > code {
   background: #f0ead6;
   color: #5a3030;
   font-size: .92em;
 }
-pre, .shiki {
+.markdown-body pre,
+.markdown-body .shiki {
   background: #f6f1e1 !important;
   border: 1px solid #d8cfa9;
 }
 
-table {
+.markdown-body table {
   border-color: #1a1a1a;
   border-top: 2px solid #1a1a1a;
   border-bottom: 2px solid #1a1a1a;
 }
-th { border-bottom: 1px solid #1a1a1a; background: transparent; }
-th, td { border-left: none; border-right: none; }
+.markdown-body th {
+  border-bottom: 1px solid #1a1a1a;
+  background: transparent;
+}
+.markdown-body th,
+.markdown-body td {
+  border-left: none;
+  border-right: none;
+}
 
-hr { background: #c0c0a8; }
+.markdown-body hr { background: #c0c0a8; }
 
-.footnotes { border-top: 1px solid #c0c0a8; font-size: .88em; }
+.markdown-body .footnotes {
+  border-top: 1px solid #c0c0a8;
+  font-size: .88em;
+}
 
-.tip    { background: #faf6e9; border-left-color: #8b1a1a; }
-.warning{ background: #fdf6ec; border-left-color: #c08e1a; }
-.danger { background: #fbeae5; border-left-color: #8b1a1a; }
-.info   { background: #f0ead6; border-left-color: #555; }
-.note   { background: #f0ead6; border-left-color: #555; }
+.markdown-body .tip    { background: #faf6e9; border-left-color: #8b1a1a; }
+.markdown-body .warning{ background: #fdf6ec; border-left-color: #c08e1a; }
+.markdown-body .danger { background: #fbeae5; border-left-color: #8b1a1a; }
+.markdown-body .info   { background: #f0ead6; border-left-color: #555; }
+.markdown-body .note   { background: #f0ead6; border-left-color: #555; }

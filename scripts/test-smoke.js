@@ -92,6 +92,8 @@ try {
   const profileSafeStandaloneHtml = path.join(tmp, 'profile-safe-standalone.html');
   const profileSimpleInput = path.join(tmp, 'profile-simple.md');
   const profilePngNoExt = path.join(tmp, 'profile-png-no-ext');
+  const academicHtml = path.join(tmp, 'academic.html');
+  const academicFontOverrideHtml = path.join(tmp, 'academic-font-override.html');
   const png = path.join(tmp, 'out.png');
   const avif = path.join(tmp, 'out.avif');
   const jxl = path.join(tmp, 'out.jxl');
@@ -191,6 +193,8 @@ server.listen(0, '127.0.0.1', () => {
   const profiled = read(profileHtml);
   assertIncludes(profiled, 'body class="format-html"', 'HTML suffix should override wechat-long default PNG format');
   assertIncludes(profiled, '#07c160', 'wechat-long profile should apply the wechat theme');
+  assertIncludes(profiled, '.markdown-body a {', 'theme link styles should be scoped to markdown-body');
+  assertIncludes(profiled, '.markdown-body .mermaid-svg', 'wechat theme should reset technical block letter spacing inside markdown-body');
 
   run('profile cli override', ['--in', profileSimpleInput, '--out', profileOverrideHtml, '--profile', 'wechat-long', '--theme', 'github-dark']);
   const profileOverride = read(profileOverrideHtml);
@@ -207,6 +211,18 @@ server.listen(0, '127.0.0.1', () => {
 
   run('profile default png without extension', ['--in', profileSimpleInput, '--out', profilePngNoExt, '--profile', 'dark-slide'], { timeout: 180000 });
   assertNonEmpty(profilePngNoExt, 'profile default PNG output without extension');
+
+  run('academic default font', ['--in', profileSimpleInput, '--out', academicHtml, '--theme', 'academic']);
+  assertIncludes(read(academicHtml), '"Source Han Serif SC"', 'academic theme should keep its serif-first default font stack');
+
+  run('academic explicit font override', ['--in', profileSimpleInput, '--out', academicFontOverrideHtml, '--theme', 'academic', '--font-cn', '"PingFang SC"', '--font-en', 'Arial']);
+  const academicFontOverride = read(academicFontOverrideHtml);
+  const academicThemeFontIndex = academicFontOverride.indexOf('"Source Han Serif SC"');
+  const explicitOverrideIndex = academicFontOverride.indexOf('.markdown-body{font-family:var(--md-font-en),var(--md-font-cn),var(--md-font-emoji);}');
+  assert.ok(academicThemeFontIndex >= 0, 'academic theme CSS should still be present');
+  assert.ok(explicitOverrideIndex > academicThemeFontIndex, 'explicit font override should be emitted after academic theme CSS');
+  assertIncludes(academicFontOverride, '--md-font-cn: "PingFang SC"', 'explicit Chinese font should be written to CSS variables');
+  assertIncludes(academicFontOverride, '--md-font-en: Arial', 'explicit English font should be written to CSS variables');
 
   run('safe html', ['--in', input, '--out', safeHtml, '--safe']);
   const safe = read(safeHtml);
