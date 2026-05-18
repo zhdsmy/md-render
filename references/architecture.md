@@ -222,6 +222,12 @@ Chrome 使用进程级 lazy singleton：
 - `academic.css`：研究报告/论文风格。
 - `animal-island.css`：温暖圆润的笔记和轻松分享风格。
 
+主题边界：
+
+- `_base.css` 拥有组件行为，包括表格收缩/横向滚动、代码块 overflow、TOC/details 结构、图片响应式、Mermaid/KaTeX 容器。
+- 主题 CSS 通过 `:root` 覆盖 `--md-*` 语义 token，并只保留必要的字体、标题造型、边框、阴影等视觉装饰。
+- 主题不应直接覆盖 `body`，也不应改写表格的 `display` / `width` / `max-width` / `overflow-x` / `border-collapse` 等行为属性；这类约束由 smoke test 的 theme CSS contract 覆盖。
+
 主题修改后至少运行 `npm test`，并渲染 `sample.md` 的全部内置主题人工检查。
 
 ## 回归测试

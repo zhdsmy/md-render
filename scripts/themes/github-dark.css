@@ -1,46 +1,37 @@
 /* GitHub Dark theme */
-body { background: #0d1117; color: #e6edf3; }
-.markdown-body { color: #e6edf3; }
-
-.markdown-body a { color: #4493f8; }
+:root {
+  --md-color-bg: #0d1117;
+  --md-color-fg: #e6edf3;
+  --md-color-muted: #9198a1;
+  --md-color-link: #4493f8;
+  --md-color-border: #30363d;
+  --md-color-surface: #161b22;
+  --md-blockquote-fg: #9198a1;
+  --md-blockquote-bg: transparent;
+  --md-blockquote-border: #30363d;
+  --md-inline-code-fg: #e6edf3;
+  --md-inline-code-bg: rgba(110,118,129,.4);
+  --md-code-bg: #161b22;
+  --md-table-border: #30363d;
+  --md-table-header-bg: #161b22;
+  --md-table-row-alt-bg: #161b22;
+  --md-hr-bg: #30363d;
+  --md-footnote-border: #30363d;
+  --md-footnote-fg: #9198a1;
+  --md-alert-tip-bg: #0c2d6b;
+  --md-alert-tip-border: #4493f8;
+  --md-alert-warning-bg: #4a3c0a;
+  --md-alert-warning-border: #d29922;
+  --md-alert-danger-bg: #67060c;
+  --md-alert-danger-border: #f85149;
+  --md-alert-info-bg: #0c2d6b;
+  --md-alert-info-border: #4493f8;
+  --md-alert-note-bg: #161b22;
+  --md-alert-note-border: #9198a1;
+}
 
 .markdown-body h1,
 .markdown-body h2 {
-  border-bottom: 1px solid #30363d;
+  border-bottom: 1px solid var(--md-color-border);
   padding-bottom: .3em;
 }
-
-.markdown-body blockquote {
-  color: #9198a1;
-  border-left-color: #30363d;
-}
-
-.markdown-body :not(pre) > code {
-  background: rgba(110,118,129,.4);
-  color: #e6edf3;
-}
-.markdown-body pre,
-.markdown-body .shiki {
-  background: #161b22 !important;
-}
-
-.markdown-body table { border-color: #30363d; }
-.markdown-body th { background: #161b22; }
-.markdown-body th,
-.markdown-body td {
-  border-color: #30363d;
-}
-.markdown-body tr:nth-child(2n) { background: #161b22; }
-
-.markdown-body hr { background: #30363d; }
-
-.markdown-body .footnotes {
-  border-top-color: #30363d;
-  color: #9198a1;
-}
-
-.markdown-body .tip    { background: #0c2d6b; border-left-color: #4493f8; }
-.markdown-body .warning{ background: #4a3c0a; border-left-color: #d29922; }
-.markdown-body .danger { background: #67060c; border-left-color: #f85149; }
-.markdown-body .info   { background: #0c2d6b; border-left-color: #4493f8; }
-.markdown-body .note   { background: #161b22; border-left-color: #9198a1; }

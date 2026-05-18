@@ -1,56 +1,62 @@
 /* 掘金风格：偏蓝、阅读友好 */
-body { background: #ffffff; color: #252933; }
-.markdown-body { color: #252933; line-height: 1.85; }
+:root {
+  --md-color-bg: #ffffff;
+  --md-color-fg: #252933;
+  --md-color-muted: #515767;
+  --md-color-link: #1e80ff;
+  --md-color-border: #ebedf0;
+  --md-color-surface: #f7f8fa;
+  --md-color-accent: #1e80ff;
+  --md-blockquote-fg: #515767;
+  --md-blockquote-bg: #f7f8fa;
+  --md-blockquote-border: #1e80ff;
+  --md-inline-code-fg: #d63384;
+  --md-inline-code-bg: #f2f3f5;
+  --md-inline-code-border: #ebedf0;
+  --md-code-bg: #f5f6f8;
+  --md-code-border: #ebedf0;
+  --md-table-border: #ebedf0;
+  --md-table-header-bg: #f7f8fa;
+  --md-table-header-fg: #1e80ff;
+  --md-table-row-alt-bg: transparent;
+  --md-table-row-hover-bg: #f7f8fa;
+  --md-hr-bg: #ebedf0;
+  --md-footnote-border: #ebedf0;
+  --md-alert-tip-bg: #e6f4ff;
+  --md-alert-tip-border: #1e80ff;
+  --md-alert-warning-bg: #fffbe6;
+  --md-alert-warning-border: #faad14;
+  --md-alert-danger-bg: #fff1f0;
+  --md-alert-danger-border: #ff4d4f;
+  --md-alert-info-bg: #e6f4ff;
+  --md-alert-info-border: #1e80ff;
+  --md-alert-note-bg: #f7f8fa;
+  --md-alert-note-border: #8a919f;
+}
 
-.markdown-body a { color: #1e80ff; }
+.markdown-body {
+  line-height: 1.85;
+}
 
 .markdown-body h1 {
   font-size: 1.75em;
-  border-bottom: 2px solid #1e80ff;
+  border-bottom: 2px solid var(--md-color-accent);
   padding-bottom: .3em;
   display: inline-block;
 }
+
 .markdown-body h2 {
   font-size: 1.4em;
   padding-left: 12px;
-  border-left: 4px solid #1e80ff;
+  border-left: 4px solid var(--md-color-accent);
   margin-top: 2em;
 }
-.markdown-body h3 { color: #1e80ff; }
+
+.markdown-body h3 {
+  color: var(--md-color-accent);
+}
 
 .markdown-body blockquote {
-  color: #515767;
-  border-left-color: #1e80ff;
-  background: #f7f8fa;
   padding: .8em 1em;
   border-radius: 0 4px 4px 0;
 }
-
-.markdown-body :not(pre) > code {
-  background: #f2f3f5;
-  color: #d63384;
-  border: 1px solid #ebedf0;
-}
-.markdown-body pre,
-.markdown-body .shiki {
-  background: #f5f6f8 !important;
-  border: 1px solid #ebedf0;
-}
-
-.markdown-body table { border-color: #ebedf0; }
-.markdown-body th { background: #f7f8fa; color: #1e80ff; }
-.markdown-body th,
-.markdown-body td {
-  border-color: #ebedf0;
-}
-.markdown-body tr:hover { background: #f7f8fa; }
-
-.markdown-body hr { background: #ebedf0; }
-
-.markdown-body .footnotes { border-top-color: #ebedf0; }
-
-.markdown-body .tip    { background: #e6f4ff; border-left-color: #1e80ff; }
-.markdown-body .warning{ background: #fffbe6; border-left-color: #faad14; }
-.markdown-body .danger { background: #fff1f0; border-left-color: #ff4d4f; }
-.markdown-body .info   { background: #e6f4ff; border-left-color: #1e80ff; }
-.markdown-body .note   { background: #f7f8fa; border-left-color: #8a919f; }

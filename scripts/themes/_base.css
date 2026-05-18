@@ -8,6 +8,50 @@
   --md-font-en: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --md-font-mono: "SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
   --md-font-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+  --md-color-bg: #ffffff;
+  --md-color-fg: #1f2328;
+  --md-color-muted: #59636e;
+  --md-color-link: #0969da;
+  --md-color-border: #d1d9e0;
+  --md-color-surface: #f6f8fa;
+  --md-color-surface-alt: #ffffff;
+  --md-color-accent: #0969da;
+  --md-color-strong: currentColor;
+  --md-blockquote-fg: var(--md-color-muted);
+  --md-blockquote-bg: transparent;
+  --md-blockquote-border: var(--md-color-border);
+  --md-inline-code-fg: var(--md-color-fg);
+  --md-inline-code-bg: rgba(175,184,193,.2);
+  --md-inline-code-border: transparent;
+  --md-code-bg: var(--md-color-surface);
+  --md-code-border: transparent;
+  --md-table-border: var(--md-color-border);
+  --md-table-header-bg: var(--md-color-surface);
+  --md-table-header-fg: var(--md-color-fg);
+  --md-table-row-alt-bg: var(--md-color-surface);
+  --md-table-row-hover-bg: transparent;
+  --md-hr-bg: var(--md-color-border);
+  --md-footnote-border: var(--md-color-border);
+  --md-footnote-fg: var(--md-color-muted);
+  --md-toc-bg: rgba(125, 125, 125, 0.04);
+  --md-toc-border: rgba(125, 125, 125, 0.25);
+  --md-toc-title-fg: var(--md-color-fg);
+  --md-details-bg: rgba(125, 125, 125, 0.04);
+  --md-details-border: rgba(125, 125, 125, 0.25);
+  --md-details-summary-fg: var(--md-color-fg);
+  --md-details-divider: rgba(125, 125, 125, 0.3);
+  --md-alert-tip-bg: #ddf4ff;
+  --md-alert-tip-border: #0969da;
+  --md-alert-warning-bg: #fff8c5;
+  --md-alert-warning-border: #9a6700;
+  --md-alert-danger-bg: #ffebe9;
+  --md-alert-danger-border: #cf222e;
+  --md-alert-info-bg: #ddf4ff;
+  --md-alert-info-border: #0969da;
+  --md-alert-note-bg: #f6f8fa;
+  --md-alert-note-border: #59636e;
+  --md-image-radius: 6px;
+  --md-image-shadow: none;
 }
 
 * { box-sizing: border-box; }
@@ -25,12 +69,15 @@ body {
   font-size: 16px;
   line-height: 1.75;
   word-wrap: break-word;
+  background: var(--md-color-bg);
+  color: var(--md-color-fg);
 }
 
 .markdown-body {
   padding: 32px 64px;
   max-width: none;
   margin: 0;
+  color: var(--md-color-fg);
 }
 
 /* Twemoji */
@@ -59,7 +106,10 @@ h6 { font-size: .85em; opacity: .8; }
 p { margin: 0 0 1em; }
 
 /* 链接 */
-a { text-decoration: none; }
+a {
+  color: var(--md-color-link);
+  text-decoration: none;
+}
 a:hover { text-decoration: underline; }
 
 /* 列表 */
@@ -73,19 +123,27 @@ blockquote {
   padding: .4em 1em;
   border-left: 4px solid;
   font-style: normal;
+  color: var(--md-blockquote-fg);
+  background: var(--md-blockquote-bg);
+  border-left-color: var(--md-blockquote-border);
 }
 
 /* 代码 */
 code, pre, kbd, samp { font-family: var(--md-font-mono); }
 :not(pre) > code {
   padding: .2em .4em;
+  border: 1px solid var(--md-inline-code-border);
   border-radius: 4px;
+  background: var(--md-inline-code-bg);
+  color: var(--md-inline-code-fg);
   font-size: .9em;
 }
 pre {
   margin: 1em 0;
   padding: 16px;
+  border: 1px solid var(--md-code-border);
   border-radius: 8px;
+  background: var(--md-code-bg) !important;
   overflow-x: auto;
   font-size: .9em;
   line-height: 1.55;
@@ -96,7 +154,9 @@ pre code { padding: 0; background: transparent !important; font-size: 1em; }
 .shiki {
   margin: 1em 0;
   padding: 16px;
+  border: 1px solid var(--md-code-border);
   border-radius: 8px;
+  background: var(--md-code-bg) !important;
   overflow-x: auto;
   font-size: .9em;
   line-height: 1.55;
@@ -119,6 +179,7 @@ table {
   max-width: 100%;
   overflow-x: auto;
   border-collapse: collapse;
+  border-color: var(--md-table-border);
   margin: 1em 0;
   font-size: .84em;
   line-height: 1.55;
@@ -126,20 +187,29 @@ table {
 th, td {
   padding: 6px 10px;
   border: 1px solid;
+  border-color: var(--md-table-border);
 }
-th { font-weight: 600; }
+th {
+  font-weight: 600;
+  background: var(--md-table-header-bg);
+  color: var(--md-table-header-fg);
+}
+tr:nth-child(2n) { background: var(--md-table-row-alt-bg); }
+tr:hover { background: var(--md-table-row-hover-bg); }
 
 /* 水平线 */
 hr {
   border: 0;
   height: 1px;
+  background: var(--md-hr-bg);
   margin: 2em 0;
 }
 
 /* 图片 */
 img:not(.emoji) {
   max-width: 100%;
-  border-radius: 6px;
+  border-radius: var(--md-image-radius);
+  box-shadow: var(--md-image-shadow);
   display: block;
   margin: 1em auto;
 }
@@ -215,6 +285,8 @@ img:not(.emoji) {
   margin-top: 3em;
   padding-top: 1em;
   border-top: 1px solid;
+  border-top-color: var(--md-footnote-border);
+  color: var(--md-footnote-fg);
 }
 
 /* 提示容器 (markdown-it-container) */
@@ -223,6 +295,26 @@ img:not(.emoji) {
   padding: 12px 16px;
   border-left: 4px solid;
   border-radius: 4px;
+}
+.tip {
+  background: var(--md-alert-tip-bg);
+  border-left-color: var(--md-alert-tip-border);
+}
+.warning {
+  background: var(--md-alert-warning-bg);
+  border-left-color: var(--md-alert-warning-border);
+}
+.danger {
+  background: var(--md-alert-danger-bg);
+  border-left-color: var(--md-alert-danger-border);
+}
+.info {
+  background: var(--md-alert-info-bg);
+  border-left-color: var(--md-alert-info-border);
+}
+.note {
+  background: var(--md-alert-note-bg);
+  border-left-color: var(--md-alert-note-border);
 }
 
 /* 目录 (TOC) — [[toc]] 或 frontmatter toc: true 触发 */
@@ -233,13 +325,14 @@ img:not(.emoji) {
   border-radius: 6px;
   font-size: .95em;
   line-height: 1.6;
-  border-color: rgba(125, 125, 125, 0.25);
-  background: rgba(125, 125, 125, 0.04);
+  border-color: var(--md-toc-border);
+  background: var(--md-toc-bg);
 }
 .md-toc .md-toc-title {
   margin: 0 0 .4em;
   font-weight: 700;
   font-size: 1em;
+  color: var(--md-toc-title-fg);
 }
 .md-toc ul {
   margin: 0;
@@ -260,9 +353,9 @@ img:not(.emoji) {
 .md-details {
   margin: 1em 0;
   padding: 8px 14px;
-  border: 1px solid rgba(125, 125, 125, 0.25);
+  border: 1px solid var(--md-details-border);
   border-radius: 6px;
-  background: rgba(125, 125, 125, 0.04);
+  background: var(--md-details-bg);
 }
 .md-details > summary {
   cursor: pointer;
@@ -270,10 +363,11 @@ img:not(.emoji) {
   padding: 4px 0;
   outline: none;
   list-style-position: inside;
+  color: var(--md-details-summary-fg);
 }
 .md-details[open] > summary {
   margin-bottom: .6em;
-  border-bottom: 1px dashed rgba(125, 125, 125, 0.3);
+  border-bottom: 1px dashed var(--md-details-divider);
 }
 
 /* GitHub Alert — 复用五套容器配色，仅调整标题字号/间距统一性 */

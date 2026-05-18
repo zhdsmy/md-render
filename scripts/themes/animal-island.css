@@ -1,20 +1,61 @@
 /* Animal Island theme: warm, rounded, cozy note style */
-body { background: #f8f3df; color: #6f5a3b; }
+:root {
+  --md-color-bg: #f8f3df;
+  --md-color-fg: #6f5a3b;
+  --md-color-muted: #7b6647;
+  --md-color-link: #087e78;
+  --md-color-border: #e0c886;
+  --md-color-surface: #fff9e8;
+  --md-color-surface-alt: #fffdf2;
+  --md-color-accent: #19c8b9;
+  --md-color-strong: #087e78;
+  --md-blockquote-fg: #7b6647;
+  --md-blockquote-bg: #fff9e8;
+  --md-blockquote-border: #19c8b9;
+  --md-inline-code-fg: #8a4f00;
+  --md-inline-code-bg: #fff4c8;
+  --md-inline-code-border: #ead49a;
+  --md-code-bg: #fff9e8;
+  --md-code-border: #e6cf91;
+  --md-table-border: #e0c886;
+  --md-table-header-bg: #19c8b9;
+  --md-table-header-fg: #ffffff;
+  --md-table-row-alt-bg: #fff8dc;
+  --md-hr-bg: #d8bc7b;
+  --md-toc-bg: #fff9e8;
+  --md-toc-border: #e0c886;
+  --md-toc-title-fg: #087e78;
+  --md-details-bg: #fff9e8;
+  --md-details-border: #e0c886;
+  --md-details-summary-fg: #087e78;
+  --md-alert-tip-bg: #e7fbf4;
+  --md-alert-tip-border: #19c8b9;
+  --md-alert-warning-bg: #fff3ce;
+  --md-alert-warning-border: #d9a441;
+  --md-alert-danger-bg: #ffe5df;
+  --md-alert-danger-border: #e46d5b;
+  --md-alert-info-bg: #e7fbf4;
+  --md-alert-info-border: #19c8b9;
+  --md-alert-note-bg: #fff9e8;
+  --md-alert-note-border: #d8bc7b;
+  --md-image-radius: 16px;
+  --md-image-shadow: 0 4px 0 #d8bc7b;
+}
+
 .markdown-body {
-  color: #6f5a3b;
   font-size: 16px;
   line-height: 1.82;
 }
 
 .markdown-body a {
-  color: #087e78;
   border-bottom: 2px solid rgba(25, 200, 185, .32);
   font-weight: 600;
 }
+
 .markdown-body a:hover {
   color: #066a65;
   text-decoration: none;
-  border-bottom-color: #19c8b9;
+  border-bottom-color: var(--md-color-accent);
 }
 
 .markdown-body h1 {
@@ -28,6 +69,7 @@ body { background: #f8f3df; color: #6f5a3b; }
   background: #fff8dc;
   box-shadow: 0 4px 0 #d8bc7b;
 }
+
 .markdown-body h2 {
   color: #ffffff;
   display: inline-block;
@@ -35,107 +77,65 @@ body { background: #f8f3df; color: #6f5a3b; }
   margin-top: 1.7em;
   padding: .22em .85em .28em;
   border-radius: 999px;
-  background: #19c8b9;
+  background: var(--md-color-accent);
   box-shadow: 0 3px 0 #0e9188;
 }
+
 .markdown-body h3 {
   color: #087e78;
   font-size: 1.16em;
   padding-left: 12px;
-  border-left: 5px solid #19c8b9;
+  border-left: 5px solid var(--md-color-accent);
 }
+
 .markdown-body h4 {
   color: #8f6b35;
 }
 
 .markdown-body blockquote {
-  color: #7b6647;
-  border-left-color: #19c8b9;
-  background: #fff9e8;
   padding: .75em 1em;
   border-radius: 12px;
   box-shadow: inset 0 0 0 1px rgba(216, 188, 123, .45);
 }
 
 .markdown-body :not(pre) > code {
-  color: #8a4f00;
-  background: #fff4c8;
-  border: 1px solid #ead49a;
   border-radius: 7px;
   padding: .16em .45em;
   font-size: .9em;
 }
+
 .markdown-body pre,
 .markdown-body .shiki {
-  background: #fff9e8 !important;
-  border: 2px solid #e6cf91;
+  border-width: 2px;
   border-radius: 14px;
   box-shadow: 0 3px 0 #d8bc7b;
 }
-.markdown-body .shiki code { background: transparent !important; }
-.markdown-body .soft-wrap-marker { color: #0e9188 !important; }
+
+.markdown-body .shiki code {
+  background: transparent !important;
+}
+
+.markdown-body .soft-wrap-marker {
+  color: #0e9188 !important;
+}
 
 .markdown-body table {
-  border-color: #e0c886;
   background: transparent;
   border-radius: 12px;
 }
-.markdown-body tbody {
-  background: #fffdf2;
+
+.markdown-body strong {
+  color: var(--md-color-strong);
 }
-.markdown-body th {
-  color: #ffffff;
-  background: #19c8b9;
-}
-.markdown-body th,
-.markdown-body td {
-  border-color: #e0c886;
-}
-.markdown-body tr:nth-child(2n) {
-  background: #fff8dc;
+
+.markdown-body .md-toc,
+.markdown-body .md-details {
+  border-radius: 14px;
+  box-shadow: 0 3px 0 #d8bc7b;
 }
 
 .markdown-body hr {
   height: 0;
   background: transparent;
   border-top: 2px dashed #d8bc7b;
-}
-
-.markdown-body strong {
-  color: #087e78;
-}
-
-.markdown-body img:not(.emoji) {
-  border-radius: 16px;
-  box-shadow: 0 4px 0 #d8bc7b;
-}
-
-.markdown-body .md-toc,
-.markdown-body .md-details {
-  border-color: #e0c886;
-  border-radius: 14px;
-  background: #fff9e8;
-  box-shadow: 0 3px 0 #d8bc7b;
-}
-.markdown-body .md-toc .md-toc-title,
-.markdown-body .md-details > summary {
-  color: #087e78;
-}
-
-.markdown-body .tip,
-.markdown-body .info {
-  background: #e7fbf4;
-  border-left-color: #19c8b9;
-}
-.markdown-body .note {
-  background: #fff9e8;
-  border-left-color: #d8bc7b;
-}
-.markdown-body .warning {
-  background: #fff3ce;
-  border-left-color: #d9a441;
-}
-.markdown-body .danger {
-  background: #ffe5df;
-  border-left-color: #e46d5b;
 }

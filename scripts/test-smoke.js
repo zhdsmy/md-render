@@ -57,6 +57,10 @@ function assertNotIncludes(text, unexpected, message) {
   assert.ok(!text.includes(unexpected), `${message}\nExpected not to include: ${unexpected}`);
 }
 
+function assertNotMatches(text, pattern, message) {
+  assert.ok(!pattern.test(text), `${message}\nUnexpected match: ${pattern}`);
+}
+
 function waitForFile(file, timeoutMs = 5000) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
@@ -214,6 +218,19 @@ server.listen(0, '127.0.0.1', () => {
   const envCheck = run('check-env', ['--check-env']);
   assertIncludes(envCheck.stdout, '[md-render] environment OK', '--check-env should report a healthy environment');
 
+  const baseCss = read(path.join(root, 'themes', '_base.css'));
+  assertIncludes(baseCss, '--md-color-bg', 'base CSS should define semantic theme tokens');
+  assertIncludes(baseCss, 'width: max-content;', 'base CSS should own table shrink-to-content behavior');
+  assertIncludes(baseCss, 'overflow-x: auto;', 'base CSS should own overflow behavior for wide content');
+  for (const themeFile of ['github.css', 'github-dark.css', 'juejin.css', 'wechat.css', 'academic.css', 'animal-island.css']) {
+    const css = read(path.join(root, 'themes', themeFile));
+    assertIncludes(css, ':root', `${themeFile} should expose token overrides`);
+    assertIncludes(css, '--md-color-bg', `${themeFile} should set base color tokens`);
+    assertNotMatches(css, /(^|\n)body\s*\{/m, `${themeFile} should not override body layout/background directly`);
+    assertNotMatches(css, /\.markdown-body\s+table\s*\{[^}]*\b(display|width|max-width|overflow-x|border-collapse)\s*:/s, `${themeFile} should not override table behavior`);
+  }
+  console.log('ok - theme CSS contract');
+
   expectFail('unknown option validation', ['--check-env', '--unknown-option'], 'unknown option(s): --unknown-option');
   expectFail('removed input alias validation', ['--input', input, '--out', safeHtml], 'unknown option(s): --input');
   expectFail('missing value validation', ['--in', input, '--out', safeHtml, '--width', '--safe'], '--width requires a value');
@@ -257,6 +274,14 @@ server.listen(0, '127.0.0.1', () => {
   const frontmatterOverride = read(frontmatterOverrideHtml);
   assertIncludes(frontmatterOverride, '<title>CLI Title</title>', 'explicit CLI title should override frontmatter title');
   assertIncludes(frontmatterOverride, '#0d1117', 'explicit CLI theme should override frontmatter profile theme');
+
+  for (const themeName of ['github', 'github-dark', 'juejin', 'wechat', 'academic', 'animal-island']) {
+    const themeHtml = path.join(tmp, `theme-${themeName}.html`);
+    run(`theme html render ${themeName}`, ['--in', profileSimpleInput, '--out', themeHtml, '--theme', themeName]);
+    const html = read(themeHtml);
+    assertIncludes(html, 'body class="format-html"', `${themeName} should render HTML`);
+    assertIncludes(html, '--md-color-bg', `${themeName} should include semantic theme tokens`);
+  }
 
   run('profile default png without extension', ['--in', profileSimpleInput, '--out', profilePngNoExt, '--profile', 'dark-slide'], { timeout: 180000 });
   assertNonEmpty(profilePngNoExt, 'profile default PNG output without extension');

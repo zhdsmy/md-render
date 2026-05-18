@@ -1,47 +1,37 @@
 /* GitHub Light theme — 类 GitHub 文档风格 */
-body { background: #ffffff; color: #1f2328; }
-.markdown-body { color: #1f2328; }
-
-.markdown-body a { color: #0969da; }
+:root {
+  --md-color-bg: #ffffff;
+  --md-color-fg: #1f2328;
+  --md-color-muted: #59636e;
+  --md-color-link: #0969da;
+  --md-color-border: #d1d9e0;
+  --md-color-surface: #f6f8fa;
+  --md-blockquote-fg: #59636e;
+  --md-blockquote-bg: transparent;
+  --md-blockquote-border: #d1d9e0;
+  --md-inline-code-fg: #1f2328;
+  --md-inline-code-bg: rgba(175,184,193,.2);
+  --md-code-bg: #f6f8fa;
+  --md-table-border: #d1d9e0;
+  --md-table-header-bg: #f6f8fa;
+  --md-table-row-alt-bg: #f6f8fa;
+  --md-hr-bg: #d1d9e0;
+  --md-footnote-border: #d1d9e0;
+  --md-footnote-fg: #59636e;
+  --md-alert-tip-bg: #ddf4ff;
+  --md-alert-tip-border: #0969da;
+  --md-alert-warning-bg: #fff8c5;
+  --md-alert-warning-border: #9a6700;
+  --md-alert-danger-bg: #ffebe9;
+  --md-alert-danger-border: #cf222e;
+  --md-alert-info-bg: #ddf4ff;
+  --md-alert-info-border: #0969da;
+  --md-alert-note-bg: #f6f8fa;
+  --md-alert-note-border: #59636e;
+}
 
 .markdown-body h1,
 .markdown-body h2 {
-  border-bottom: 1px solid #d1d9e0;
+  border-bottom: 1px solid var(--md-color-border);
   padding-bottom: .3em;
 }
-
-.markdown-body blockquote {
-  color: #59636e;
-  border-left-color: #d1d9e0;
-  background: transparent;
-}
-
-.markdown-body :not(pre) > code {
-  background: rgba(175,184,193,.2);
-  color: #1f2328;
-}
-.markdown-body pre,
-.markdown-body .shiki {
-  background: #f6f8fa !important;
-}
-
-.markdown-body table { border-color: #d1d9e0; }
-.markdown-body th { background: #f6f8fa; }
-.markdown-body th,
-.markdown-body td {
-  border-color: #d1d9e0;
-}
-.markdown-body tr:nth-child(2n) { background: #f6f8fa; }
-
-.markdown-body hr { background: #d1d9e0; }
-
-.markdown-body .footnotes {
-  border-top-color: #d1d9e0;
-  color: #59636e;
-}
-
-.markdown-body .tip    { background: #ddf4ff; border-left-color: #0969da; }
-.markdown-body .warning{ background: #fff8c5; border-left-color: #9a6700; }
-.markdown-body .danger { background: #ffebe9; border-left-color: #cf222e; }
-.markdown-body .info   { background: #ddf4ff; border-left-color: #0969da; }
-.markdown-body .note   { background: #f6f8fa; border-left-color: #59636e; }
