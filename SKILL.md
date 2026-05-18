@@ -99,6 +99,7 @@ node render.js --in input.md --out note.png --profile cozy-note
 - `--optimize-png`：用 `oxipng` 做可选无损压缩。
 - `--title`、`--font-cn`、`--font-en`、`--font-mono`、`--shiki-theme`：样式覆盖。
 - `--chrome`、`--keep-tmp`、`--trusted`、`--no-prerender-mermaid`、`--no-downsample`：调试/兼容参数，普通任务少用。
+- Frontmatter 可作为文档级默认配置：`title`、`description`、`author`、`tags`、`toc`、`format`、`profile`、`theme`、`width`、`fonts.*`、`render.shikiTheme`、`pdf.mode/pageSize/margin` 等；显式 CLI 参数优先，已知输出后缀优先于 frontmatter `format`。
 
 ## 输出模式
 

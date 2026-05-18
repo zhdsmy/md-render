@@ -12,6 +12,7 @@
 
 - **多种输出格式**：HTML、PNG、AVIF、JPEG XL 和 PDF。
 - **六套内置主题**：`github`、`github-dark`、`juejin`、`wechat`、`academic` 和 `animal-island`。
+- **YAML frontmatter 默认配置**：支持标题、元信息、目录、主题/profile、字体和 PDF 参数。
 - **扩展 Markdown 支持**：
   - GFM 表格、任务列表、删除线和自动链接
   - Shiki 代码高亮

@@ -60,7 +60,7 @@ node render.js --in <input> --out <output> [options]
 `--profile` 只填默认值，不覆盖显式 CLI 参数。格式优先级为：
 
 ```text
---format > --out 后缀 > profile 默认格式 > html
+--format > --out 后缀 > frontmatter format > profile 默认格式 > html
 ```
 
 例如 `--profile wechat-long --out article.html` 仍然输出 HTML，但会使用 wechat 主题；`--profile wechat-long --out article.png --width 900` 会使用 `width=900`，而不是 profile 默认的 `720`。
@@ -75,6 +75,51 @@ node render.js --in <input> --out <output> [options]
 | `safe-standalone` | 不可信输入 / 离线 HTML | `html` | `github` | `--safe --standalone` |
 | `retina-image` | 高清长图 | `png` | `github` | `--width 1200 --supersample 2` |
 | `cozy-note` | 温暖圆润笔记 / 轻松分享 | `png` | `animal-island` | `--width 900` |
+
+## Frontmatter
+
+文件开头的 YAML frontmatter 会在渲染前剥离，不会出现在正文中。它可以作为文档级默认配置；显式 CLI 参数优先，`--out` 的已知后缀也优先于 frontmatter `format`。
+
+```markdown
+---
+title: "Frontmatter Config"
+description: "Short SEO or sharing description"
+author: "md-render"
+tags: [markdown, renderer, frontmatter]
+format: html
+profile: cozy-note
+toc: true
+fonts:
+  en: Georgia
+  cn: "PingFang SC"
+render:
+  theme: animal-island
+  width: 900
+  shikiTheme: github-dark
+pdf:
+  mode: paged
+  pageSize: A4
+  margin: 16mm
+---
+
+# Document
+```
+
+支持字段：
+
+| 字段 | 作用 |
+|---|---|
+| `title` | 文档标题；CLI `--title` 优先 |
+| `description` / `summary` / `excerpt` | HTML `<meta name="description">` |
+| `author` / `authors` | HTML `<meta name="author">` |
+| `tags` / `keywords` | HTML `<meta name="keywords">` |
+| `toc: true` | 自动生成 h2/h3 目录 |
+| `format` / `profile` / `theme` / `width` | 对应同名渲染参数；`format` 只在输出后缀无法推断时生效 |
+| `safe` / `standalone` | 对应安全模式和 standalone HTML |
+| `supersample` / `wrap-code-column` | 对应位图/PDF 高级参数 |
+| `fonts.en` / `fonts.cn` / `fonts.mono` | 对应 `--font-en` / `--font-cn` / `--font-mono` |
+| `render.shikiTheme` | 对应 `--shiki-theme` |
+| `pdf.mode` / `pdf.pageSize` / `pdf.margin` | 对应 `--pdf-mode` / `--page-size` / `--margin` |
 
 ## 常用案例
 

@@ -148,6 +148,7 @@ function parseArgs(argv) {
 }
 
 const args = parseArgs(process.argv);
+const cliArgs = new Set(Object.keys(args));
 
 if (args.help || args.h) {
   console.log(fs.readFileSync(__filename, 'utf8').split('\n').filter(l => l.startsWith(' *') || l.startsWith('/*')).join('\n'));
@@ -223,6 +224,7 @@ const PROFILES = Object.freeze({
 });
 const SUPPORTED_PROFILES = new Set(Object.keys(PROFILES));
 let profileDefaultFormat = null;
+let frontmatterDefaultFormat = null;
 
 function failUsage(message) {
   console.error(`Error: ${message}`);
@@ -270,6 +272,9 @@ function validateArgs() {
   if (args.format !== undefined && !SUPPORTED_FORMATS.has(args.format)) {
     failUsage('--format must be one of: html, png, pdf, avif, jxl.');
   }
+  if (frontmatterDefaultFormat !== null && !SUPPORTED_FORMATS.has(frontmatterDefaultFormat)) {
+    failUsage('frontmatter format must be one of: html, png, pdf, avif, jxl.');
+  }
   if (args.theme !== undefined && !SUPPORTED_THEMES.has(args.theme)) {
     failUsage('--theme must be one of: github, github-dark, juejin, wechat, academic, animal-island.');
   }
@@ -289,6 +294,222 @@ function validateArgs() {
 
 validateArgs();
 
+function stripYamlComment(raw) {
+  let quote = null;
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i];
+    if (quote) {
+      if (quote === '"' && ch === '\\') { i++; continue; }
+      if (ch === quote) quote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      continue;
+    }
+    if (ch === '#' && (i === 0 || /\s/.test(raw[i - 1]))) {
+      return raw.slice(0, i).trimEnd();
+    }
+  }
+  return raw.trimEnd();
+}
+
+function splitInlineYamlArray(raw) {
+  const inner = raw.trim().slice(1, -1);
+  const items = [];
+  let quote = null;
+  let start = 0;
+  for (let i = 0; i < inner.length; i++) {
+    const ch = inner[i];
+    if (quote) {
+      if (quote === '"' && ch === '\\') { i++; continue; }
+      if (ch === quote) quote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      continue;
+    }
+    if (ch === ',') {
+      items.push(inner.slice(start, i));
+      start = i + 1;
+    }
+  }
+  items.push(inner.slice(start));
+  return items.map(parseYamlScalar).filter(v => v !== '');
+}
+
+function parseYamlScalar(raw) {
+  const s = stripYamlComment(String(raw || '')).trim();
+  if (!s) return '';
+  if (s.startsWith('[') && s.endsWith(']')) return splitInlineYamlArray(s);
+  if (s.startsWith('"') && s.endsWith('"')) {
+    try {
+      return JSON.parse(s);
+    } catch {
+      return s.slice(1, -1);
+    }
+  }
+  if (s.startsWith("'") && s.endsWith("'")) return s.slice(1, -1).replace(/''/g, "'");
+  if (/^(true|false)$/i.test(s)) return /^true$/i.test(s);
+  if (/^(null|~)$/i.test(s)) return null;
+  if (/^-?\d+(?:\.\d+)?$/.test(s)) return Number(s);
+  return s;
+}
+
+function countIndent(line) {
+  const m = line.match(/^[ \t]*/);
+  return m ? m[0].replace(/\t/g, '  ').length : 0;
+}
+
+function parseSimpleYamlFrontmatter(yaml) {
+  const lines = String(yaml || '').replace(/\r\n/g, '\n').split('\n');
+  const root = {};
+  let i = 0;
+
+  function readBlockScalar(parentIndent, folded) {
+    const parts = [];
+    while (i < lines.length) {
+      const line = lines[i];
+      if (line.trim() === '') {
+        parts.push('');
+        i++;
+        continue;
+      }
+      const indent = countIndent(line);
+      if (indent <= parentIndent) break;
+      parts.push(line.slice(Math.min(line.length, parentIndent + 2)));
+      i++;
+    }
+    return folded ? parts.join(' ').replace(/\s+/g, ' ').trim() : parts.join('\n').trimEnd();
+  }
+
+  function readCollection(parentIndent) {
+    const object = {};
+    const array = [];
+    let mode = null;
+    while (i < lines.length) {
+      const line = lines[i];
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) {
+        i++;
+        continue;
+      }
+      const indent = countIndent(line);
+      if (indent <= parentIndent) break;
+      const body = line.slice(indent);
+      if (body.startsWith('- ')) {
+        mode = mode || 'array';
+        if (mode !== 'array') { i++; continue; }
+        array.push(parseYamlScalar(body.slice(2)));
+        i++;
+        continue;
+      }
+      const m = body.match(/^([A-Za-z_][\w-]*)\s*:\s*(.*)$/);
+      if (!m) { i++; continue; }
+      mode = mode || 'object';
+      if (mode !== 'object') { i++; continue; }
+      const key = m[1];
+      const value = m[2].trim();
+      i++;
+      if (value === '|' || value === '>') {
+        object[key] = readBlockScalar(indent, value === '>');
+      } else if (value === '') {
+        object[key] = readCollection(indent);
+      } else {
+        object[key] = parseYamlScalar(value);
+      }
+    }
+    return mode === 'array' ? array : object;
+  }
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) {
+      i++;
+      continue;
+    }
+    if (countIndent(line) !== 0) {
+      i++;
+      continue;
+    }
+    const m = line.match(/^([A-Za-z_][\w-]*)\s*:\s*(.*)$/);
+    if (!m) {
+      i++;
+      continue;
+    }
+    const key = m[1];
+    const value = m[2].trim();
+    i++;
+    if (value === '|' || value === '>') {
+      root[key] = readBlockScalar(0, value === '>');
+    } else if (value === '') {
+      root[key] = readCollection(0);
+    } else {
+      root[key] = parseYamlScalar(value);
+    }
+  }
+
+  return root;
+}
+
+function getFrontmatterValue(meta, paths) {
+  for (const pathSpec of paths) {
+    const parts = Array.isArray(pathSpec) ? pathSpec : [pathSpec];
+    let cursor = meta;
+    let ok = true;
+    for (const part of parts) {
+      if (!cursor || typeof cursor !== 'object' || !(part in cursor)) {
+        ok = false;
+        break;
+      }
+      cursor = cursor[part];
+    }
+    if (ok && cursor !== undefined && cursor !== null && cursor !== '') return cursor;
+  }
+  return undefined;
+}
+
+function stringifyFrontmatterValue(value) {
+  if (Array.isArray(value)) return value.map(v => String(v)).join(', ');
+  return String(value);
+}
+
+function setArgDefaultFromFrontmatter(argName, value) {
+  if (value === undefined || cliArgs.has(argName)) return;
+  if (typeof value === 'boolean') {
+    if (value) args[argName] = true;
+    return;
+  }
+  args[argName] = stringifyFrontmatterValue(value);
+}
+
+function applyFrontmatterDefaults(meta) {
+  if (!meta || typeof meta !== 'object') return;
+  const mappings = [
+    ['profile', ['profile', ['render', 'profile']]],
+    ['theme', ['theme', ['render', 'theme']]],
+    ['width', ['width', ['render', 'width']]],
+    ['safe', ['safe', ['render', 'safe']]],
+    ['standalone', ['standalone', ['render', 'standalone']]],
+    ['supersample', ['supersample', ['render', 'supersample']]],
+    ['wrap-code-column', ['wrap-code-column', 'wrapCodeColumn', 'wrap_code_column', ['render', 'wrap-code-column'], ['render', 'wrapCodeColumn']]],
+    ['pdf-mode', ['pdf-mode', 'pdfMode', ['pdf', 'mode'], ['pdf', 'pdf-mode'], ['pdf', 'pdfMode']]],
+    ['page-size', ['page-size', 'pageSize', ['pdf', 'page-size'], ['pdf', 'pageSize']]],
+    ['margin', ['margin', ['pdf', 'margin']]],
+    ['font-cn', ['font-cn', 'fontCn', ['fonts', 'cn'], ['fonts', 'zh'], ['font', 'cn']]],
+    ['font-en', ['font-en', 'fontEn', ['fonts', 'en'], ['font', 'en']]],
+    ['font-mono', ['font-mono', 'fontMono', ['fonts', 'mono'], ['font', 'mono']]],
+    ['shiki-theme', ['shiki-theme', 'shikiTheme', ['render', 'shiki-theme'], ['render', 'shikiTheme']]],
+  ];
+  for (const [argName, paths] of mappings) {
+    setArgDefaultFromFrontmatter(argName, getFrontmatterValue(meta, paths));
+  }
+  const fmFormat = getFrontmatterValue(meta, ['format', ['render', 'format']]);
+  if (fmFormat !== undefined && !cliArgs.has('format')) frontmatterDefaultFormat = stringifyFrontmatterValue(fmFormat);
+}
+
 function applyProfileDefaults() {
   if (!args.profile) return;
   const defaults = PROFILES[args.profile];
@@ -299,11 +520,44 @@ function applyProfileDefaults() {
   }
 }
 
-applyProfileDefaults();
-
 if (args['check-env']) {
   process.exit(runEnvCheck() ? 0 : 1);
 }
+
+const inputPath  = args.in;
+const outputPath = args.out;
+if (!inputPath || !outputPath) {
+  console.error('Error: --in and --out are required. Use --help for details.');
+  process.exit(1);
+}
+
+// -------- load markdown + frontmatter --------
+let md_src;
+if (inputPath === '-') {
+  md_src = fs.readFileSync(0, 'utf8');
+} else {
+  md_src = fs.readFileSync(inputPath, 'utf8');
+}
+const inputBaseDir = inputPath === '-' ? process.cwd() : path.dirname(path.resolve(inputPath));
+
+// markdown-it 默认不识别 YAML frontmatter（开头的 ---…--- 块），会把 `---` 当作 <hr>、
+// 中间的 key: value 行当作段落渲染出来。这里在进入 markdown-it 之前剥离 frontmatter，
+// 并把常用字段作为文档级默认配置。
+function stripFrontmatter(src) {
+  const m = src.match(/^\uFEFF?---[ \t]*\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/);
+  if (!m) return { body: src, meta: {} };
+  return {
+    body: src.slice(m[0].length),
+    meta: parseSimpleYamlFrontmatter(m[1]),
+  };
+}
+const { body: _mdBody, meta: _fmMeta } = stripFrontmatter(md_src);
+md_src = _mdBody;
+
+applyFrontmatterDefaults(_fmMeta);
+validateArgs();
+applyProfileDefaults();
+validateArgs();
 
 // 默认保持历史兼容：允许可信 Markdown 内的原始 HTML；处理外部输入时使用 --safe。
 // --trusted 显式压过 --safe，便于脚本模板里统一追加安全参数后临时放开。
@@ -311,16 +565,10 @@ const safeMode = !!args.safe && !args.trusted;
 const mermaidSecurityLevel = safeMode ? 'strict' : 'loose';
 
 // -------- infer format --------
-const inputPath  = args.in;
-const outputPath = args.out;
-if (!inputPath || !outputPath) {
-  console.error('Error: --in and --out are required. Use --help for details.');
-  process.exit(1);
-}
 let format = args.format;
 if (!format) {
   const ext = path.extname(outputPath).toLowerCase().slice(1);
-  format = SUPPORTED_FORMATS.has(ext) ? ext : (profileDefaultFormat || 'html');
+  format = SUPPORTED_FORMATS.has(ext) ? ext : (frontmatterDefaultFormat || profileDefaultFormat || 'html');
 }
 const theme = args.theme || 'github';
 if (format !== 'html' && args.standalone) {
@@ -336,8 +584,17 @@ if (format !== 'pdf' && (args['pdf-mode'] || args['page-size'] || args.margin)) 
   console.warn('[md-render] WARN: --pdf-mode, --page-size, and --margin only affect PDF output.');
 }
 // docTitle 优先级：--title CLI > frontmatter.title（若存在）> 输入文件名（不含扩展名）。
-// 这里先按文件名兜底初始化，等下面剥离 frontmatter 后若能解析出 title 再按优先级覆盖。
 let docTitle = args.title || path.basename(inputPath, path.extname(inputPath));
+if (!args.title) {
+  const fmTitle = getFrontmatterValue(_fmMeta, ['title']);
+  if (fmTitle !== undefined) docTitle = stringifyFrontmatterValue(fmTitle);
+}
+const docDescriptionValue = getFrontmatterValue(_fmMeta, ['description', 'summary', 'excerpt']);
+const docAuthorValue = getFrontmatterValue(_fmMeta, ['author', 'authors']);
+const docKeywordsValue = getFrontmatterValue(_fmMeta, ['keywords', 'tags']);
+const docDescription = docDescriptionValue === undefined ? '' : stringifyFrontmatterValue(docDescriptionValue);
+const docAuthor = docAuthorValue === undefined ? '' : stringifyFrontmatterValue(docAuthorValue);
+const docKeywords = docKeywordsValue === undefined ? '' : stringifyFrontmatterValue(docKeywordsValue);
 
 // 默认截图宽度 900；--width 显式覆盖，并在启动阶段校验，避免非法值拖到 Puppeteer 阶段才失败。最小宽度限制为 375。
 const viewportWidth = Math.max(375, readPositiveIntegerArg('width', 900));
@@ -393,46 +650,6 @@ const CDN = {
 const SYS_FONT_EN   = '-apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif';
 const SYS_FONT_CN   = '"PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Heiti SC", sans-serif';
 const SYS_FONT_MONO = '"SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New", monospace';
-
-// -------- load markdown --------
-let md_src;
-if (inputPath === '-') {
-  md_src = fs.readFileSync(0, 'utf8');
-} else {
-  md_src = fs.readFileSync(inputPath, 'utf8');
-}
-const inputBaseDir = inputPath === '-' ? process.cwd() : path.dirname(path.resolve(inputPath));
-
-// -------- strip YAML frontmatter --------
-// markdown-it 默认不识别 YAML frontmatter（开头的 ---…--- 块），会把 `---` 当作 <hr>、
-// 中间的 key: value 行当作段落渲染出来，导致产物顶部出现一大坨 `title: "…" author: "…"`
-// 原文，既难看又挤占正文首屏。这里在进入 markdown-it 之前手动剥掉 frontmatter。
-//
-// 仅识别最常见的形态：文件首行就是 `---`，之后若干行 YAML，再以单独一行 `---` 收尾；
-// 不做完整 YAML 解析，只用正则抓取顶层 `title:` 用作 docTitle 兜底。其它字段（author /
-// date / tags 等）一律丢弃，不渲染、不展示。
-function stripFrontmatter(src) {
-  // 开头必须是 --- 紧接换行；允许 BOM 前缀。
-  const m = src.match(/^\uFEFF?---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
-  if (!m) return { body: src, meta: {} };
-  const meta = {};
-  // 极简解析：只抓顶层 `key: value` 行，value 为引号包裹或裸字符串都去掉首尾引号。
-  const lines = m[1].split(/\r?\n/);
-  for (const line of lines) {
-    const mm = line.match(/^([A-Za-z_][\w-]*)\s*:\s*(.*)$/);
-    if (!mm) continue;
-    let v = mm[2].trim();
-    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
-      v = v.slice(1, -1);
-    }
-    meta[mm[1]] = v;
-  }
-  return { body: src.slice(m[0].length), meta };
-}
-const { body: _mdBody, meta: _fmMeta } = stripFrontmatter(md_src);
-md_src = _mdBody;
-// 仅当用户未显式 --title 时，才用 frontmatter.title 覆盖文件名兜底。
-if (!args.title && _fmMeta.title) docTitle = _fmMeta.title;
 
 // -------- markdown-it pipeline --------
 const MarkdownIt = require('markdown-it');
@@ -1524,6 +1741,11 @@ body.${outputClass} .md-details {
 }
 ` : '';
   const formatCss = `${htmlResponsiveCss}${captureCss}${pagedPdfCss}`;
+  const frontmatterMetaTags = [
+    docDescription ? `<meta name="description" content="${escapeHtml(docDescription)}">` : '',
+    docAuthor ? `<meta name="author" content="${escapeHtml(docAuthor)}">` : '',
+    docKeywords ? `<meta name="keywords" content="${escapeHtml(docKeywords)}">` : '',
+  ].filter(Boolean).join('\n');
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -1532,6 +1754,7 @@ body.${outputClass} .md-details {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="${escapeHtml(csp)}">
+${frontmatterMetaTags ? `${frontmatterMetaTags}\n` : ''}<meta name="generator" content="md-render">
 <title>${escapeHtml(docTitle)}</title>
 ${mathCssTag}
 <style>${baseCss}</style>

@@ -51,7 +51,7 @@ Markdown
 - GitHub Alert blockquote 自动改写为提示块。
 - `[[toc]]` 或 frontmatter `toc: true` 生成 h2/h3 目录。
 
-Frontmatter 当前是轻量解析，只识别最常见的 `--- ... ---`，并读取顶层 `title` / `toc`。如果未来要支持更多元数据，建议改成 `gray-matter` + `js-yaml`。
+Frontmatter 在 markdown-it 之前剥离，支持常见 YAML 标量、布尔值、数字、数组、一层嵌套对象和 `|` / `>` 块文本。它可提供文档级默认配置，包括 `title`、HTML meta、`toc`、`format`、`profile`、`theme`、字体、位图/PDF 参数和分页 PDF 参数。合并优先级是显式 CLI 参数最高；格式推断额外遵循 `--format > --out 后缀 > frontmatter format > profile 默认格式 > html`。
 
 ## Slug 与 TOC
 

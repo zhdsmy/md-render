@@ -12,6 +12,7 @@ It is designed for AI-generated Markdown and technical documents that may contai
 
 - **Multiple output formats**: HTML, PNG, AVIF, JPEG XL, and PDF.
 - **Six built-in themes**: `github`, `github-dark`, `juejin`, `wechat`, `academic`, and `animal-island`.
+- **YAML frontmatter defaults** for title, metadata, TOC, theme/profile, fonts, and PDF options.
 - **Extended Markdown support**:
   - GFM tables, task lists, strikethrough, and autolinks
   - Shiki code highlighting

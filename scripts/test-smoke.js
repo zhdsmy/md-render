@@ -91,6 +91,9 @@ try {
   const profileDefaultHtml = path.join(tmp, 'profile-default.unknown');
   const profileSafeStandaloneHtml = path.join(tmp, 'profile-safe-standalone.html');
   const profileSimpleInput = path.join(tmp, 'profile-simple.md');
+  const frontmatterInput = path.join(tmp, 'frontmatter.md');
+  const frontmatterDefaultHtml = path.join(tmp, 'frontmatter-default.unknown');
+  const frontmatterOverrideHtml = path.join(tmp, 'frontmatter-override.html');
   const profilePngNoExt = path.join(tmp, 'profile-png-no-ext');
   const animalIslandHtml = path.join(tmp, 'animal-island.html');
   const cozyNoteHtml = path.join(tmp, 'cozy-note.html');
@@ -184,6 +187,29 @@ server.listen(0, '127.0.0.1', () => {
     '',
     'A small document for profile format inference.',
   ].join('\n'));
+  fs.writeFileSync(frontmatterInput, [
+    '---',
+    'title: "Frontmatter Config"',
+    'description: |',
+    '  Frontmatter driven rendering.',
+    'author: "md-render"',
+    'tags: [markdown, renderer, frontmatter]',
+    'format: html',
+    'profile: cozy-note',
+    'toc: true',
+    'fonts:',
+    '  en: Georgia',
+    'render:',
+    '  shikiTheme: github-dark',
+    '---',
+    '# Frontmatter smoke',
+    '',
+    '## Configured section',
+    '',
+    '```js',
+    'console.log("frontmatter");',
+    '```',
+  ].join('\n'));
 
   const envCheck = run('check-env', ['--check-env']);
   assertIncludes(envCheck.stdout, '[md-render] environment OK', '--check-env should report a healthy environment');
@@ -215,6 +241,22 @@ server.listen(0, '127.0.0.1', () => {
   const profileSafeStandalone = read(profileSafeStandaloneHtml);
   assertIncludes(profileSafeStandalone, 'Content-Security-Policy', 'safe-standalone profile should enable safe HTML hardening');
   assertNotIncludes(profileSafeStandalone, 'cdn.jsdelivr.net', 'safe-standalone profile should inline assets instead of using CDN');
+
+  run('frontmatter defaults', ['--in', frontmatterInput, '--out', frontmatterDefaultHtml]);
+  const frontmatterDefault = read(frontmatterDefaultHtml);
+  assertIncludes(frontmatterDefault, 'body class="format-html"', 'frontmatter format should apply when output suffix is unknown');
+  assertIncludes(frontmatterDefault, '<title>Frontmatter Config</title>', 'frontmatter title should set document title');
+  assertIncludes(frontmatterDefault, '<meta name="description" content="Frontmatter driven rendering.">', 'frontmatter description should become HTML metadata');
+  assertIncludes(frontmatterDefault, '<meta name="author" content="md-render">', 'frontmatter author should become HTML metadata');
+  assertIncludes(frontmatterDefault, '<meta name="keywords" content="markdown, renderer, frontmatter">', 'frontmatter tags should become keywords metadata');
+  assertIncludes(frontmatterDefault, '#19c8b9', 'frontmatter profile should apply profile defaults');
+  assertIncludes(frontmatterDefault, '--md-font-en: Georgia', 'frontmatter nested font config should apply');
+  assertIncludes(frontmatterDefault, 'class="md-toc"', 'frontmatter toc=true should still emit TOC');
+
+  run('frontmatter cli override', ['--in', frontmatterInput, '--out', frontmatterOverrideHtml, '--theme', 'github-dark', '--title', 'CLI Title']);
+  const frontmatterOverride = read(frontmatterOverrideHtml);
+  assertIncludes(frontmatterOverride, '<title>CLI Title</title>', 'explicit CLI title should override frontmatter title');
+  assertIncludes(frontmatterOverride, '#0d1117', 'explicit CLI theme should override frontmatter profile theme');
 
   run('profile default png without extension', ['--in', profileSimpleInput, '--out', profilePngNoExt, '--profile', 'dark-slide'], { timeout: 180000 });
   assertNonEmpty(profilePngNoExt, 'profile default PNG output without extension');
