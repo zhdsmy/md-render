@@ -1,5 +1,7 @@
 # md-render 详细用法
 
+本文记录 CLI 参数和常用示例。实现架构、渲染链路与维护注意事项见 `architecture.md`。
+
 ## 命令格式
 
 ```
@@ -15,6 +17,7 @@ node render.js --in <input> --out <output> [options]
 | `--in <path>` | 输入 md 文件，`-` 读 stdin | 必填 |
 | `--out <path>` | 输出文件 | 必填 |
 | `--format html\|png\|avif\|jxl\|pdf` | 显式指定格式，否则按后缀推断 | 自动 |
+| `--profile <name>` | 按场景注入默认参数；显式 CLI 参数优先。可选：`github-doc` / `wechat-long` / `juejin-article` / `academic-pdf` / `dark-slide` / `safe-standalone` / `retina-image` | 无 |
 | `--theme <name>` | github / github-dark / juejin / wechat / academic | github |
 | `--width <px>` | 位图/PDF 的视口宽度（也是 PDF 页宽，也是默认最终位图像素宽）。最小限制为 375 | 900 |
 | `--safe` | 不可信输入安全模式：禁用 Markdown 原始 HTML、拦截 `javascript:` / `data:` 等高风险链接或图片协议、Mermaid 使用 `strict`，并强化 HTML CSP / referrer / 外链属性 | false |
@@ -49,6 +52,26 @@ node render.js --in <input> --out <output> [options]
 | `--no-prerender-mermaid` | 关闭 Mermaid Node 端预渲染，改走运行时 Mermaid，仅排查问题时使用 | false |
 | `--no-downsample` | 旧版位图逃生门：保留超采样中间态作为最终输出；新用法更推荐直接增大 `--width` | false |
 
+## Profile 预设
+
+`--profile` 只填默认值，不覆盖显式 CLI 参数。格式优先级为：
+
+```text
+--format > --out 后缀 > profile 默认格式 > html
+```
+
+例如 `--profile wechat-long --out article.html` 仍然输出 HTML，但会使用 wechat 主题；`--profile wechat-long --out article.png --width 900` 会使用 `width=900`，而不是 profile 默认的 `720`。
+
+| profile | 场景 | 默认格式 | 默认主题 | 默认参数 |
+|---|---|---:|---|---|
+| `github-doc` | README / 技术文档 / API 笔记 | `html` | `github` | `--width 900` |
+| `wechat-long` | 微信公众号 / 朋友圈长图 | `png` | `wechat` | `--width 720 --wrap-code-column auto` |
+| `juejin-article` | 掘金 / 中文技术博客 | `png` | `juejin` | `--width 900` |
+| `academic-pdf` | 研究笔记 / 报告 | `pdf` | `academic` | `--width 900` |
+| `dark-slide` | 暗色演示截图 / 终端配图 | `png` | `github-dark` | `--width 1200` |
+| `safe-standalone` | 不可信输入 / 离线 HTML | `html` | `github` | `--safe --standalone` |
+| `retina-image` | 高清长图 | `png` | `github` | `--width 1200 --supersample 2` |
+
 ## 常用案例
 
 ### 0. 环境诊断
@@ -74,7 +97,7 @@ npm test
 
 ```bash
 echo "$AI_MARKDOWN" > /tmp/article.md
-$NODE render.js --in /tmp/article.md --out /tmp/article.png --theme wechat --width 720
+$NODE render.js --in /tmp/article.md --out /tmp/article.png --profile wechat-long
 ```
 
 ### 2. 技术文档 → PDF（单页长图式 PDF）
@@ -88,7 +111,7 @@ $NODE render.js --in doc.md --out doc.pdf --theme github
 ### 3. 暗色演示稿截图
 
 ```bash
-$NODE render.js --in slides.md --out slides.png --theme github-dark --width 1200
+$NODE render.js --in slides.md --out slides.png --profile dark-slide
 ```
 
 ### 3.1 AVIF 图片输出
@@ -106,7 +129,7 @@ $NODE render.js --in article.md --out article.jxl --theme github --width 900
 ### 4. 学术报告（衬线长图式 PDF）
 
 ```bash
-$NODE render.js --in report.md --out report.pdf --theme academic
+$NODE render.js --in report.md --out report.pdf --profile academic-pdf
 ```
 
 ### 5. 用 stdin 输入（Pipe 模式）

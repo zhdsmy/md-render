@@ -12,6 +12,7 @@
  *   --in <path>          input markdown file (or '-' for stdin)
  *   --out <path>         output file
  *   --format <fmt>       html | png | avif | jxl | pdf  (default: inferred from --out extension)
+ *   --profile <name>     preset defaults for common scenarios
  *   --theme <name>       github | github-dark | juejin | wechat | academic  (default: github)
  *   --width <px>         viewport width for bitmap/pdf AND final bitmap pixel width (default: 900)
  *   --safe               disable raw HTML in Markdown and use stricter Mermaid security
@@ -151,13 +152,13 @@ if (args.help || args.h) {
 }
 
 const KNOWN_ARGS = new Set([
-  '_', 'h', 'help', 'in', 'out', 'format', 'theme', 'width', 'safe', 'standalone', 'check-env',
+  '_', 'h', 'help', 'in', 'out', 'format', 'profile', 'theme', 'width', 'safe', 'standalone', 'check-env',
   'supersample', 'wrap-code-column', 'optimize-png',
   'title', 'font-cn', 'font-en', 'font-mono', 'shiki-theme',
   'chrome', 'keep-tmp', 'trusted', 'no-prerender-mermaid', 'no-downsample',
 ]);
 const VALUE_ARGS = new Set([
-  'in', 'out', 'format', 'theme', 'width', 'supersample', 'wrap-code-column',
+  'in', 'out', 'format', 'profile', 'theme', 'width', 'supersample', 'wrap-code-column',
   'title', 'font-cn', 'font-en', 'font-mono', 'shiki-theme', 'chrome',
 ]);
 const SUPPORTED_FORMATS = new Set(['html', 'png', 'pdf', 'avif', 'jxl']);
@@ -165,6 +166,48 @@ const BITMAP_FORMATS = new Set(['png', 'avif', 'jxl']);
 const AVIF_MAX_CELL_SIZE = 65536;
 const AVIF_MIN_GRID_CELL_SIZE = 64;
 const SUPPORTED_THEMES = new Set(['github', 'github-dark', 'juejin', 'wechat', 'academic']);
+const PROFILES = Object.freeze({
+  'github-doc': {
+    format: 'html',
+    theme: 'github',
+    width: '900',
+  },
+  'wechat-long': {
+    format: 'png',
+    theme: 'wechat',
+    width: '720',
+    'wrap-code-column': 'auto',
+  },
+  'juejin-article': {
+    format: 'png',
+    theme: 'juejin',
+    width: '900',
+  },
+  'academic-pdf': {
+    format: 'pdf',
+    theme: 'academic',
+    width: '900',
+  },
+  'dark-slide': {
+    format: 'png',
+    theme: 'github-dark',
+    width: '1200',
+  },
+  'safe-standalone': {
+    format: 'html',
+    theme: 'github',
+    safe: true,
+    standalone: true,
+  },
+  'retina-image': {
+    format: 'png',
+    theme: 'github',
+    width: '1200',
+    supersample: '2',
+  },
+});
+const SUPPORTED_PROFILES = new Set(Object.keys(PROFILES));
+let profileDefaultFormat = null;
 
 function failUsage(message) {
   console.error(`Error: ${message}`);
@@ -189,6 +232,9 @@ function validateArgs() {
   if (unknown.length) failUsage(`unknown option(s): ${unknown.map(key => `--${key}`).join(', ')}`);
   if (args._.length) failUsage(`unexpected positional argument(s): ${args._.join(', ')}`);
   for (const name of VALUE_ARGS) requireValueArg(name);
+  if (args.profile !== undefined && !SUPPORTED_PROFILES.has(args.profile)) {
+    failUsage(`--profile must be one of: ${Array.from(SUPPORTED_PROFILES).join(', ')}.`);
+  }
   if (args.format !== undefined && !SUPPORTED_FORMATS.has(args.format)) {
     failUsage('--format must be one of: html, png, pdf, avif, jxl.');
   }
@@ -203,6 +249,18 @@ function validateArgs() {
 }
 
 validateArgs();
+
+function applyProfileDefaults() {
+  if (!args.profile) return;
+  const defaults = PROFILES[args.profile];
+  profileDefaultFormat = defaults.format || null;
+  for (const [key, value] of Object.entries(defaults)) {
+    if (key === 'format') continue;
+    if (args[key] === undefined) args[key] = value;
+  }
+}
+
+applyProfileDefaults();
 
 if (args['check-env']) {
   process.exit(runEnvCheck() ? 0 : 1);
@@ -223,7 +281,7 @@ if (!inputPath || !outputPath) {
 let format = args.format;
 if (!format) {
   const ext = path.extname(outputPath).toLowerCase().slice(1);
-  format = SUPPORTED_FORMATS.has(ext) ? ext : 'html';
+  format = SUPPORTED_FORMATS.has(ext) ? ext : (profileDefaultFormat || 'html');
 }
 const theme = args.theme || 'github';
 if (format !== 'html' && args.standalone) {
@@ -2066,6 +2124,14 @@ function fixJourneySvg(svg, bbox) {
         ], { stdio: 'inherit' });
       } catch (e) {
         throw new Error(`pdftoppm 调用失败（请安装 poppler：brew install poppler）：${e.message}`);
+      }
+      // pdftoppm 接收的是输出 prefix，会自动追加 `.png`。当用户显式传
+      // `--format png --out out` 或 profile 默认推断为 PNG 但输出路径没有 `.png`
+      // 后缀时，需要把实际产物移动回用户指定的精确路径。
+      const producedRasterPng = `${outPrefix}.png`;
+      if (producedRasterPng !== rasterPng && fs.existsSync(producedRasterPng)) {
+        safeUnlink(rasterPng);
+        fs.renameSync(producedRasterPng, rasterPng);
       }
       // tmpPdf 和非目标格式的 PNG 中间产物交给 finally 清理；用户可用的 @Nx 目标产物默认保留。
 

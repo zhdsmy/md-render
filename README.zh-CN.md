@@ -35,7 +35,8 @@
 ├── README.zh-CN.md          # 中文说明
 ├── LICENSE                  # 个人使用、禁止商用的自定义协议
 ├── references/
-│   └── usage.md             # 详细 CLI 用法和示例
+│   ├── usage.md             # 详细 CLI 用法和示例
+│   └── architecture.md      # 渲染链路和维护说明
 └── scripts/
     ├── render.js            # 主渲染 CLI
     ├── sample.md            # 用于冒烟测试的虚构样例文档
@@ -109,6 +110,7 @@ node render.js \
   --in <input.md> \
   --out <output.{html,png,avif,jxl,pdf}> \
   [--format html|png|avif|jxl|pdf] \
+  [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image] \
   [--theme github|github-dark|juejin|wechat|academic] \
   [--width 900] \
   [--safe] \
@@ -117,6 +119,8 @@ node render.js \
 ```
 
 默认会根据 `--out` 的文件后缀推断输出格式；显式传入 `--format` 时，以 `--format` 为准。
+
+`--profile` 会按场景注入默认参数，但不会覆盖显式 CLI 参数。可选 profile：`github-doc`、`wechat-long`、`juejin-article`、`academic-pdf`、`dark-slide`、`safe-standalone`、`retina-image`。
 
 也可以从 stdin 读取 Markdown：
 
@@ -141,7 +145,7 @@ node render.js --in input.md --out output.html --theme github --standalone
 生成暗色主题图片：
 
 ```bash
-node render.js --in input.md --out output.png --theme github-dark --width 1200
+node render.js --in input.md --out output.png --profile dark-slide
 ```
 
 生成 AVIF 图片：
@@ -159,7 +163,7 @@ node render.js --in input.md --out output.jxl --theme github --width 900
 生成文档风格 PDF：
 
 ```bash
-node render.js --in input.md --out output.pdf --theme academic
+node render.js --in input.md --out output.pdf --profile academic-pdf
 ```
 
 ## 主题
@@ -194,6 +198,8 @@ npm test
 ## 更多文档
 
 完整命令参数、高级渲染选项和更多示例见 `references/usage.md`。
+
+渲染管线、安全模型、Mermaid/数学公式/图片处理细节和维护注意事项见 `references/architecture.md`。
 
 ## 隐私
 

@@ -35,7 +35,8 @@ It is designed for AI-generated Markdown and technical documents that may contai
 ├── README.zh-CN.md          # Simplified Chinese documentation
 ├── LICENSE                  # Custom personal-use, non-commercial license
 ├── references/
-│   └── usage.md             # Detailed CLI usage and examples
+│   ├── usage.md             # Detailed CLI usage and examples
+│   └── architecture.md      # Rendering pipeline and maintenance notes
 └── scripts/
     ├── render.js            # Main renderer CLI
     ├── sample.md            # Synthetic sample document for smoke testing
@@ -109,6 +110,7 @@ node render.js \
   --in <input.md> \
   --out <output.{html,png,avif,jxl,pdf}> \
   [--format html|png|avif|jxl|pdf] \
+  [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image] \
   [--theme github|github-dark|juejin|wechat|academic] \
   [--width 900] \
   [--safe] \
@@ -117,6 +119,8 @@ node render.js \
 ```
 
 The output format is inferred from the `--out` file extension unless `--format` is provided.
+
+`--profile` applies scenario defaults without overriding explicit CLI options. Available profiles are `github-doc`, `wechat-long`, `juejin-article`, `academic-pdf`, `dark-slide`, `safe-standalone`, and `retina-image`.
 
 You can also read Markdown from stdin:
 
@@ -141,7 +145,7 @@ node render.js --in input.md --out output.html --theme github --standalone
 Generate a dark themed image:
 
 ```bash
-node render.js --in input.md --out output.png --theme github-dark --width 1200
+node render.js --in input.md --out output.png --profile dark-slide
 ```
 
 Generate an AVIF image:
@@ -159,7 +163,7 @@ node render.js --in input.md --out output.jxl --theme github --width 900
 Generate a document-style PDF:
 
 ```bash
-node render.js --in input.md --out output.pdf --theme academic
+node render.js --in input.md --out output.pdf --profile academic-pdf
 ```
 
 ## Themes
@@ -194,6 +198,8 @@ The tests cover environment checks, safe and trusted rendering behavior, standal
 ## More documentation
 
 See `references/usage.md` for the full command reference, advanced rendering options, and additional examples.
+
+See `references/architecture.md` for the rendering pipeline, security model, Mermaid/math/image internals, and maintenance notes.
 
 ## Privacy
 

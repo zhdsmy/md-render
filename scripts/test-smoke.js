@@ -86,6 +86,12 @@ try {
   const standaloneHtml = path.join(tmp, 'standalone.html');
   const standaloneTrustedHtml = path.join(tmp, 'standalone-trusted.html');
   const standaloneRemoteHtml = path.join(tmp, 'standalone-remote.html');
+  const profileHtml = path.join(tmp, 'profile.html');
+  const profileOverrideHtml = path.join(tmp, 'profile-override.html');
+  const profileDefaultHtml = path.join(tmp, 'profile-default.unknown');
+  const profileSafeStandaloneHtml = path.join(tmp, 'profile-safe-standalone.html');
+  const profileSimpleInput = path.join(tmp, 'profile-simple.md');
+  const profilePngNoExt = path.join(tmp, 'profile-png-no-ext');
   const png = path.join(tmp, 'out.png');
   const avif = path.join(tmp, 'out.avif');
   const jxl = path.join(tmp, 'out.jxl');
@@ -167,6 +173,11 @@ server.listen(0, '127.0.0.1', () => {
     '',
     'Inline math $E=mc^2$ and emoji :smile:.',
   ].join('\n'));
+  fs.writeFileSync(profileSimpleInput, [
+    '# Profile smoke',
+    '',
+    'A small document for profile format inference.',
+  ].join('\n'));
 
   const envCheck = run('check-env', ['--check-env']);
   assertIncludes(envCheck.stdout, '[md-render] environment OK', '--check-env should report a healthy environment');
@@ -174,6 +185,28 @@ server.listen(0, '127.0.0.1', () => {
   expectFail('unknown option validation', ['--check-env', '--unknown-option'], 'unknown option(s): --unknown-option');
   expectFail('removed input alias validation', ['--input', input, '--out', safeHtml], 'unknown option(s): --input');
   expectFail('missing value validation', ['--in', input, '--out', safeHtml, '--width', '--safe'], '--width requires a value');
+  expectFail('unknown profile validation', ['--in', input, '--out', profileHtml, '--profile', 'unknown-profile'], '--profile must be one of:');
+
+  run('profile suffix overrides default format', ['--in', profileSimpleInput, '--out', profileHtml, '--profile', 'wechat-long']);
+  const profiled = read(profileHtml);
+  assertIncludes(profiled, 'body class="format-html"', 'HTML suffix should override wechat-long default PNG format');
+  assertIncludes(profiled, '#07c160', 'wechat-long profile should apply the wechat theme');
+
+  run('profile cli override', ['--in', profileSimpleInput, '--out', profileOverrideHtml, '--profile', 'wechat-long', '--theme', 'github-dark']);
+  const profileOverride = read(profileOverrideHtml);
+  assertIncludes(profileOverride, '#0d1117', 'explicit --theme should override profile theme');
+  assertNotIncludes(profileOverride, '#07c160', 'overridden profile theme should not leak wechat CSS');
+
+  run('profile default html format', ['--in', profileSimpleInput, '--out', profileDefaultHtml, '--profile', 'github-doc']);
+  assertIncludes(read(profileDefaultHtml), 'body class="format-html"', 'unknown output suffix should use github-doc default HTML format');
+
+  run('profile safe standalone', ['--in', profileSimpleInput, '--out', profileSafeStandaloneHtml, '--profile', 'safe-standalone']);
+  const profileSafeStandalone = read(profileSafeStandaloneHtml);
+  assertIncludes(profileSafeStandalone, 'Content-Security-Policy', 'safe-standalone profile should enable safe HTML hardening');
+  assertNotIncludes(profileSafeStandalone, 'cdn.jsdelivr.net', 'safe-standalone profile should inline assets instead of using CDN');
+
+  run('profile default png without extension', ['--in', profileSimpleInput, '--out', profilePngNoExt, '--profile', 'dark-slide'], { timeout: 180000 });
+  assertNonEmpty(profilePngNoExt, 'profile default PNG output without extension');
 
   run('safe html', ['--in', input, '--out', safeHtml, '--safe']);
   const safe = read(safeHtml);
