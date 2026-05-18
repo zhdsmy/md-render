@@ -92,6 +92,8 @@ try {
   const profileSafeStandaloneHtml = path.join(tmp, 'profile-safe-standalone.html');
   const profileSimpleInput = path.join(tmp, 'profile-simple.md');
   const profilePngNoExt = path.join(tmp, 'profile-png-no-ext');
+  const animalIslandHtml = path.join(tmp, 'animal-island.html');
+  const cozyNoteHtml = path.join(tmp, 'cozy-note.html');
   const academicHtml = path.join(tmp, 'academic.html');
   const academicFontOverrideHtml = path.join(tmp, 'academic-font-override.html');
   const png = path.join(tmp, 'out.png');
@@ -211,6 +213,17 @@ server.listen(0, '127.0.0.1', () => {
 
   run('profile default png without extension', ['--in', profileSimpleInput, '--out', profilePngNoExt, '--profile', 'dark-slide'], { timeout: 180000 });
   assertNonEmpty(profilePngNoExt, 'profile default PNG output without extension');
+
+  run('animal island theme', ['--in', profileSimpleInput, '--out', animalIslandHtml, '--theme', 'animal-island']);
+  const animalIsland = read(animalIslandHtml);
+  assertIncludes(animalIsland, '#19c8b9', 'animal-island theme should include the mint accent color');
+  assertIncludes(animalIsland, '.markdown-body .md-toc', 'animal-island theme should style markdown components under markdown-body');
+  assertIncludes(animalIsland, 'width: max-content;', 'tables should shrink to content globally to avoid right-side blank space');
+
+  run('cozy note profile', ['--in', profileSimpleInput, '--out', cozyNoteHtml, '--profile', 'cozy-note']);
+  const cozyNote = read(cozyNoteHtml);
+  assertIncludes(cozyNote, 'body class="format-html"', 'HTML suffix should override cozy-note default PNG format');
+  assertIncludes(cozyNote, '#19c8b9', 'cozy-note profile should apply animal-island theme');
 
   run('academic default font', ['--in', profileSimpleInput, '--out', academicHtml, '--theme', 'academic']);
   assertIncludes(read(academicHtml), '"Source Han Serif SC"', 'academic theme should keep its serif-first default font stack');

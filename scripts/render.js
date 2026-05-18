@@ -13,7 +13,7 @@
  *   --out <path>         output file
  *   --format <fmt>       html | png | avif | jxl | pdf  (default: inferred from --out extension)
  *   --profile <name>     preset defaults for common scenarios
- *   --theme <name>       github | github-dark | juejin | wechat | academic  (default: github)
+ *   --theme <name>       github | github-dark | juejin | wechat | academic | animal-island  (default: github)
  *   --width <px>         viewport width for bitmap/pdf AND final bitmap pixel width (default: 900)
  *   --safe               disable raw HTML in Markdown and use stricter Mermaid security
  *   --standalone         (HTML only) inline assets for a zero-network HTML file
@@ -102,7 +102,7 @@ function runEnvCheck() {
     { name: 'cjxl', ok: commandExists('cjxl'), install: 'brew install jpeg-xl', requiredFor: 'JPEG XL output', optional: true },
     { name: 'oxipng', ok: commandExists('oxipng'), install: 'brew install oxipng', requiredFor: 'optional PNG optimization', optional: true },
   ];
-  const themeFiles = ['_base.css', 'github.css', 'github-dark.css', 'juejin.css', 'wechat.css', 'academic.css'].map(file => ({
+  const themeFiles = ['_base.css', 'github.css', 'github-dark.css', 'juejin.css', 'wechat.css', 'academic.css', 'animal-island.css'].map(file => ({
     name: file,
     ok: fs.existsSync(path.join(THEME_DIR, file)),
   }));
@@ -165,7 +165,7 @@ const SUPPORTED_FORMATS = new Set(['html', 'png', 'pdf', 'avif', 'jxl']);
 const BITMAP_FORMATS = new Set(['png', 'avif', 'jxl']);
 const AVIF_MAX_CELL_SIZE = 65536;
 const AVIF_MIN_GRID_CELL_SIZE = 64;
-const SUPPORTED_THEMES = new Set(['github', 'github-dark', 'juejin', 'wechat', 'academic']);
+const SUPPORTED_THEMES = new Set(['github', 'github-dark', 'juejin', 'wechat', 'academic', 'animal-island']);
 const PROFILES = Object.freeze({
   'github-doc': {
     format: 'html',
@@ -205,6 +205,11 @@ const PROFILES = Object.freeze({
     width: '1200',
     supersample: '2',
   },
+  'cozy-note': {
+    format: 'png',
+    theme: 'animal-island',
+    width: '900',
+  },
 });
 const SUPPORTED_PROFILES = new Set(Object.keys(PROFILES));
 let profileDefaultFormat = null;
@@ -239,7 +244,7 @@ function validateArgs() {
     failUsage('--format must be one of: html, png, pdf, avif, jxl.');
   }
   if (args.theme !== undefined && !SUPPORTED_THEMES.has(args.theme)) {
-    failUsage('--theme must be one of: github, github-dark, juejin, wechat, academic.');
+    failUsage('--theme must be one of: github, github-dark, juejin, wechat, academic, animal-island.');
   }
   const wrap = args['wrap-code-column'];
   if (wrap !== undefined && wrap !== 'auto') {
@@ -1821,6 +1826,7 @@ function fixJourneySvg(svg, bbox) {
     'juejin':       'github-light',
     'wechat':       'github-light',  // 高对比浅色，配 wechat 米色代码块
     'academic':     'github-light',
+    'animal-island':'github-light',
   };
   const shikiTheme = args['shiki-theme'] || SHIKI_THEME_MAP[theme] || 'github-light';
 

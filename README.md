@@ -11,7 +11,7 @@ It is designed for AI-generated Markdown and technical documents that may contai
 ## Features
 
 - **Multiple output formats**: HTML, PNG, AVIF, JPEG XL, and PDF.
-- **Five built-in themes**: `github`, `github-dark`, `juejin`, `wechat`, and `academic`.
+- **Six built-in themes**: `github`, `github-dark`, `juejin`, `wechat`, `academic`, and `animal-island`.
 - **Extended Markdown support**:
   - GFM tables, task lists, strikethrough, and autolinks
   - Shiki code highlighting
@@ -110,8 +110,8 @@ node render.js \
   --in <input.md> \
   --out <output.{html,png,avif,jxl,pdf}> \
   [--format html|png|avif|jxl|pdf] \
-  [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image] \
-  [--theme github|github-dark|juejin|wechat|academic] \
+  [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image|cozy-note] \
+  [--theme github|github-dark|juejin|wechat|academic|animal-island] \
   [--width 900] \
   [--safe] \
   [--standalone] \
@@ -120,7 +120,7 @@ node render.js \
 
 The output format is inferred from the `--out` file extension unless `--format` is provided.
 
-`--profile` applies scenario defaults without overriding explicit CLI options. Available profiles are `github-doc`, `wechat-long`, `juejin-article`, `academic-pdf`, `dark-slide`, `safe-standalone`, and `retina-image`.
+`--profile` applies scenario defaults without overriding explicit CLI options. Available profiles are `github-doc`, `wechat-long`, `juejin-article`, `academic-pdf`, `dark-slide`, `safe-standalone`, `retina-image`, and `cozy-note`.
 
 You can also read Markdown from stdin:
 
@@ -175,6 +175,7 @@ node render.js --in input.md --out output.pdf --profile academic-pdf
 | `juejin` | Chinese technical articles |
 | `wechat` | Social sharing or article-style long screenshots |
 | `academic` | Research notes, reports, and formal documents |
+| `animal-island` | Warm, rounded, cozy notes or friendly share images |
 
 ## Security notes
 

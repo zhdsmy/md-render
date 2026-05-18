@@ -1,6 +1,6 @@
 ---
 name: md-render
-description: "当用户需要将 Markdown 渲染或转换为 HTML、位图图片（PNG、AVIF、JPEG XL）或单页 PDF 时使用本 Skill。适合 AI 生成内容、技术文档、长图分享、微信公众号文章、研究笔记、代码块、Mermaid 图表、KaTeX 数学公式、GitHub Alert、目录、emoji 和自定义提示块。内置 github、github-dark、juejin、wechat、academic 五套主题，支持安全模式、standalone HTML、自定义字体和位图/PDF 调优。"
+description: "当用户需要将 Markdown 渲染或转换为 HTML、位图图片（PNG、AVIF、JPEG XL）或单页 PDF 时使用本 Skill。适合 AI 生成内容、技术文档、长图分享、微信公众号文章、研究笔记、代码块、Mermaid 图表、KaTeX 数学公式、GitHub Alert、目录、emoji 和自定义提示块。内置 github、github-dark、juejin、wechat、academic、animal-island 主题，支持安全模式、standalone HTML、自定义字体和位图/PDF 调优。"
 version: 1.0.0
 agent_created: true
 ---
@@ -33,6 +33,7 @@ agent_created: true
 | 中文技术博客 | `png`/`html` | `juejin` | `--profile juejin-article` |
 | 暗色演示图 | `png` | `github-dark` | `--profile dark-slide` |
 | 论文 / 研究报告 | `pdf` | `academic` | `--profile academic-pdf` |
+| 温暖圆润笔记 / 轻松分享 | `png`/`html` | `animal-island` | `--profile cozy-note` |
 | AVIF / JPEG XL | `avif`/`jxl` | `github` | 需要对应编码器 |
 | 不可信输入 | 任意 | 按内容选 | 加 `--safe` |
 
@@ -44,8 +45,8 @@ node render.js \
   --in <input.md> \
   --out <output.{html,png,avif,jxl,pdf}> \
   [--format html|png|avif|jxl|pdf] \
-  [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image] \
-  [--theme github|github-dark|juejin|wechat|academic] \
+  [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image|cozy-note] \
+  [--theme github|github-dark|juejin|wechat|academic|animal-island] \
   [--width 900] \
   [--safe] \
   [--standalone] \
@@ -71,6 +72,7 @@ cat input.md | node render.js --in - --out out.png --theme wechat
 | `dark-slide` | 暗色演示截图 / 终端配图 | `png` | `github-dark` | `--width 1200` |
 | `safe-standalone` | 不可信输入 / 离线 HTML | `html` | `github` | `--safe --standalone` |
 | `retina-image` | 高清长图 | `png` | `github` | `--width 1200 --supersample 2` |
+| `cozy-note` | 温暖圆润笔记 / 轻松分享 | `png` | `animal-island` | `--width 900` |
 
 示例：
 
@@ -78,6 +80,7 @@ cat input.md | node render.js --in - --out out.png --theme wechat
 node render.js --in input.md --out article.png --profile wechat-long
 node render.js --in input.md --out report.pdf --profile academic-pdf
 node render.js --in input.md --out share.html --profile safe-standalone
+node render.js --in input.md --out note.png --profile cozy-note
 ```
 
 ## 常用参数
@@ -117,7 +120,7 @@ node render.js --in input.md --out share.html --profile safe-standalone
 1. 接收 Markdown：来自用户消息、文件、上一轮 AI 输出或 stdin。
 2. 判断输入可信度：外部/未知来源一律加 `--safe`。
 3. 选择输出格式：图片默认 `png`，PDF 默认 `pdf`，网页默认 `html`。
-4. 选择主题：微信用 `wechat`，中文技术博客用 `juejin`，论文报告用 `academic`，暗色演示用 `github-dark`，其他用 `github`。
+4. 选择主题：微信用 `wechat`，中文技术博客用 `juejin`，论文报告用 `academic`，暗色演示用 `github-dark`，温暖圆润笔记用 `animal-island`，其他用 `github`。
 5. 首次运行或失败时执行 `node render.js --check-env`。
 6. 渲染后确认输出文件存在且非空，再把路径或附件返回给用户。
 
@@ -149,7 +152,7 @@ npm test
 需要人工检查主题视觉效果时：
 
 ```bash
-for t in github github-dark juejin wechat academic; do
+for t in github github-dark juejin wechat academic animal-island; do
   node render.js --in sample.md --out ./md-$t.png --theme $t
 done
 ```

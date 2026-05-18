@@ -17,8 +17,8 @@ node render.js --in <input> --out <output> [options]
 | `--in <path>` | 输入 md 文件，`-` 读 stdin | 必填 |
 | `--out <path>` | 输出文件 | 必填 |
 | `--format html\|png\|avif\|jxl\|pdf` | 显式指定格式，否则按后缀推断 | 自动 |
-| `--profile <name>` | 按场景注入默认参数；显式 CLI 参数优先。可选：`github-doc` / `wechat-long` / `juejin-article` / `academic-pdf` / `dark-slide` / `safe-standalone` / `retina-image` | 无 |
-| `--theme <name>` | github / github-dark / juejin / wechat / academic | github |
+| `--profile <name>` | 按场景注入默认参数；显式 CLI 参数优先。可选：`github-doc` / `wechat-long` / `juejin-article` / `academic-pdf` / `dark-slide` / `safe-standalone` / `retina-image` / `cozy-note` | 无 |
+| `--theme <name>` | github / github-dark / juejin / wechat / academic / animal-island | github |
 | `--width <px>` | 位图/PDF 的视口宽度（也是 PDF 页宽，也是默认最终位图像素宽）。最小限制为 375 | 900 |
 | `--safe` | 不可信输入安全模式：禁用 Markdown 原始 HTML、拦截 `javascript:` / `data:` 等高风险链接或图片协议、Mermaid 使用 `strict`，并强化 HTML CSP / referrer / 外链属性 | false |
 | `--standalone` | **仅 HTML 输出生效**：把 KaTeX / Mermaid / Twemoji 等资源内联，可信模式下把本地图片转成 data URL，生成零依赖 HTML；位图/PDF 始终走内联，不需要传该参数 | false |
@@ -71,6 +71,7 @@ node render.js --in <input> --out <output> [options]
 | `dark-slide` | 暗色演示截图 / 终端配图 | `png` | `github-dark` | `--width 1200` |
 | `safe-standalone` | 不可信输入 / 离线 HTML | `html` | `github` | `--safe --standalone` |
 | `retina-image` | 高清长图 | `png` | `github` | `--width 1200 --supersample 2` |
+| `cozy-note` | 温暖圆润笔记 / 轻松分享 | `png` | `animal-island` | `--width 900` |
 
 ## 常用案例
 

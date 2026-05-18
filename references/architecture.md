@@ -221,8 +221,9 @@ Chrome 使用进程级 lazy singleton：
 - `juejin.css`：中文技术博客。
 - `wechat.css`：公众号/社交分享。
 - `academic.css`：研究报告/论文风格。
+- `animal-island.css`：温暖圆润的笔记和轻松分享风格。
 
-主题修改后至少运行 `npm test`，并渲染 `sample.md` 的五套主题人工检查。
+主题修改后至少运行 `npm test`，并渲染 `sample.md` 的全部内置主题人工检查。
 
 ## 回归测试
 

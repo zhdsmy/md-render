@@ -1,0 +1,141 @@
+/* Animal Island theme: warm, rounded, cozy note style */
+body { background: #f8f3df; color: #6f5a3b; }
+.markdown-body {
+  color: #6f5a3b;
+  font-size: 16px;
+  line-height: 1.82;
+}
+
+.markdown-body a {
+  color: #087e78;
+  border-bottom: 2px solid rgba(25, 200, 185, .32);
+  font-weight: 600;
+}
+.markdown-body a:hover {
+  color: #066a65;
+  text-decoration: none;
+  border-bottom-color: #19c8b9;
+}
+
+.markdown-body h1 {
+  color: #6b4b2f;
+  text-align: center;
+  font-size: 1.85em;
+  margin: 1.1em 0 1.25em;
+  padding: .3em .7em .42em;
+  border: 2px solid #d8bc7b;
+  border-radius: 18px;
+  background: #fff8dc;
+  box-shadow: 0 4px 0 #d8bc7b;
+}
+.markdown-body h2 {
+  color: #ffffff;
+  display: inline-block;
+  font-size: 1.38em;
+  margin-top: 1.7em;
+  padding: .22em .85em .28em;
+  border-radius: 999px;
+  background: #19c8b9;
+  box-shadow: 0 3px 0 #0e9188;
+}
+.markdown-body h3 {
+  color: #087e78;
+  font-size: 1.16em;
+  padding-left: 12px;
+  border-left: 5px solid #19c8b9;
+}
+.markdown-body h4 {
+  color: #8f6b35;
+}
+
+.markdown-body blockquote {
+  color: #7b6647;
+  border-left-color: #19c8b9;
+  background: #fff9e8;
+  padding: .75em 1em;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px rgba(216, 188, 123, .45);
+}
+
+.markdown-body :not(pre) > code {
+  color: #8a4f00;
+  background: #fff4c8;
+  border: 1px solid #ead49a;
+  border-radius: 7px;
+  padding: .16em .45em;
+  font-size: .9em;
+}
+.markdown-body pre,
+.markdown-body .shiki {
+  background: #fff9e8 !important;
+  border: 2px solid #e6cf91;
+  border-radius: 14px;
+  box-shadow: 0 3px 0 #d8bc7b;
+}
+.markdown-body .shiki code { background: transparent !important; }
+.markdown-body .soft-wrap-marker { color: #0e9188 !important; }
+
+.markdown-body table {
+  border-color: #e0c886;
+  background: transparent;
+  border-radius: 12px;
+}
+.markdown-body tbody {
+  background: #fffdf2;
+}
+.markdown-body th {
+  color: #ffffff;
+  background: #19c8b9;
+}
+.markdown-body th,
+.markdown-body td {
+  border-color: #e0c886;
+}
+.markdown-body tr:nth-child(2n) {
+  background: #fff8dc;
+}
+
+.markdown-body hr {
+  height: 0;
+  background: transparent;
+  border-top: 2px dashed #d8bc7b;
+}
+
+.markdown-body strong {
+  color: #087e78;
+}
+
+.markdown-body img:not(.emoji) {
+  border-radius: 16px;
+  box-shadow: 0 4px 0 #d8bc7b;
+}
+
+.markdown-body .md-toc,
+.markdown-body .md-details {
+  border-color: #e0c886;
+  border-radius: 14px;
+  background: #fff9e8;
+  box-shadow: 0 3px 0 #d8bc7b;
+}
+.markdown-body .md-toc .md-toc-title,
+.markdown-body .md-details > summary {
+  color: #087e78;
+}
+
+.markdown-body .tip,
+.markdown-body .info {
+  background: #e7fbf4;
+  border-left-color: #19c8b9;
+}
+.markdown-body .note {
+  background: #fff9e8;
+  border-left-color: #d8bc7b;
+}
+.markdown-body .warning {
+  background: #fff3ce;
+  border-left-color: #d9a441;
+}
+.markdown-body .danger {
+  background: #ffe5df;
+  border-left-color: #e46d5b;
+}

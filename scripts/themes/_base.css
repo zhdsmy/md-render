@@ -115,7 +115,8 @@ pre code { padding: 0; background: transparent !important; font-size: 1em; }
 /* 表格 */
 table {
   display: block;
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
   overflow-x: auto;
   border-collapse: collapse;
   margin: 1em 0;

@@ -11,7 +11,7 @@
 ## 功能特性
 
 - **多种输出格式**：HTML、PNG、AVIF、JPEG XL 和 PDF。
-- **五套内置主题**：`github`、`github-dark`、`juejin`、`wechat` 和 `academic`。
+- **六套内置主题**：`github`、`github-dark`、`juejin`、`wechat`、`academic` 和 `animal-island`。
 - **扩展 Markdown 支持**：
   - GFM 表格、任务列表、删除线和自动链接
   - Shiki 代码高亮
@@ -110,8 +110,8 @@ node render.js \
   --in <input.md> \
   --out <output.{html,png,avif,jxl,pdf}> \
   [--format html|png|avif|jxl|pdf] \
-  [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image] \
-  [--theme github|github-dark|juejin|wechat|academic] \
+  [--profile github-doc|wechat-long|juejin-article|academic-pdf|dark-slide|safe-standalone|retina-image|cozy-note] \
+  [--theme github|github-dark|juejin|wechat|academic|animal-island] \
   [--width 900] \
   [--safe] \
   [--standalone] \
@@ -120,7 +120,7 @@ node render.js \
 
 默认会根据 `--out` 的文件后缀推断输出格式；显式传入 `--format` 时，以 `--format` 为准。
 
-`--profile` 会按场景注入默认参数，但不会覆盖显式 CLI 参数。可选 profile：`github-doc`、`wechat-long`、`juejin-article`、`academic-pdf`、`dark-slide`、`safe-standalone`、`retina-image`。
+`--profile` 会按场景注入默认参数，但不会覆盖显式 CLI 参数。可选 profile：`github-doc`、`wechat-long`、`juejin-article`、`academic-pdf`、`dark-slide`、`safe-standalone`、`retina-image`、`cozy-note`。
 
 也可以从 stdin 读取 Markdown：
 
@@ -175,6 +175,7 @@ node render.js --in input.md --out output.pdf --profile academic-pdf
 | `juejin` | 中文技术文章 |
 | `wechat` | 社交分享或文章风格长图 |
 | `academic` | 研究笔记、报告和正式文档 |
+| `animal-island` | 温暖圆润的笔记、轻松分享长图 |
 
 ## 安全说明
 
