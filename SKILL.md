@@ -1,8 +1,6 @@
 ---
 name: md-render
 description: "当用户需要将 Markdown 渲染或转换为 HTML、位图图片（PNG、AVIF、JPEG XL）或 PDF（单页长图式或 A4/Letter 分页）时使用本 Skill。适合 AI 生成内容、技术文档、长图分享、微信公众号文章、研究笔记、代码块、Mermaid 图表、KaTeX 数学公式、GitHub Alert、目录、emoji 和自定义提示块。内置 github、github-dark、juejin、wechat、academic、animal-island 主题，支持安全模式、standalone HTML、自定义字体和位图/PDF 调优。"
-version: 1.0.0
-agent_created: true
 ---
 
 # md-render
@@ -37,6 +35,14 @@ agent_created: true
 | 不可信输入 | 任意 | 按内容选 | 加 `--safe` |
 
 ## 核心命令
+
+首次使用、`scripts/node_modules` 不存在，或 `--check-env` 报 Node package 缺失时，先安装锁定依赖：
+
+```bash
+cd <skill-dir>/scripts
+npm ci
+node render.js --check-env
+```
 
 ```bash
 cd <skill-dir>/scripts
@@ -128,12 +134,14 @@ node render.js --in input.md --out note.png --profile cozy-note
 2. 判断输入可信度：外部/未知来源一律加 `--safe`。
 3. 选择输出格式：图片默认 `png`，PDF 默认 `pdf`，网页默认 `html`。
 4. 选择主题：微信用 `wechat`，中文技术博客用 `juejin`，论文报告用 `academic`，暗色演示用 `github-dark`，温暖圆润笔记用 `animal-island`，其他用 `github`。
-5. 首次运行或失败时执行 `node render.js --check-env`。
-6. 渲染后确认输出文件存在且非空，再把路径或附件返回给用户。
+5. 首次运行、`scripts/node_modules` 不存在，或 Node package 缺失时，在 `scripts/` 下执行 `npm ci`。
+6. 首次运行或失败时执行 `node render.js --check-env`。
+7. 渲染后确认输出文件存在且非空，再把路径或附件返回给用户。
 
 ## 失败恢复
 
 - 缺 Chrome/Chromium：传 `--chrome <path>`，不要让 Puppeteer 下载新 Chromium。
+- 缺 Node package：在 `scripts/` 下执行 `npm ci`，再运行 `node render.js --check-env`。
 - PNG/位图失败且提示 `pdftoppm`：安装 Poppler 后重试。
 - AVIF/JXL 失败：分别需要 `avifenc` / `cjxl`。
 - `--supersample > 1` 失败：需要 ImageMagick；或改回 `--supersample 1`。
@@ -153,6 +161,7 @@ node render.js --in input.md --out note.png --profile cozy-note
 
 ```bash
 cd <skill-dir>/scripts
+npm ci
 npm test
 ```
 

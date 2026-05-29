@@ -2,6 +2,19 @@
 
 本文记录 CLI 参数和常用示例。实现架构、渲染链路与维护注意事项见 `architecture.md`。
 
+## 目录
+
+- [命令格式](#命令格式)
+- [参数清单](#参数清单)
+- [Profile 预设](#profile-预设)
+- [Frontmatter](#frontmatter)
+- [常用案例](#常用案例)
+- [自定义容器示例](#自定义容器示例)
+- [GitHub Alert 语法](#github-alert-语法)
+- [目录 (TOC)](#目录-toc)
+- [折叠块](#折叠块)
+- [Mermaid 用法](#mermaid-用法)
+
 ## 命令格式
 
 ```

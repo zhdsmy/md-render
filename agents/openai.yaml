@@ -1,0 +1,4 @@
+interface:
+  display_name: "Markdown Renderer"
+  short_description: "Render Markdown to HTML, images, and PDF"
+  default_prompt: "Use $md-render to render this Markdown as a polished HTML, image, or PDF artifact."
