@@ -1,50 +1,53 @@
 /* Animal Island theme: warm, rounded, cozy note style */
 :root {
-  --md-color-bg: #f8f3df;
-  --md-color-fg: #6f5a3b;
-  --md-color-muted: #7b6647;
+  --md-color-bg: #f8f8f0;
+  --md-color-fg: #725d42;
+  --md-color-muted: #8a7b66;
   --md-color-link: #087e78;
-  --md-color-border: #e0c886;
-  --md-color-surface: #fff9e8;
+  --md-color-border: #aaa69d;
+  --md-color-surface: #f7f3df;
   --md-color-surface-alt: #fffdf2;
   --md-color-accent: #19c8b9;
   --md-color-strong: #087e78;
-  --md-blockquote-fg: #7b6647;
-  --md-blockquote-bg: #fff9e8;
+  --md-blockquote-fg: #725d42;
+  --md-blockquote-bg: #f7f3df;
   --md-blockquote-border: #19c8b9;
   --md-inline-code-fg: #8a4f00;
   --md-inline-code-bg: #fff4c8;
-  --md-inline-code-border: #ead49a;
-  --md-code-bg: #fff9e8;
-  --md-code-border: #e6cf91;
-  --md-table-border: #e0c886;
+  --md-inline-code-border: #c4b89e;
+  --md-code-bg: #f7f3df;
+  --md-code-border: #c4b89e;
+  --md-table-border: #c4b89e;
   --md-table-header-bg: #19c8b9;
   --md-table-header-fg: #ffffff;
-  --md-table-row-alt-bg: #fff8dc;
-  --md-hr-bg: #d8bc7b;
-  --md-toc-bg: #fff9e8;
-  --md-toc-border: #e0c886;
+  --md-table-row-alt-bg: #f0e8d8;
+  --md-hr-bg: #d8d0c3;
+  --md-toc-bg: #f7f3df;
+  --md-toc-border: #c4b89e;
   --md-toc-title-fg: #087e78;
-  --md-details-bg: #fff9e8;
-  --md-details-border: #e0c886;
+  --md-details-bg: #f7f3df;
+  --md-details-border: #c4b89e;
   --md-details-summary-fg: #087e78;
+  --md-details-divider: rgba(159, 146, 125, .35);
   --md-alert-tip-bg: #e7fbf4;
   --md-alert-tip-border: #19c8b9;
   --md-alert-warning-bg: #fff3ce;
-  --md-alert-warning-border: #d9a441;
+  --md-alert-warning-border: #f5c31c;
   --md-alert-danger-bg: #ffe5df;
-  --md-alert-danger-border: #e46d5b;
+  --md-alert-danger-border: #e05a5a;
   --md-alert-info-bg: #e7fbf4;
   --md-alert-info-border: #19c8b9;
-  --md-alert-note-bg: #fff9e8;
-  --md-alert-note-border: #d8bc7b;
+  --md-alert-note-bg: #f7f3df;
+  --md-alert-note-border: #aaa69d;
   --md-image-radius: 16px;
-  --md-image-shadow: 0 4px 0 #d8bc7b;
+  --md-image-shadow: 0 4px 10px rgba(107, 92, 67, .28);
 }
 
 .markdown-body {
+  font-family: Nunito, "Noto Sans SC", "Zen Maru Gothic", var(--md-font-en), var(--md-font-cn), var(--md-font-emoji);
   font-size: 16px;
   line-height: 1.82;
+  font-weight: 500;
 }
 
 .markdown-body a {
@@ -59,15 +62,42 @@
 }
 
 .markdown-body h1 {
-  color: #6b4b2f;
+  position: relative;
+  z-index: 0;
+  color: #725d42;
+  display: table;
   text-align: center;
   font-size: 1.85em;
   margin: 1.1em 0 1.25em;
-  padding: .3em .7em .42em;
-  border: 2px solid #d8bc7b;
-  border-radius: 18px;
-  background: #fff8dc;
-  box-shadow: 0 4px 0 #d8bc7b;
+  margin-left: auto;
+  margin-right: auto;
+  padding: .32em 1.55em .42em;
+  border: 0;
+  border-radius: 8px;
+  background: #f1e26f;
+  box-shadow: 0 7px 0 #d4c23f;
+}
+
+.markdown-body h1::before,
+.markdown-body h1::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  z-index: -1;
+  width: 38px;
+  height: 34px;
+  background: #caaa2a;
+  transform: translateY(-44%) skewY(-12deg);
+}
+
+.markdown-body h1::before {
+  left: -25px;
+  clip-path: polygon(0 0, 100% 18%, 100% 82%, 0 100%, 28% 50%);
+}
+
+.markdown-body h1::after {
+  right: -25px;
+  clip-path: polygon(0 18%, 100% 0, 72% 50%, 100% 100%, 0 82%);
 }
 
 .markdown-body h2 {
@@ -76,26 +106,32 @@
   font-size: 1.38em;
   margin-top: 1.7em;
   padding: .22em .85em .28em;
-  border-radius: 999px;
+  border-radius: 50px;
   background: var(--md-color-accent);
-  box-shadow: 0 3px 0 #0e9188;
+  box-shadow: 0 5px 0 #11a89b;
 }
 
 .markdown-body h3 {
-  color: #087e78;
+  color: #794f27;
   font-size: 1.16em;
   padding-left: 12px;
   border-left: 5px solid var(--md-color-accent);
 }
 
 .markdown-body h4 {
-  color: #8f6b35;
+  color: #794f27;
+}
+
+.markdown-body ul li::marker,
+.markdown-body ol li::marker {
+  color: var(--md-color-accent);
+  font-weight: 800;
 }
 
 .markdown-body blockquote {
   padding: .75em 1em;
-  border-radius: 12px;
-  box-shadow: inset 0 0 0 1px rgba(216, 188, 123, .45);
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px rgba(196, 184, 158, .55);
 }
 
 .markdown-body :not(pre) > code {
@@ -108,7 +144,7 @@
 .markdown-body .shiki {
   border-width: 2px;
   border-radius: 14px;
-  box-shadow: 0 3px 0 #d8bc7b;
+  box-shadow: 0 3px 0 #d4c9b4;
 }
 
 .markdown-body .shiki code {
@@ -121,7 +157,7 @@
 
 .markdown-body table {
   background: transparent;
-  border-radius: 12px;
+  border-radius: 18px;
 }
 
 .markdown-body strong {
@@ -130,12 +166,16 @@
 
 .markdown-body .md-toc,
 .markdown-body .md-details {
-  border-radius: 14px;
-  box-shadow: 0 3px 0 #d8bc7b;
+  border-radius: 18px;
+  box-shadow: 0 3px 0 #d4c9b4;
 }
 
 .markdown-body hr {
-  height: 0;
+  height: 12px;
   background: transparent;
-  border-top: 2px dashed #d8bc7b;
+  border: 0;
+  background-image: url("data:image/svg+xml,%3csvg width='297' height='14' viewBox='0 0 297 14' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M20 10.42L33 11 28 0zM10 6.97L0 3l.858 9zM43 1l.613 11L53 5.585zm89 13l11-5.867L133.507 1zm67-3.58l13 .58-4.998-11zm-10-3.45L179 3l.858 9zM90.634 1L88 13l12-4.39zM155 13l12-2.4-8.47-9.6zM110 3l2.057 9L118 6.292zm-47 8.215L76 14 71.048 1zM222 1l.613 11L232 5.585zm47.634 0L267 13l12-4.39zM289 3l2.057 9L297 6.292zm-48 8.215L254 14l-4.952-13z' fill='%23d8d0c3' fill-rule='evenodd'/%3e%3c/svg%3e");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }

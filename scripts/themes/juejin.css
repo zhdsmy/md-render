@@ -1,27 +1,37 @@
-/* 掘金风格：偏蓝、阅读友好 */
+/* Juejin style: clean Chinese technical article with restrained brand blue. */
 :root {
   --md-color-bg: #ffffff;
   --md-color-fg: #252933;
   --md-color-muted: #515767;
   --md-color-link: #1e80ff;
-  --md-color-border: #ebedf0;
+  --md-color-border: #e4e6eb;
   --md-color-surface: #f7f8fa;
+  --md-color-surface-alt: #ffffff;
   --md-color-accent: #1e80ff;
+  --md-color-strong: #252933;
   --md-blockquote-fg: #515767;
   --md-blockquote-bg: #f7f8fa;
-  --md-blockquote-border: #1e80ff;
-  --md-inline-code-fg: #d63384;
+  --md-blockquote-border: #c8ccd3;
+  --md-inline-code-fg: #476582;
   --md-inline-code-bg: #f2f3f5;
-  --md-inline-code-border: #ebedf0;
+  --md-inline-code-border: transparent;
   --md-code-bg: #f5f6f8;
-  --md-code-border: #ebedf0;
-  --md-table-border: #ebedf0;
+  --md-code-border: #e4e6eb;
+  --md-table-border: #e4e6eb;
   --md-table-header-bg: #f7f8fa;
-  --md-table-header-fg: #1e80ff;
-  --md-table-row-alt-bg: transparent;
+  --md-table-header-fg: #252933;
+  --md-table-row-alt-bg: #fafafa;
   --md-table-row-hover-bg: #f7f8fa;
-  --md-hr-bg: #ebedf0;
-  --md-footnote-border: #ebedf0;
+  --md-hr-bg: #e4e6eb;
+  --md-footnote-border: #e4e6eb;
+  --md-footnote-fg: #8a919f;
+  --md-toc-bg: #f7f8fa;
+  --md-toc-border: #e4e6eb;
+  --md-toc-title-fg: #252933;
+  --md-details-bg: #f7f8fa;
+  --md-details-border: #e4e6eb;
+  --md-details-summary-fg: #252933;
+  --md-details-divider: #e4e6eb;
   --md-alert-tip-bg: #e6f4ff;
   --md-alert-tip-border: #1e80ff;
   --md-alert-warning-bg: #fffbe6;
@@ -32,31 +42,133 @@
   --md-alert-info-border: #1e80ff;
   --md-alert-note-bg: #f7f8fa;
   --md-alert-note-border: #8a919f;
+  --md-image-radius: 4px;
+  --md-image-shadow: none;
 }
 
 .markdown-body {
-  line-height: 1.85;
+  font-family: var(--md-font-en), var(--md-font-cn), var(--md-font-emoji);
+  font-size: 16px;
+  line-height: 1.75;
+  font-weight: 400;
+}
+
+.markdown-body a {
+  color: var(--md-color-link);
+  text-decoration: none;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body strong {
+  color: var(--md-color-strong);
+  font-weight: 600;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  color: #252933;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .markdown-body h1 {
-  font-size: 1.75em;
-  border-bottom: 2px solid var(--md-color-accent);
-  padding-bottom: .3em;
-  display: inline-block;
+  font-size: 1.8em;
+  margin: 1.1em 0 .8em;
+  border-bottom: 0;
+  padding-bottom: 0;
+  display: block;
 }
 
 .markdown-body h2 {
-  font-size: 1.4em;
-  padding-left: 12px;
-  border-left: 4px solid var(--md-color-accent);
-  margin-top: 2em;
+  font-size: 1.45em;
+  padding-left: 0;
+  border-left: 0;
+  margin: 2em 0 .85em;
 }
 
 .markdown-body h3 {
-  color: var(--md-color-accent);
+  font-size: 1.22em;
+  margin: 1.65em 0 .75em;
+}
+
+.markdown-body h4 {
+  font-size: 1.08em;
+}
+
+.markdown-body h5 {
+  font-size: .95em;
+}
+
+.markdown-body h6 {
+  font-size: .9em;
+  color: var(--md-color-muted);
+}
+
+.markdown-body p,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body blockquote,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .shiki {
+  margin-top: 0;
+  margin-bottom: 1em;
 }
 
 .markdown-body blockquote {
   padding: .8em 1em;
+  border-left-width: 4px;
   border-radius: 0 4px 4px 0;
+}
+
+.markdown-body :not(pre) > code {
+  padding: .16em .42em;
+  border: 0;
+  border-radius: 4px;
+  font-size: .9em;
+}
+
+.markdown-body pre,
+.markdown-body .shiki {
+  padding: 16px;
+  border-radius: 4px;
+  font-size: .88em;
+  line-height: 1.65;
+}
+
+.markdown-body .shiki code {
+  background: transparent !important;
+}
+
+.markdown-body table {
+  font-size: .9em;
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 8px 12px;
+}
+
+.markdown-body th {
+  font-weight: 600;
+}
+
+.markdown-body hr {
+  margin: 2em 0;
+}
+
+.markdown-body .md-toc,
+.markdown-body .md-details {
+  border-radius: 4px;
+}
+
+.markdown-body .footnotes {
+  font-size: .88em;
 }

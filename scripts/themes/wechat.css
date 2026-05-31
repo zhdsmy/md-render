@@ -1,46 +1,63 @@
-/* 微信公众号风格：偏绿、紧凑，适合图文长稿 */
+/* WeChat Official Account style: neutral article reading with restrained brand green. */
 :root {
   --md-color-bg: #ffffff;
   --md-color-fg: #3f3f3f;
-  --md-color-muted: #6a737d;
+  --md-color-muted: #8c8c8c;
   --md-color-link: #576b95;
-  --md-color-border: #dfe2e5;
+  --md-color-border: #e5e5e5;
   --md-color-surface: #f7f7f7;
+  --md-color-surface-alt: #ffffff;
   --md-color-accent: #07c160;
-  --md-color-strong: #07c160;
-  --md-blockquote-fg: #6a737d;
+  --md-color-strong: #3f3f3f;
+  --md-blockquote-fg: #7f7f7f;
   --md-blockquote-bg: #f7f7f7;
-  --md-blockquote-border: #07c160;
-  --md-inline-code-fg: #d14;
-  --md-inline-code-bg: #f4f5f4;
-  --md-inline-code-border: #e6e8e6;
-  --md-code-bg: #fafaf7;
-  --md-code-border: #e6e8e6;
-  --md-table-border: #dfe2e5;
-  --md-table-header-bg: #07c160;
-  --md-table-header-fg: #ffffff;
-  --md-table-row-alt-bg: transparent;
-  --md-hr-bg: #07c160;
-  --md-alert-tip-bg: #f0f9eb;
-  --md-alert-tip-border: #67c23a;
-  --md-alert-warning-bg: #fdf6ec;
-  --md-alert-warning-border: #e6a23c;
-  --md-alert-danger-bg: #fef0f0;
-  --md-alert-danger-border: #f56c6c;
-  --md-alert-info-bg: #f4f4f5;
-  --md-alert-info-border: #909399;
-  --md-alert-note-bg: #f4f4f5;
-  --md-alert-note-border: #909399;
+  --md-blockquote-border: #e5e5e5;
+  --md-inline-code-fg: #476582;
+  --md-inline-code-bg: #f5f7f9;
+  --md-inline-code-border: #edf0f2;
+  --md-code-bg: #f7f7f7;
+  --md-code-border: #e5e5e5;
+  --md-table-border: #e5e5e5;
+  --md-table-header-bg: #f7f7f7;
+  --md-table-header-fg: #3f3f3f;
+  --md-table-row-alt-bg: #fafafa;
+  --md-table-row-hover-bg: transparent;
+  --md-hr-bg: #e5e5e5;
+  --md-footnote-border: #e5e5e5;
+  --md-footnote-fg: #8c8c8c;
+  --md-toc-bg: #f7f7f7;
+  --md-toc-border: #e5e5e5;
+  --md-toc-title-fg: #3f3f3f;
+  --md-details-bg: #f7f7f7;
+  --md-details-border: #e5e5e5;
+  --md-details-summary-fg: #3f3f3f;
+  --md-details-divider: #e5e5e5;
+  --md-alert-tip-bg: #f2fbf6;
+  --md-alert-tip-border: #07c160;
+  --md-alert-warning-bg: #fff8e6;
+  --md-alert-warning-border: #faad14;
+  --md-alert-danger-bg: #fff1f0;
+  --md-alert-danger-border: #ff4d4f;
+  --md-alert-info-bg: #f4f7fb;
+  --md-alert-info-border: #576b95;
+  --md-alert-note-bg: #f7f7f7;
+  --md-alert-note-border: #8c8c8c;
+  --md-image-radius: 0;
+  --md-image-shadow: none;
 }
 
 .markdown-body {
-  font-size: 15px;
-  line-height: 1.8;
-  letter-spacing: .05em;
+  font-family: var(--md-font-cn), var(--md-font-en), var(--md-font-emoji);
+  font-size: 16px;
+  line-height: 1.85;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 .markdown-body a {
-  border-bottom: 1px solid var(--md-color-link);
+  color: var(--md-color-link);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(87, 107, 149, .28);
 }
 
 .markdown-body a:hover {
@@ -48,47 +65,83 @@
 }
 
 .markdown-body h1 {
-  font-size: 1.4em;
-  text-align: center;
-  margin: 1.2em 0 1em;
-  padding-bottom: .5em;
-  border-bottom: 2px solid var(--md-color-accent);
+  font-size: 1.5em;
+  line-height: 1.35;
+  text-align: left;
+  margin: 1.2em 0 .9em;
+  padding: 0;
+  border-bottom: 0;
+  color: #1f1f1f;
+  font-weight: 600;
 }
 
 .markdown-body h2 {
-  font-size: 1.2em;
-  display: inline-block;
-  padding: .2em .8em;
+  position: relative;
+  font-size: 1.17em;
+  line-height: 1.45;
+  display: block;
+  padding: 0 0 0 12px;
+  background: transparent;
+  color: #1f1f1f !important;
+  border-radius: 0;
+  margin: 1.85em 0 .85em;
+  font-weight: 600;
+}
+
+.markdown-body h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .22em;
+  bottom: .22em;
+  width: 4px;
+  border-radius: 2px;
   background: var(--md-color-accent);
-  color: #ffffff !important;
-  border-radius: 4px;
-  margin: 1.5em 0 .8em;
 }
 
 .markdown-body h3 {
-  font-size: 1.1em;
-  padding-left: 10px;
-  border-left: 3px solid var(--md-color-accent);
-  color: var(--md-color-accent);
+  font-size: 1.05em;
+  line-height: 1.5;
+  padding-left: 0;
+  border-left: 0;
+  color: #1f1f1f;
+  font-weight: 600;
+  margin-top: 1.55em;
+}
+
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  color: #3f3f3f;
+  font-weight: 600;
+}
+
+.markdown-body p,
+.markdown-body ul,
+.markdown-body ol {
+  margin-bottom: 1.15em;
 }
 
 .markdown-body blockquote {
-  padding: .8em 1em;
-  margin: 1em 0;
-  font-size: .95em;
+  padding: .85em 1em;
+  margin: 1.2em 0;
+  font-size: .94em;
+  border-left-width: 3px;
+  border-radius: 0;
 }
 
 .markdown-body :not(pre) > code {
-  padding: .15em .45em;
+  padding: .12em .4em;
   border-radius: 3px;
+  font-size: .9em;
 }
 
 .markdown-body pre,
 .markdown-body .shiki {
-  border-left: 3px solid var(--md-color-accent);
-  font-size: .86em;
+  border-left: 0;
+  font-size: .85em;
   line-height: 1.65;
-  padding: 14px 16px;
+  padding: 14px;
   border-radius: 4px;
 }
 
@@ -111,15 +164,34 @@
 }
 
 .markdown-body table {
-  font-size: .82em;
+  font-size: .86em;
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 7px 10px;
+}
+
+.markdown-body th {
+  font-weight: 600;
 }
 
 .markdown-body hr {
   background: transparent;
-  border-top: 1px dashed var(--md-color-accent);
+  border-top: 1px solid var(--md-color-border);
   height: 0;
+  margin: 1.8em 0;
 }
 
 .markdown-body strong {
   color: var(--md-color-strong);
+  font-weight: 600;
+}
+
+.markdown-body img:not(.emoji) {
+  margin: 1.1em auto;
+}
+
+.markdown-body .footnotes {
+  font-size: .86em;
 }

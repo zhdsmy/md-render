@@ -1,37 +1,183 @@
 /* GitHub Dark theme */
 :root {
   --md-color-bg: #0d1117;
-  --md-color-fg: #e6edf3;
+  --md-color-fg: #f0f6fc;
   --md-color-muted: #9198a1;
   --md-color-link: #4493f8;
-  --md-color-border: #30363d;
-  --md-color-surface: #161b22;
+  --md-color-border: #3d444d;
+  --md-color-surface: #151b23;
+  --md-color-surface-alt: #0d1117;
+  --md-color-strong: #f0f6fc;
   --md-blockquote-fg: #9198a1;
   --md-blockquote-bg: transparent;
-  --md-blockquote-border: #30363d;
-  --md-inline-code-fg: #e6edf3;
-  --md-inline-code-bg: rgba(110,118,129,.4);
-  --md-code-bg: #161b22;
-  --md-table-border: #30363d;
-  --md-table-header-bg: #161b22;
-  --md-table-row-alt-bg: #161b22;
-  --md-hr-bg: #30363d;
-  --md-footnote-border: #30363d;
+  --md-blockquote-border: #3d444d;
+  --md-inline-code-fg: #f0f6fc;
+  --md-inline-code-bg: #656c7633;
+  --md-inline-code-border: transparent;
+  --md-code-bg: #151b23;
+  --md-code-border: transparent;
+  --md-table-border: #3d444d;
+  --md-table-header-bg: #0d1117;
+  --md-table-header-fg: #f0f6fc;
+  --md-table-row-alt-bg: #151b23;
+  --md-table-row-hover-bg: transparent;
+  --md-hr-bg: #3d444d;
+  --md-footnote-border: #3d444d;
   --md-footnote-fg: #9198a1;
+  --md-toc-bg: #151b23;
+  --md-toc-border: #3d444d;
+  --md-toc-title-fg: #f0f6fc;
+  --md-details-bg: #151b23;
+  --md-details-border: #3d444d;
+  --md-details-summary-fg: #f0f6fc;
+  --md-details-divider: #3d444d;
   --md-alert-tip-bg: #0c2d6b;
   --md-alert-tip-border: #4493f8;
-  --md-alert-warning-bg: #4a3c0a;
+  --md-alert-warning-bg: #bb800926;
   --md-alert-warning-border: #d29922;
-  --md-alert-danger-bg: #67060c;
+  --md-alert-danger-bg: #da363326;
   --md-alert-danger-border: #f85149;
   --md-alert-info-bg: #0c2d6b;
   --md-alert-info-border: #4493f8;
-  --md-alert-note-bg: #161b22;
+  --md-alert-note-bg: #151b23;
   --md-alert-note-border: #9198a1;
+  --md-image-radius: 0;
+  --md-image-shadow: none;
+}
+
+.markdown-body {
+  font-family: var(--md-font-en), var(--md-font-cn), var(--md-font-emoji);
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.markdown-body a {
+  text-decoration: none;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body strong {
+  font-weight: 600;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
 }
 
 .markdown-body h1,
 .markdown-body h2 {
   border-bottom: 1px solid var(--md-color-border);
   padding-bottom: .3em;
+}
+
+.markdown-body h1 { font-size: 2em; }
+.markdown-body h2 { font-size: 1.5em; }
+.markdown-body h3 { font-size: 1.25em; }
+.markdown-body h4 { font-size: 1em; }
+.markdown-body h5 { font-size: .875em; }
+.markdown-body h6 {
+  font-size: .85em;
+  color: var(--md-color-muted);
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .shiki,
+.markdown-body .md-details {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body blockquote {
+  padding: 0 1em;
+  border-left-width: .25em;
+}
+
+.markdown-body table {
+  font-size: inherit;
+  overflow: auto;
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 6px 13px;
+}
+
+.markdown-body th {
+  font-weight: 600;
+}
+
+.markdown-body tr {
+  background-color: var(--md-color-bg);
+  border-top: 1px solid rgba(61, 68, 77, .7);
+}
+
+.markdown-body :not(pre) > code {
+  padding: .2em .4em;
+  border: 0;
+  border-radius: 6px;
+  font-size: 85%;
+  white-space: break-spaces;
+}
+
+.markdown-body pre,
+.markdown-body .shiki {
+  padding: 16px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 85%;
+  line-height: 1.45;
+}
+
+.markdown-body pre code,
+.markdown-body .shiki code {
+  font-size: 100%;
+}
+
+.markdown-body hr {
+  height: .25em;
+  padding: 0;
+  margin: 24px 0;
+  border: 0;
+}
+
+.markdown-body img:not(.emoji) {
+  display: inline-block;
+  margin: 0;
+}
+
+.markdown-body .footnotes {
+  margin-top: 24px;
+  padding-top: 16px;
+  font-size: 12px;
 }
