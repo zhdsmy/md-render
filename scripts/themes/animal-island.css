@@ -1,4 +1,6 @@
-/* Animal Island theme: warm, rounded, cozy note style */
+/* Animal Island theme: warm, rounded, cozy note style.
+ * Inspired by guokaigdg/animal-island-ui v1.0.0 design tokens and component language.
+ */
 :root {
   --md-color-bg: #f8f8f0;
   --md-color-fg: #725d42;
@@ -9,15 +11,29 @@
   --md-color-surface-alt: #fffdf2;
   --md-color-accent: #19c8b9;
   --md-color-strong: #087e78;
+  --md-animal-primary-hover: #3dd4c6;
+  --md-animal-primary-active: #50b9ab;
+  --md-animal-border-light: #e8e2d6;
+  --md-animal-tooltip-border: #c4b89e;
+  --md-animal-shadow-sm: 0 2px 4px 0 rgba(61, 52, 40, .06);
+  --md-animal-shadow-base: 0 3px 10px 0 rgba(61, 52, 40, .10);
+  --md-animal-shadow-lg: 0 8px 24px 0 rgba(61, 52, 40, .14);
+  --md-animal-ribbon-front: #27d039;
+  --md-animal-ribbon-back: #20992a;
+  --md-animal-ribbon-fold: #115017;
+  --md-animal-ribbon-text: #ffffff;
+  --md-animal-focus-yellow: #ffcc00;
+  --md-animal-pattern: radial-gradient(circle, rgba(196, 184, 158, .15) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(196, 184, 158, .10) 1px, transparent 1px);
   --md-blockquote-fg: #725d42;
   --md-blockquote-bg: #f7f3df;
   --md-blockquote-border: #19c8b9;
   --md-inline-code-fg: #8a4f00;
   --md-inline-code-bg: #fff4c8;
-  --md-inline-code-border: #c4b89e;
+  --md-inline-code-border: #e8e2d6;
   --md-code-bg: #f7f3df;
-  --md-code-border: #c4b89e;
-  --md-table-border: #c4b89e;
+  --md-code-border: #e8e2d6;
+  --md-table-border: #e8e2d6;
   --md-table-header-bg: #19c8b9;
   --md-table-header-fg: #ffffff;
   --md-table-row-alt-bg: #f0e8d8;
@@ -44,10 +60,11 @@
 }
 
 .markdown-body {
-  font-family: Nunito, "Noto Sans SC", "Zen Maru Gothic", var(--md-font-en), var(--md-font-cn), var(--md-font-emoji);
+  font-family: Nunito, "Noto Sans SC", "Zen Maru Gothic", "HarmonyOS Sans SC", "MiSans", var(--md-font-cn), var(--md-font-en), var(--md-font-emoji);
   font-size: 16px;
   line-height: 1.82;
   font-weight: 500;
+  letter-spacing: .01em;
 }
 
 .markdown-body a {
@@ -64,40 +81,54 @@
 .markdown-body h1 {
   position: relative;
   z-index: 0;
-  color: #725d42;
-  display: table;
+  color: var(--md-animal-ribbon-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: calc(100% - 2.4em);
   text-align: center;
-  font-size: 1.85em;
-  margin: 1.1em 0 1.25em;
+  font-size: 1.72em;
+  line-height: 1;
+  min-height: 2em;
+  margin: 1.15em 0 1.35em;
   margin-left: auto;
   margin-right: auto;
-  padding: .32em 1.55em .42em;
+  padding: .11em 1.6em 0;
   border: 0;
-  border-radius: 8px;
-  background: #f1e26f;
-  box-shadow: 0 7px 0 #d4c23f;
+  border-radius: .2em;
+  background: var(--md-animal-ribbon-front);
+  box-shadow: inset 0 -.06em 0 rgba(0, 0, 0, .05);
+  filter: drop-shadow(0 .08em .12em rgba(0, 0, 0, .05));
+  font-weight: 900;
+  letter-spacing: .04em;
+  white-space: normal;
+  text-wrap: balance;
+  text-shadow: 0 .04em .08em rgba(0, 0, 0, .05);
+  transform: perspective(11.5em) rotateX(3deg);
 }
 
 .markdown-body h1::before,
 .markdown-body h1::after {
   content: "";
   position: absolute;
-  top: 50%;
+  bottom: -.4em;
   z-index: -1;
-  width: 38px;
-  height: 34px;
-  background: #caaa2a;
-  transform: translateY(-44%) skewY(-12deg);
+  width: 1.7em;
+  height: 1.7em;
+  background: var(--md-animal-ribbon-back);
 }
 
 .markdown-body h1::before {
-  left: -25px;
-  clip-path: polygon(0 0, 100% 18%, 100% 82%, 0 100%, 28% 50%);
+  left: -.6em;
+  border-radius: .08em 0 0 .08em;
+  clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 30% 50%, 0% 0%);
 }
 
 .markdown-body h1::after {
-  right: -25px;
-  clip-path: polygon(0 18%, 100% 0, 72% 50%, 100% 100%, 0 82%);
+  right: -.6em;
+  border-radius: 0 .08em .08em 0;
+  clip-path: polygon(0% 0%, 100% 0%, 70% 50%, 100% 100%, 0% 100%);
 }
 
 .markdown-body h2 {
@@ -108,7 +139,7 @@
   padding: .22em .85em .28em;
   border-radius: 50px;
   background: var(--md-color-accent);
-  box-shadow: 0 5px 0 #11a89b;
+  box-shadow: 0 5px 0 var(--md-animal-primary-active);
 }
 
 .markdown-body h3 {
@@ -129,9 +160,11 @@
 }
 
 .markdown-body blockquote {
-  padding: .75em 1em;
+  padding: .78em 1em;
+  border: 2px solid var(--md-animal-tooltip-border);
+  border-left: 6px solid var(--md-blockquote-border);
   border-radius: 18px;
-  box-shadow: inset 0 0 0 1px rgba(196, 184, 158, .55);
+  box-shadow: var(--md-animal-shadow-sm);
 }
 
 .markdown-body :not(pre) > code {
@@ -143,7 +176,7 @@
 .markdown-body pre,
 .markdown-body .shiki {
   border-width: 2px;
-  border-radius: 14px;
+  border-radius: 20px;
   box-shadow: 0 3px 0 #d4c9b4;
 }
 
@@ -157,7 +190,7 @@
 
 .markdown-body table {
   background: transparent;
-  border-radius: 18px;
+  border-radius: 20px;
 }
 
 .markdown-body strong {
@@ -166,8 +199,47 @@
 
 .markdown-body .md-toc,
 .markdown-body .md-details {
-  border-radius: 18px;
-  box-shadow: 0 3px 0 #d4c9b4;
+  border-width: 2px;
+  border-radius: 20px;
+  box-shadow: var(--md-animal-shadow-base);
+}
+
+.markdown-body .md-toc {
+  background-image: var(--md-animal-pattern);
+  background-size: 28px 28px, 14px 14px;
+  background-position: 0 0, 7px 7px;
+}
+
+.markdown-body .md-details > summary {
+  font-weight: 700;
+}
+
+.markdown-body .tip,
+.markdown-body .warning,
+.markdown-body .danger,
+.markdown-body .info,
+.markdown-body .note {
+  border: 2px solid;
+  border-radius: 16px;
+  box-shadow: var(--md-animal-shadow-base);
+  font-weight: 500;
+}
+
+.markdown-body .tip,
+.markdown-body .info {
+  border-color: var(--md-alert-tip-border);
+}
+
+.markdown-body .warning {
+  border-color: var(--md-alert-warning-border);
+}
+
+.markdown-body .danger {
+  border-color: var(--md-alert-danger-border);
+}
+
+.markdown-body .note {
+  border-color: var(--md-alert-note-border);
 }
 
 .markdown-body hr {

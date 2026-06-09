@@ -187,6 +187,12 @@ node render.js --in input.md --out output.pdf --profile academic-pdf --pdf-mode 
 | `academic` | Research notes, reports, and formal documents |
 | `animal-island` | Warm, rounded, cozy notes or friendly share images |
 
+The `animal-island` theme is a Markdown-oriented CSS adaptation inspired by
+[guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
+v1.0.0 and its [demo site](https://guokaigdg.github.io/animal-island-ui/#/).
+It borrows the visual direction and token palette, but does not bundle the
+React component library, its assets, or Nintendo-owned materials.
+
 ## Security notes
 
 By default, the renderer assumes trusted Markdown for compatibility with rich content.
