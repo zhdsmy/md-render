@@ -189,9 +189,10 @@ node render.js --in input.md --out output.pdf --profile academic-pdf --pdf-mode 
 
 The `animal-island` theme is a Markdown-oriented CSS adaptation inspired by
 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
-v1.0.0 and its [demo site](https://guokaigdg.github.io/animal-island-ui/#/).
-It borrows the visual direction and token palette, but does not bundle the
-React component library, its assets, or Nintendo-owned materials.
+v1.2.0 and its [demo site](https://guokaigdg.github.io/animal-island-ui/#/).
+It borrows the visual direction, token palette, pill-tag language, and soft
+feedback-card depth cues, but does not bundle the React component library,
+its assets, or Nintendo-owned materials.
 
 ## Security notes
 

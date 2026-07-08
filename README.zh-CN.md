@@ -189,8 +189,9 @@ node render.js --in input.md --out output.pdf --profile academic-pdf --pdf-mode 
 
 `animal-island` 主题是面向 Markdown 渲染的 CSS 改编，视觉方向和 token
 调色参考了 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
-v1.0.0 及其 [Demo 站点](https://guokaigdg.github.io/animal-island-ui/#/)；本项目不会
-打包该 React 组件库、其素材资源，或任天堂相关素材。
+v1.2.0 及其 [Demo 站点](https://guokaigdg.github.io/animal-island-ui/#/)；主题吸收了
+圆润标签、小型内容容器和反馈卡片景深等视觉语汇，但本项目不会打包该 React 组件库、其素材资源，
+或任天堂相关素材。
 
 ## 安全说明
 
