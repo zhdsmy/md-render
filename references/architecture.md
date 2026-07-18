@@ -233,7 +233,8 @@ Chrome 使用进程级 lazy singleton：
 
 主题拆分：
 
-- `_base.css`：通用 Markdown、表格、代码、Mermaid、TOC、容器、details 样式。
+- `_base.css`：通用 Markdown、表格、代码、`mark`、`kbd`、`progress`、键盘焦点、
+  Mermaid、TOC、容器和 details 样式。
 - `github.css`：默认技术文档。
 - `github-dark.css`：暗色演示/终端风格。
 - `juejin.css`：中文技术博客。

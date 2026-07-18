@@ -190,6 +190,8 @@ server.listen(0, '127.0.0.1', () => {
     '# Profile smoke',
     '',
     'A small document for profile format inference.',
+    '',
+    '<progress value="66" max="100">66%</progress>',
   ].join('\n'));
   fs.writeFileSync(frontmatterInput, [
     '---',
@@ -258,6 +260,7 @@ server.listen(0, '127.0.0.1', () => {
   const profileSafeStandalone = read(profileSafeStandaloneHtml);
   assertIncludes(profileSafeStandalone, 'Content-Security-Policy', 'safe-standalone profile should enable safe HTML hardening');
   assertNotIncludes(profileSafeStandalone, 'cdn.jsdelivr.net', 'safe-standalone profile should inline assets instead of using CDN');
+  assertNotIncludes(profileSafeStandalone, '<progress', 'safe-standalone profile should reject raw progress HTML');
 
   run('frontmatter defaults', ['--in', frontmatterInput, '--out', frontmatterDefaultHtml]);
   const frontmatterDefault = read(frontmatterDefaultHtml);
@@ -275,12 +278,29 @@ server.listen(0, '127.0.0.1', () => {
   assertIncludes(frontmatterOverride, '<title>CLI Title</title>', 'explicit CLI title should override frontmatter title');
   assertIncludes(frontmatterOverride, '#0d1117', 'explicit CLI theme should override frontmatter profile theme');
 
+  const themeProgressFills = {
+    github: '#0969da',
+    'github-dark': '#2f81f7',
+    juejin: '#1e80ff',
+    wechat: '#07c160',
+    academic: '#1f1f1f',
+    'animal-island': 'var(--md-animal-progress-fill)',
+  };
   for (const themeName of ['github', 'github-dark', 'juejin', 'wechat', 'academic', 'animal-island']) {
     const themeHtml = path.join(tmp, `theme-${themeName}.html`);
     run(`theme html render ${themeName}`, ['--in', profileSimpleInput, '--out', themeHtml, '--theme', themeName]);
     const html = read(themeHtml);
     assertIncludes(html, 'body class="format-html"', `${themeName} should render HTML`);
     assertIncludes(html, '--md-color-bg', `${themeName} should include semantic theme tokens`);
+    assertIncludes(html, '.markdown-body mark', `${themeName} should style highlighted text`);
+    assertIncludes(html, '.markdown-body kbd', `${themeName} should style keyboard keys`);
+    assertIncludes(html, '.markdown-body progress', `${themeName} should style native progress elements`);
+    assertIncludes(html, '<progress value="66" max="100">66%</progress>', `${themeName} should preserve trusted native progress`);
+    assertIncludes(
+      html,
+      `--md-progress-fill: ${themeProgressFills[themeName]};`,
+      `${themeName} should define its progress fill`,
+    );
   }
 
   run('profile default png without extension', ['--in', profileSimpleInput, '--out', profilePngNoExt, '--profile', 'dark-slide'], { timeout: 180000 });
@@ -290,6 +310,13 @@ server.listen(0, '127.0.0.1', () => {
   const animalIsland = read(animalIslandHtml);
   assertIncludes(animalIsland, '#19c8b9', 'animal-island theme should include the mint accent color');
   assertIncludes(animalIsland, '.markdown-body .md-toc', 'animal-island theme should style markdown components under markdown-body');
+  assertIncludes(animalIsland, '.markdown-body progress', 'animal-island theme should style native progress elements');
+  assertIncludes(animalIsland, '#0ec4b6', 'animal-island progress should use the upstream striped fill color');
+  assertNotMatches(
+    animalIsland,
+    /progress::-webkit-progress-value,\s*\.markdown-body progress::-moz-progress-bar/,
+    'animal-island progress should keep browser-specific pseudo-elements in separate selector rules',
+  );
   assertIncludes(animalIsland, 'width: max-content;', 'tables should shrink to content globally to avoid right-side blank space');
 
   run('cozy note profile', ['--in', profileSimpleInput, '--out', cozyNoteHtml, '--profile', 'cozy-note']);

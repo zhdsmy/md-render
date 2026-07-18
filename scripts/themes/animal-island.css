@@ -1,5 +1,5 @@
 /* Animal Island theme: warm, rounded, cozy note style.
- * Inspired by guokaigdg/animal-island-ui v1.2.0 design tokens and component language.
+ * Inspired by guokaigdg/animal-island-ui v.1.3.0 design tokens and component language.
  */
 :root {
   --md-color-bg: #f8f8f0;
@@ -11,6 +11,14 @@
   --md-color-surface-alt: #fffdf2;
   --md-color-accent: #19c8b9;
   --md-color-strong: #087e78;
+  --md-mark-fg: #5f4d33;
+  --md-mark-bg: #fff1a8;
+  --md-kbd-fg: #725d42;
+  --md-kbd-bg: #fffdf2;
+  --md-kbd-border: #c4b89e;
+  --md-kbd-shadow: rgba(114, 93, 66, .22);
+  --md-focus-ring: #087e78;
+  --md-selection-bg: rgba(25, 200, 185, .28);
   --md-animal-primary-hover: #3dd4c6;
   --md-animal-primary-active: #50b9ab;
   --md-animal-primary-bg: #e6f9f6;
@@ -49,6 +57,24 @@
   --md-animal-error-bg: #fde8e8;
   --md-animal-error-icon-bg: #f7c8c8;
   --md-animal-error-active: #c94444;
+  --md-animal-progress-fill: #0ec4b6;
+  --md-animal-progress-fill-alt: #01b0a7;
+  --md-animal-progress-track: #f8f8f0;
+  --md-animal-progress-border: #e8dcc8;
+  --md-animal-progress-inner: rgba(114, 93, 66, .08);
+  --md-progress-track: var(--md-animal-progress-track);
+  --md-progress-fill: var(--md-animal-progress-fill);
+  --md-progress-fill-bg: repeating-linear-gradient(
+    -45deg,
+    var(--md-animal-progress-fill) 0,
+    var(--md-animal-progress-fill) 10px,
+    var(--md-animal-progress-fill-alt) 10px,
+    var(--md-animal-progress-fill-alt) 20px
+  );
+  --md-progress-border: var(--md-animal-progress-border);
+  --md-progress-shadow: inset 0 2px 4px var(--md-animal-progress-inner);
+  --md-progress-height: 20px;
+  --md-progress-border-width: 2px;
   --md-animal-pattern: radial-gradient(circle, rgba(196, 184, 158, .15) 1.5px, transparent 1.5px),
     radial-gradient(circle, rgba(196, 184, 158, .10) 1px, transparent 1px);
   --md-blockquote-fg: #725d42;
@@ -483,4 +509,34 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.markdown-body progress::-webkit-progress-value {
+  background-size: 28.28px 28.28px;
+  animation: md-animal-progress-stripe 1s linear infinite;
+}
+
+.markdown-body progress::-moz-progress-bar {
+  background-size: 28.28px 28.28px;
+  animation: md-animal-progress-stripe 1s linear infinite;
+}
+
+@keyframes md-animal-progress-stripe {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -28.28px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markdown-body progress::-webkit-progress-value {
+    animation: none;
+  }
+
+  .markdown-body progress::-moz-progress-bar {
+    animation: none;
+  }
 }

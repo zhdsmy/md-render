@@ -187,11 +187,15 @@ node render.js --in input.md --out output.pdf --profile academic-pdf --pdf-mode 
 | `academic` | 研究笔记、报告和正式文档 |
 | `animal-island` | 温暖圆润的笔记、轻松分享长图 |
 
+六套主题都会分别处理高亮文本、键盘按键、键盘焦点和原生进度条。在可信
+Markdown 中可以使用原生 `<kbd>` 与 `<progress>` 元素。
+
 `animal-island` 主题是面向 Markdown 渲染的 CSS 改编，视觉方向和 token
 调色参考了 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
-v1.2.0 及其 [Demo 站点](https://guokaigdg.github.io/animal-island-ui/#/)；主题吸收了
-圆润标签、小型内容容器和反馈卡片景深等视觉语汇，但本项目不会打包该 React 组件库、其素材资源，
-或任天堂相关素材。
+上游 `v.1.3.0` tag 及其 [Demo 站点](https://guokaigdg.github.io/animal-island-ui/#/)；
+主题吸收了圆润标签、小型内容容器和反馈卡片景深等视觉语汇，其中原生进度条会采用
+上游的斜纹进度条样式。
+本项目不会打包该 React 组件库、其素材资源，或任天堂相关素材。
 
 ## 安全说明
 

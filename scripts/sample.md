@@ -43,6 +43,12 @@ Emoji 测试：:smile: :+1: :tada: :fire: :sparkles: :rocket: :heart: :star: :za
 
 需要转义的 Markdown 字符：\*不是斜体\*、\`不是代码\`、\[不是链接\](https://example.com)。
 
+原生进度条（可信 HTML）：
+
+<progress value="18" max="100">18%</progress>
+
+<progress value="66" max="100">66%</progress>
+
 一段包含超长英文单词的正文：pneumonoultramicroscopicsilicovolcanoconiosispneumonoultramicroscopicsilicovolcanoconiosis，用于测试不可断词内容是否撑破容器。
 
 ## 2. 列表、引用与任务项
