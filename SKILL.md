@@ -127,6 +127,9 @@ node render.js --in input.md --out note.png --profile cozy-note
 - GitHub Alert：`> [!NOTE]`、`> [!TIP]`、`> [!IMPORTANT]`、`> [!WARNING]`、`> [!CAUTION]`。
 - 目录：frontmatter `toc: true` 或正文 `[[toc]]`。
 - Emoji：`:smile:` 简码和 Unicode emoji，使用 Twemoji 保持跨平台一致。
+- `animal-island` 可信 HTML：原生 `<progress>` 和 `.md-skeleton*` 骨架屏工具类；
+  骨架元素加 `aria-hidden="true"`，加载容器加 `role="status"` 和 `aria-busy="true"`。
+  `--safe` 会禁用这些原始 HTML。
 
 ## 执行流程
 

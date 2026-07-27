@@ -95,6 +95,7 @@ try {
   const profileDefaultHtml = path.join(tmp, 'profile-default.unknown');
   const profileSafeStandaloneHtml = path.join(tmp, 'profile-safe-standalone.html');
   const profileSimpleInput = path.join(tmp, 'profile-simple.md');
+  const animalIslandInput = path.join(tmp, 'animal-island.md');
   const frontmatterInput = path.join(tmp, 'frontmatter.md');
   const frontmatterDefaultHtml = path.join(tmp, 'frontmatter-default.unknown');
   const frontmatterOverrideHtml = path.join(tmp, 'frontmatter-override.html');
@@ -190,6 +191,22 @@ server.listen(0, '127.0.0.1', () => {
     '# Profile smoke',
     '',
     'A small document for profile format inference.',
+    '',
+    '<progress value="66" max="100">66%</progress>',
+  ].join('\n'));
+  fs.writeFileSync(animalIslandInput, [
+    '# Animal Island v1.4 smoke',
+    '',
+    '> [!TIP]',
+    '> Soft tag treatment.',
+    '',
+    '<div role="status" aria-busy="true" aria-label="Loading preview">',
+    '  <div class="md-skeleton-paragraph" aria-hidden="true">',
+    '    <span class="md-skeleton"></span>',
+    '    <span class="md-skeleton"></span>',
+    '    <span class="md-skeleton"></span>',
+    '  </div>',
+    '</div>',
     '',
     '<progress value="66" max="100">66%</progress>',
   ].join('\n'));
@@ -306,12 +323,18 @@ server.listen(0, '127.0.0.1', () => {
   run('profile default png without extension', ['--in', profileSimpleInput, '--out', profilePngNoExt, '--profile', 'dark-slide'], { timeout: 180000 });
   assertNonEmpty(profilePngNoExt, 'profile default PNG output without extension');
 
-  run('animal island theme', ['--in', profileSimpleInput, '--out', animalIslandHtml, '--theme', 'animal-island']);
+  run('animal island theme', ['--in', animalIslandInput, '--out', animalIslandHtml, '--theme', 'animal-island']);
   const animalIsland = read(animalIslandHtml);
   assertIncludes(animalIsland, '#19c8b9', 'animal-island theme should include the mint accent color');
   assertIncludes(animalIsland, '.markdown-body .md-toc', 'animal-island theme should style markdown components under markdown-body');
   assertIncludes(animalIsland, '.markdown-body progress', 'animal-island theme should style native progress elements');
   assertIncludes(animalIsland, '#0ec4b6', 'animal-island progress should use the upstream striped fill color');
+  assertIncludes(animalIsland, '--md-animal-tag-soft-bg: #f5f0e6;', 'animal-island should include v1.4 soft tag tokens');
+  assertIncludes(animalIsland, '.markdown-body .md-skeleton', 'animal-island should style trusted skeleton helpers');
+  assertIncludes(animalIsland, '#eae5db', 'animal-island skeleton should use the upstream base color');
+  assertIncludes(animalIsland, '@keyframes md-animal-skeleton-shimmer', 'animal-island skeleton should include shimmer motion');
+  assertIncludes(animalIsland, 'role="status" aria-busy="true"', 'animal-island skeleton wrapper should preserve loading semantics');
+  assertIncludes(animalIsland, 'class="md-skeleton-paragraph" aria-hidden="true"', 'animal-island should preserve trusted skeleton markup');
   assertNotMatches(
     animalIsland,
     /progress::-webkit-progress-value,\s*\.markdown-body progress::-moz-progress-bar/,

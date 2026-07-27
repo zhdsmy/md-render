@@ -193,11 +193,26 @@ keys, visible keyboard focus, and native progress elements. Raw `<kbd>` and
 
 The `animal-island` theme is a Markdown-oriented CSS adaptation inspired by
 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
-the upstream `v.1.3.0` tag and its [demo site](https://guokaigdg.github.io/animal-island-ui/#/).
-It borrows the visual direction, token palette, pill-tag language, and soft
+the upstream `v1.4.0` tag and its [demo site](https://guokaigdg.github.io/animal-island-ui/#/).
+It borrows the visual direction, token palette, soft pill-tag language, and
 feedback-card depth cues. Its native progress treatment uses the upstream
-striped progress language. The theme does not bundle the React component
-library, its assets, or Nintendo-owned materials.
+striped progress language. Trusted Markdown can also use the no-script
+Skeleton helpers introduced for this adaptation:
+
+```html
+<div role="status" aria-busy="true" aria-label="Loading preview">
+  <div class="md-skeleton-paragraph" aria-hidden="true">
+    <span class="md-skeleton"></span>
+    <span class="md-skeleton"></span>
+    <span class="md-skeleton"></span>
+  </div>
+</div>
+```
+
+Available shapes are `md-skeleton-text`, `md-skeleton-circle`,
+`md-skeleton-rect`, `md-skeleton-button`, and `md-skeleton-input`. The theme
+does not bundle the React component library, its assets, or Nintendo-owned
+materials.
 
 ## Security notes
 

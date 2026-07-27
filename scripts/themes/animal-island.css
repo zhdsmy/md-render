@@ -1,5 +1,5 @@
 /* Animal Island theme: warm, rounded, cozy note style.
- * Inspired by guokaigdg/animal-island-ui v.1.3.0 design tokens and component language.
+ * Inspired by guokaigdg/animal-island-ui v1.4.0 design tokens and component language.
  */
 :root {
   --md-color-bg: #f8f8f0;
@@ -11,8 +11,8 @@
   --md-color-surface-alt: #fffdf2;
   --md-color-accent: #19c8b9;
   --md-color-strong: #087e78;
-  --md-mark-fg: #5f4d33;
-  --md-mark-bg: #fff1a8;
+  --md-mark-fg: #794f27;
+  --md-mark-bg: #fff8e1;
   --md-kbd-fg: #725d42;
   --md-kbd-bg: #fffdf2;
   --md-kbd-border: #c4b89e;
@@ -24,6 +24,15 @@
   --md-animal-primary-bg: #e6f9f6;
   --md-animal-text-head: #794f27;
   --md-animal-text-chip: #8f734f;
+  --md-animal-tag-soft-bg: #f5f0e6;
+  --md-animal-tag-soft-green-bg: #e8f5e9;
+  --md-animal-tag-soft-green-fg: #2e7d32;
+  --md-animal-tag-soft-teal-bg: #e0f2f1;
+  --md-animal-tag-soft-teal-fg: #00695c;
+  --md-animal-tag-soft-yellow-bg: #fff8e1;
+  --md-animal-tag-soft-yellow-fg: #8a6800;
+  --md-animal-tag-soft-red-bg: #ffebee;
+  --md-animal-tag-soft-red-fg: #c62828;
   --md-animal-border-hover: #a89878;
   --md-animal-border-light: #e8e2d6;
   --md-animal-border-chip: #d4c4a8;
@@ -57,6 +66,10 @@
   --md-animal-error-bg: #fde8e8;
   --md-animal-error-icon-bg: #f7c8c8;
   --md-animal-error-active: #c94444;
+  --md-animal-skeleton-bg: #eae5db;
+  --md-animal-skeleton-line: #dfd9ce;
+  --md-animal-skeleton-shimmer-light: rgba(255, 252, 242, .55);
+  --md-animal-skeleton-shimmer-mid: rgba(255, 250, 235, .18);
   --md-animal-progress-fill: #0ec4b6;
   --md-animal-progress-fill-alt: #01b0a7;
   --md-animal-progress-track: #f8f8f0;
@@ -324,9 +337,9 @@
   min-height: 29px;
   margin-bottom: .55em;
   padding: 0 12px;
-  border: 1.5px solid var(--md-animal-border-chip);
+  border: 1.5px solid transparent;
   border-radius: 999px;
-  background: var(--md-color-surface);
+  background: var(--md-animal-tag-soft-bg);
   color: var(--md-animal-text-chip);
   font-size: .92em;
   font-weight: 800;
@@ -345,9 +358,9 @@
   min-height: 29px;
   margin-bottom: .55em;
   padding: 0 12px 0 9px;
-  border: 1.5px solid var(--md-animal-border-chip);
+  border: 1.5px solid transparent;
   border-radius: 999px;
-  background: var(--md-color-surface);
+  background: var(--md-animal-tag-soft-bg);
   color: var(--md-animal-text-chip);
   font-size: .92em;
   font-weight: 800;
@@ -400,9 +413,9 @@
 
 .markdown-body .tip > .custom-block-title,
 .markdown-body .github-alert-tip .custom-block-title {
-  border-color: var(--md-animal-success);
-  background: var(--md-animal-success-bg);
-  color: var(--md-animal-success-active);
+  border-color: transparent;
+  background: var(--md-animal-tag-soft-green-bg);
+  color: var(--md-animal-tag-soft-green-fg);
 }
 
 .markdown-body .tip > .custom-block-title::before,
@@ -413,9 +426,9 @@
 
 .markdown-body .info > .custom-block-title,
 .markdown-body .github-alert-important .custom-block-title {
-  border-color: var(--md-alert-info-border);
-  background: var(--md-animal-info-bg);
-  color: #11a89b;
+  border-color: transparent;
+  background: var(--md-animal-tag-soft-teal-bg);
+  color: var(--md-animal-tag-soft-teal-fg);
 }
 
 .markdown-body .info > .custom-block-title::before,
@@ -431,9 +444,9 @@
 
 .markdown-body .warning > .custom-block-title,
 .markdown-body .github-alert-warning .custom-block-title {
-  border-color: var(--md-alert-warning-border);
-  background: var(--md-animal-warning-bg);
-  color: var(--md-animal-warning-active);
+  border-color: transparent;
+  background: var(--md-animal-tag-soft-yellow-bg);
+  color: var(--md-animal-tag-soft-yellow-fg);
 }
 
 .markdown-body .warning > .custom-block-title::before,
@@ -449,9 +462,9 @@
 
 .markdown-body .danger > .custom-block-title,
 .markdown-body .github-alert-caution .custom-block-title {
-  border-color: var(--md-alert-danger-border);
-  background: var(--md-animal-error-bg);
-  color: var(--md-animal-error-active);
+  border-color: transparent;
+  background: var(--md-animal-tag-soft-red-bg);
+  color: var(--md-animal-tag-soft-red-fg);
 }
 
 .markdown-body .danger > .custom-block-title::before,
@@ -467,7 +480,9 @@
 
 .markdown-body .note > .custom-block-title,
 .markdown-body .github-alert-note .custom-block-title {
-  border-color: var(--md-alert-note-border);
+  border-color: transparent;
+  background: var(--md-animal-tag-soft-bg);
+  color: var(--md-animal-text-chip);
 }
 
 .markdown-body .note > .custom-block-title::before,
@@ -488,10 +503,10 @@
   min-width: 1.45em;
   min-height: 1.45em;
   padding: 0 .38em;
-  border: 1.5px solid var(--md-animal-tag-teal);
+  border: 1.5px solid transparent;
   border-radius: 999px;
-  background: var(--md-animal-primary-bg);
-  color: #087e78;
+  background: var(--md-animal-tag-soft-teal-bg);
+  color: var(--md-animal-tag-soft-teal-fg);
   font-size: .78em;
   font-weight: 800;
   line-height: 1;
@@ -509,6 +524,94 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.markdown-body .md-skeleton {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+  vertical-align: middle;
+  border-radius: 12px;
+  background: var(--md-animal-skeleton-bg);
+  color: transparent;
+  line-height: 1;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.markdown-body .md-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--md-animal-skeleton-shimmer-mid),
+    var(--md-animal-skeleton-shimmer-light),
+    var(--md-animal-skeleton-shimmer-mid),
+    transparent
+  );
+  animation: md-animal-skeleton-shimmer 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.markdown-body .md-skeleton-text {
+  margin-bottom: 8px;
+}
+
+.markdown-body .md-skeleton-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+
+.markdown-body .md-skeleton-rect {
+  min-height: 120px;
+  border-radius: 18px;
+}
+
+.markdown-body .md-skeleton-button {
+  width: 100px;
+  height: 45px;
+  border-radius: 50px;
+}
+
+.markdown-body .md-skeleton-input {
+  width: min(100%, 200px);
+  height: 40px;
+  border-radius: 50px;
+}
+
+.markdown-body .md-skeleton-paragraph {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.markdown-body .md-skeleton-paragraph > .md-skeleton {
+  display: block;
+  height: 14px;
+  margin: 0;
+  background: var(--md-animal-skeleton-line);
+}
+
+.markdown-body .md-skeleton-paragraph > .md-skeleton:last-child {
+  width: 60%;
+}
+
+@keyframes md-animal-skeleton-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
 }
 
 .markdown-body progress::-webkit-progress-value {
@@ -532,11 +635,22 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .markdown-body .md-skeleton::after {
+    display: none;
+    animation: none;
+  }
+
   .markdown-body progress::-webkit-progress-value {
     animation: none;
   }
 
   .markdown-body progress::-moz-progress-bar {
     animation: none;
+  }
+}
+
+@media print {
+  .markdown-body .md-skeleton::after {
+    display: none;
   }
 }
