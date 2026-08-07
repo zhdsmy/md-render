@@ -1,5 +1,5 @@
 /* Animal Island theme: warm, rounded, cozy note style.
- * Inspired by guokaigdg/animal-island-ui v1.4.0 design tokens and component language.
+ * Inspired by guokaigdg/animal-island-ui v1.5.0 design tokens and component language.
  */
 :root {
   --md-color-bg: #f8f8f0;
@@ -123,6 +123,13 @@
   --md-alert-note-border: #aaa69d;
   --md-image-radius: 16px;
   --md-image-shadow: 0 4px 10px rgba(107, 92, 67, .28);
+  --md-animal-image-border: rgba(196, 184, 158, .72);
+  --md-animal-image-hover-border: #a89878;
+  --md-animal-image-focus: rgba(25, 200, 185, .42);
+  --md-animal-back-top-bg: #fffbe7;
+  --md-animal-back-top-fg: #8b7355;
+  --md-animal-back-top-hover: #fff4c8;
+  --md-animal-time-divider: rgba(159, 146, 125, .35);
 }
 
 .markdown-body {
@@ -142,6 +149,23 @@
   color: #066a65;
   text-decoration: none;
   border-bottom-color: var(--md-color-accent);
+}
+
+.markdown-body img:not(.emoji) {
+  border: 2px solid var(--md-animal-image-border);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.markdown-body a:hover img:not(.emoji) {
+  border-color: var(--md-animal-image-hover-border);
+  box-shadow: 0 10px 24px rgba(107, 92, 67, .24);
+  transform: translateY(-1px);
+}
+
+.markdown-body a:focus-visible img:not(.emoji) {
+  border-color: var(--md-color-accent);
+  box-shadow: 0 0 0 4px var(--md-animal-image-focus), var(--md-image-shadow);
+  outline: none;
 }
 
 .markdown-body h1 {
@@ -604,6 +628,80 @@
   width: 60%;
 }
 
+/* v1.5.0-inspired trusted HTML helpers; CSS provides presentation only. */
+.markdown-body .md-back-top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--md-animal-back-top-bg);
+  color: var(--md-animal-back-top-fg);
+  box-shadow: 0 3px 0 #d4c9b4;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.markdown-body .md-back-top:hover {
+  background: var(--md-animal-back-top-hover);
+  box-shadow: 0 3px 0 #c4b89e;
+  color: var(--md-animal-back-top-fg);
+  transform: translateY(-1px);
+}
+
+.markdown-body .md-back-top:focus-visible {
+  outline: 3px solid var(--md-focus-ring);
+  outline-offset: 3px;
+}
+
+.markdown-body .md-time-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 1em 0;
+  color: var(--md-animal-back-top-fg);
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+}
+
+.markdown-body .md-time-game > time,
+.markdown-body .md-time-game .md-time-clock {
+  font-size: 2.5em;
+  letter-spacing: .04em;
+}
+
+.markdown-body .md-time-game .md-time-divider {
+  width: 100%;
+  min-width: 7em;
+  margin: .65em 0 .55em;
+  border-top: 2px solid var(--md-animal-time-divider);
+}
+
+.markdown-body .md-time-game .md-time-date {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .45em;
+  font-size: 1.05em;
+}
+
+.markdown-body .md-time-game .md-time-weekday {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.55em;
+  min-height: 1.55em;
+  border-radius: 50%;
+  background: var(--md-animal-tag-soft-teal-bg);
+  color: var(--md-animal-tag-soft-teal-fg);
+}
+
 @keyframes md-animal-skeleton-shimmer {
   from {
     transform: translateX(-100%);
@@ -635,6 +733,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .markdown-body img:not(.emoji),
+  .markdown-body .md-back-top {
+    transition: none;
+  }
+
+  .markdown-body a:hover img:not(.emoji),
+  .markdown-body .md-back-top:hover {
+    transform: none;
+  }
+
   .markdown-body .md-skeleton::after {
     display: none;
     animation: none;

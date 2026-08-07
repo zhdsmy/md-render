@@ -127,7 +127,7 @@ node render.js --in input.md --out note.png --profile cozy-note
 - GitHub Alert：`> [!NOTE]`、`> [!TIP]`、`> [!IMPORTANT]`、`> [!WARNING]`、`> [!CAUTION]`。
 - 目录：frontmatter `toc: true` 或正文 `[[toc]]`。
 - Emoji：`:smile:` 简码和 Unicode emoji，使用 Twemoji 保持跨平台一致。
-- `animal-island` 可信 HTML：原生 `<progress>` 和 `.md-skeleton*` 骨架屏工具类；
+- `animal-island` 可信 HTML：原生 `<progress>`、`.md-skeleton*` 骨架屏、`.md-back-top` 返回顶部和 `.md-time-game` 游戏时间工具类；链接图片会使用 v1.5.0 风格的暖色边框、悬停和焦点状态。
   骨架元素加 `aria-hidden="true"`，加载容器加 `role="status"` 和 `aria-busy="true"`。
   `--safe` 会禁用这些原始 HTML。
 

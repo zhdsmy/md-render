@@ -192,9 +192,10 @@ Markdown 中可以使用原生 `<kbd>` 与 `<progress>` 元素。
 
 `animal-island` 主题是面向 Markdown 渲染的 CSS 改编，视觉方向和 token
 调色参考了 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
-上游 `v1.4.0` tag 及其 [Demo 站点](https://guokaigdg.github.io/animal-island-ui/#/)；
+上游 `v1.5.0` tag 及其 [Demo 站点](https://guokaigdg.github.io/animal-island-ui/#/)；
 主题吸收了柔和圆润标签、小型内容容器和反馈卡片景深等视觉语汇，其中原生进度条会采用
-上游的斜纹进度条样式。可信 Markdown 还可以使用本主题提供的无脚本 Skeleton 工具类：
+上游的斜纹进度条样式，链接图片则使用 v1.5.0 的暖色边框、悬停和焦点效果。可信 Markdown
+还可以使用本主题提供的无脚本 Skeleton、返回顶部和游戏时间工具类：
 
 ```html
 <div role="status" aria-busy="true" aria-label="正在加载预览">
@@ -208,6 +209,17 @@ Markdown 中可以使用原生 `<kbd>` 与 `<progress>` 元素。
 
 可用形态包括 `md-skeleton-text`、`md-skeleton-circle`、`md-skeleton-rect`、
 `md-skeleton-button` 和 `md-skeleton-input`。
+
+```html
+<a id="top" href="#top" class="md-back-top">返回顶部</a>
+<div class="md-time-game">
+  <time class="md-time-clock">09:30</time>
+  <span class="md-time-divider" aria-hidden="true"></span>
+  <span class="md-time-date">6月8日 <span class="md-time-weekday">一</span></span>
+</div>
+```
+
+这些工具类只提供展示样式，不负责滚动监听、图片预览弹层或动态更新时间。
 本项目不会打包该 React 组件库、其素材资源，或任天堂相关素材。
 
 ## 安全说明

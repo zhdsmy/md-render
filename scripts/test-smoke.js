@@ -195,7 +195,7 @@ server.listen(0, '127.0.0.1', () => {
     '<progress value="66" max="100">66%</progress>',
   ].join('\n'));
   fs.writeFileSync(animalIslandInput, [
-    '# Animal Island v1.4 smoke',
+    '# Animal Island v1.5 smoke',
     '',
     '> [!TIP]',
     '> Soft tag treatment.',
@@ -207,6 +207,16 @@ server.listen(0, '127.0.0.1', () => {
     '    <span class="md-skeleton"></span>',
     '  </div>',
     '</div>',
+    '',
+    '<a id="top" href="#top" class="md-back-top" aria-label="Back to top">Back to top</a>',
+    '',
+    '<div class="md-time-game" aria-label="09:30, June 8, Monday">',
+    '  <time class="md-time-clock" datetime="2026-06-08T09:30:00">09:30</time>',
+    '  <span class="md-time-divider" aria-hidden="true"></span>',
+    '  <span class="md-time-date"><span>6月8日</span><span class="md-time-weekday">一</span></span>',
+    '</div>',
+    '',
+    '<a href="https://example.com/image"><img src="data:image/png;base64,iVBORw0KGgo=" alt="Tiny preview"></a>',
     '',
     '<progress value="66" max="100">66%</progress>',
   ].join('\n'));
@@ -335,6 +345,10 @@ server.listen(0, '127.0.0.1', () => {
   assertIncludes(animalIsland, '@keyframes md-animal-skeleton-shimmer', 'animal-island skeleton should include shimmer motion');
   assertIncludes(animalIsland, 'role="status" aria-busy="true"', 'animal-island skeleton wrapper should preserve loading semantics');
   assertIncludes(animalIsland, 'class="md-skeleton-paragraph" aria-hidden="true"', 'animal-island should preserve trusted skeleton markup');
+  assertIncludes(animalIsland, '.markdown-body img:not(.emoji)', 'animal-island should style v1.5 image treatments');
+  assertIncludes(animalIsland, '.markdown-body .md-back-top', 'animal-island should style the trusted back-top helper');
+  assertIncludes(animalIsland, '.markdown-body .md-time-game', 'animal-island should style the trusted game time helper');
+  assertIncludes(animalIsland, 'class="md-time-divider"', 'animal-island should preserve the game time divider markup');
   assertNotMatches(
     animalIsland,
     /progress::-webkit-progress-value,\s*\.markdown-body progress::-moz-progress-bar/,

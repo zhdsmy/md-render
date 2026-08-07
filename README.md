@@ -193,11 +193,12 @@ keys, visible keyboard focus, and native progress elements. Raw `<kbd>` and
 
 The `animal-island` theme is a Markdown-oriented CSS adaptation inspired by
 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
-the upstream `v1.4.0` tag and its [demo site](https://guokaigdg.github.io/animal-island-ui/#/).
+the upstream `v1.5.0` tag and its [demo site](https://guokaigdg.github.io/animal-island-ui/#/).
 It borrows the visual direction, token palette, soft pill-tag language, and
 feedback-card depth cues. Its native progress treatment uses the upstream
 striped progress language. Trusted Markdown can also use the no-script
-Skeleton helpers introduced for this adaptation:
+Skeleton, back-top, and game-time helpers introduced for this adaptation.
+Linked images also use the v1.5.0 warm framed hover and focus treatment:
 
 ```html
 <div role="status" aria-busy="true" aria-label="Loading preview">
@@ -210,7 +211,19 @@ Skeleton helpers introduced for this adaptation:
 ```
 
 Available shapes are `md-skeleton-text`, `md-skeleton-circle`,
-`md-skeleton-rect`, `md-skeleton-button`, and `md-skeleton-input`. The theme
+`md-skeleton-rect`, `md-skeleton-button`, and `md-skeleton-input`.
+
+```html
+<a id="top" href="#top" class="md-back-top">Back to top</a>
+<div class="md-time-game">
+  <time class="md-time-clock">09:30</time>
+  <span class="md-time-divider" aria-hidden="true"></span>
+  <span class="md-time-date">6月8日 <span class="md-time-weekday">一</span></span>
+</div>
+```
+
+These helpers provide presentation only; they do not add scroll listeners,
+image preview dialogs, or a live clock. The theme
 does not bundle the React component library, its assets, or Nintendo-owned
 materials.
 

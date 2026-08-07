@@ -240,8 +240,9 @@ Chrome 使用进程级 lazy singleton：
 - `juejin.css`：中文技术博客。
 - `wechat.css`：公众号/社交分享。
 - `academic.css`：研究报告/论文风格。
-- `animal-island.css`：温暖圆润的笔记和轻松分享风格；额外提供可信 HTML 可用的
-  `.md-skeleton*` 纯 CSS 骨架屏工具类。
+- `animal-island.css`：参考 `animal-island-ui v1.5.0` 的温暖圆润笔记风格；额外提供
+  可信 HTML 可用的 `.md-skeleton*`、`.md-back-top` 和 `.md-time-game` 纯 CSS 工具类，
+  以及链接图片的悬停和焦点装饰。它不提供图片预览、滚动监听或动态时钟行为。
 
 主题边界：
 
