@@ -57,6 +57,32 @@
   --md-alert-note-border: #5f6368;
   --md-image-radius: 0;
   --md-image-shadow: none;
+  --md-tag-bg: #f7f7f7;
+  --md-tag-fg: #4f4f4f;
+  --md-tag-border: #8f8f8f;
+  --md-tag-accent-bg: #eef2f8;
+  --md-tag-accent-fg: #0645ad;
+  --md-tag-danger-bg: #f8e8eb;
+  --md-tag-danger-fg: #a40e26;
+  --md-tag-radius: 2px;
+  --md-picker-bg: #ffffff;
+  --md-picker-border: #8f8f8f;
+  --md-picker-divider: #d8d8d8;
+  --md-picker-shadow: none;
+  --md-picker-radius: 2px;
+  --md-picker-cell-radius: 2px;
+  --md-picker-option-radius: 2px;
+  --md-picker-nav-fg: #5f6368;
+  --md-picker-hover-bg: #f2f2f2;
+  --md-picker-hover-fg: #0645ad;
+  --md-picker-outside-fg: #8f8f8f;
+  --md-picker-selected-bg: #1f1f1f;
+  --md-picker-range-bg: #e8e8e8;
+  --md-picker-range-fg: #1f1f1f;
+  --md-picker-range-active-bg: #1f1f1f;
+  --md-picker-action-hover-bg: #f2f2f2;
+  --md-picker-primary-bg: #1f1f1f;
+  --md-picker-primary-fg: #ffffff;
 }
 
 .markdown-body {
@@ -99,8 +125,8 @@
 
 .markdown-body h2 {
   font-size: 1.32em;
-  border-bottom: 1px solid var(--md-color-border);
-  padding-bottom: .22em;
+  border-bottom: 3px double var(--md-color-border);
+  padding-bottom: .3em;
   margin-top: 1.8em;
   margin-bottom: .8em;
   font-weight: 700;
@@ -151,7 +177,7 @@
 .markdown-body pre,
 .markdown-body .shiki {
   padding: 14px 16px;
-  border-radius: 3px;
+  border-radius: 0;
   font-size: .86em;
   line-height: 1.55;
 }
@@ -204,4 +230,27 @@
 .markdown-body .footnotes {
   font-size: .82em;
   line-height: 1.55;
+}
+
+.markdown-body .md-toc {
+  padding: 1em 0;
+  border-width: 1px 0;
+  border-color: var(--md-color-border);
+  background: transparent;
+  box-shadow: none;
+}
+
+.markdown-body .md-toc .md-toc-title {
+  text-align: center;
+  font-variant: small-caps;
+  letter-spacing: 0;
+}
+
+.markdown-body .md-toc > ul {
+  padding-left: 1.5em;
+}
+
+.markdown-body .md-date-picker,
+.markdown-body .md-time-picker {
+  border-width: 1px;
 }

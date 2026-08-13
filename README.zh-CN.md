@@ -182,19 +182,24 @@ node render.js --in input.md --out output.pdf --profile academic-pdf --pdf-mode 
 |---|---|
 | `github` | 技术文档、README、API 说明 |
 | `github-dark` | 暗色截图或演示素材 |
-| `juejin` | 中文技术文章 |
-| `wechat` | 社交分享或文章风格长图 |
-| `academic` | 研究笔记、报告和正式文档 |
+| `juejin` | 带平台蓝章节标记的中文技术文章 |
+| `wechat` | 居中题名、绿色导读线的公众号编辑稿 |
+| `academic` | 衬线字体、克制分隔线的研究笔记和正式报告 |
 | `animal-island` | 温暖圆润的笔记、轻松分享长图 |
 
-六套主题都会分别处理高亮文本、键盘按键、键盘焦点和原生进度条。在可信
-Markdown 中可以使用原生 `<kbd>` 与 `<progress>` 元素。
+六套主题都会分别处理高亮文本、键盘按键、键盘焦点、原生进度条、24/32/40px 的
+`.md-tag` 标签体系和静态日期/时间选择面板。在可信 Markdown 中可以使用原生
+`<kbd>`、`<progress>` 和 picker 标记。
+GitHub 保持仓库文档气质，Juejin 使用平台蓝章节与代码标记，WeChat 采用更平面的
+编辑稿节奏，Academic 去除卡片化装饰，Animal Island 则保留最鲜明的奶油、薄荷绿与
+琥珀色组件语言。
 
 `animal-island` 主题是面向 Markdown 渲染的 CSS 改编，视觉方向和 token
 调色参考了 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
-上游 `v1.5.0` tag 及其 [Demo 站点](https://guokaigdg.github.io/animal-island-ui/#/)；
+上游 `v1.6.0` tag 及其 [Demo 站点](https://guokaigdg.github.io/animal-island-ui/#/)；
 主题吸收了柔和圆润标签、小型内容容器和反馈卡片景深等视觉语汇，其中原生进度条会采用
-上游的斜纹进度条样式，链接图片则使用 v1.5.0 的暖色边框、悬停和焦点效果。可信 Markdown
+上游的斜纹进度条样式，链接图片则使用暖色边框、悬停和焦点效果。Animal Island 还为
+共享 tag/picker 结构提供上游风格的奶油面板、圆形日期格和琥珀范围色。可信 Markdown
 还可以使用本主题提供的无脚本 Skeleton、返回顶部和游戏时间工具类：
 
 ```html
@@ -221,6 +226,19 @@ Markdown 中可以使用原生 `<kbd>` 与 `<progress>` 元素。
 
 这些工具类只提供展示样式，不负责滚动监听、图片预览弹层或动态更新时间。
 本项目不会打包该 React 组件库、其素材资源，或任天堂相关素材。
+
+```html
+<span class="md-tag md-tag-small">小</span>
+<span class="md-tag md-tag-teal">中</span>
+<span class="md-tag md-tag-large md-tag-dashed">大</span>
+
+<section class="md-date-picker">...</section>
+<section class="md-time-picker">...</section>
+```
+
+六套主题的 Picker 工具类都支持 `md-picker-day-today`、`md-picker-day-selected`、
+`md-picker-day-range`、`md-time-option-selected` 等静态状态样式，但不负责日期计算、
+弹层开关、滚动列或提交值。
 
 ## 安全说明
 

@@ -1,5 +1,5 @@
 /* Animal Island theme: warm, rounded, cozy note style.
- * Inspired by guokaigdg/animal-island-ui v1.5.0 design tokens and component language.
+ * Inspired by guokaigdg/animal-island-ui v1.6.0 design tokens and component language.
  */
 :root {
   --md-color-bg: #f8f8f0;
@@ -130,6 +130,34 @@
   --md-animal-back-top-fg: #8b7355;
   --md-animal-back-top-hover: #fff4c8;
   --md-animal-time-divider: rgba(159, 146, 125, .35);
+  --md-tag-bg: var(--md-animal-tag-soft-bg);
+  --md-tag-fg: var(--md-animal-text-chip);
+  --md-tag-border: var(--md-animal-border-chip);
+  --md-tag-accent-bg: var(--md-animal-tag-soft-teal-bg);
+  --md-tag-accent-fg: var(--md-animal-tag-soft-teal-fg);
+  --md-tag-warning-bg: var(--md-animal-tag-soft-yellow-bg);
+  --md-tag-warning-fg: var(--md-animal-tag-soft-yellow-fg);
+  --md-tag-danger-bg: var(--md-animal-tag-soft-red-bg);
+  --md-tag-danger-fg: var(--md-animal-tag-soft-red-fg);
+  --md-picker-bg: #fffdf7;
+  --md-picker-border: #e8dcc8;
+  --md-picker-divider: #f0e8d8;
+  --md-picker-shadow: var(--md-animal-shadow-base);
+  --md-picker-radius: 20px;
+  --md-picker-cell-radius: 50%;
+  --md-picker-option-radius: 16px;
+  --md-picker-nav-fg: #a0936e;
+  --md-picker-hover-bg: #e6f9f6;
+  --md-picker-hover-fg: #19c8b9;
+  --md-picker-outside-fg: #c4b89e;
+  --md-picker-selected-bg: #19c8b9;
+  --md-picker-range-bg: #ffc107;
+  --md-picker-range-fg: #ffffff;
+  --md-picker-range-active-bg: #ffb400;
+  --md-picker-endpoint-ring: #ffffff;
+  --md-picker-action-hover-bg: rgba(114, 93, 66, .1);
+  --md-picker-primary-bg: #796c5a;
+  --md-picker-primary-fg: #ffffff;
 }
 
 .markdown-body {
@@ -137,7 +165,7 @@
   font-size: 16px;
   line-height: 1.82;
   font-weight: 500;
-  letter-spacing: .01em;
+  letter-spacing: 0;
 }
 
 .markdown-body a {
@@ -191,7 +219,7 @@
   box-shadow: inset 0 -.06em 0 rgba(0, 0, 0, .05);
   filter: drop-shadow(0 .08em .12em rgba(0, 0, 0, .05));
   font-weight: 900;
-  letter-spacing: .04em;
+  letter-spacing: 0;
   white-space: normal;
   text-wrap: balance;
   text-shadow: 0 .04em .08em rgba(0, 0, 0, .05);
@@ -296,7 +324,7 @@
 }
 
 .markdown-body th {
-  letter-spacing: .02em;
+  letter-spacing: 0;
 }
 
 .markdown-body tr:last-child > td {
@@ -358,14 +386,14 @@
 .markdown-body .md-toc .md-toc-title {
   display: inline-flex;
   align-items: center;
-  min-height: 29px;
+  min-height: 32px;
   margin-bottom: .55em;
   padding: 0 12px;
   border: 1.5px solid transparent;
   border-radius: 999px;
   background: var(--md-animal-tag-soft-bg);
   color: var(--md-animal-text-chip);
-  font-size: .92em;
+  font-size: .875em;
   font-weight: 800;
   line-height: 1;
 }
@@ -379,14 +407,14 @@
   display: inline-flex;
   align-items: center;
   gap: .45em;
-  min-height: 29px;
+  min-height: 32px;
   margin-bottom: .55em;
   padding: 0 12px 0 9px;
   border: 1.5px solid transparent;
   border-radius: 999px;
   background: var(--md-animal-tag-soft-bg);
   color: var(--md-animal-text-chip);
-  font-size: .92em;
+  font-size: .875em;
   font-weight: 800;
   line-height: 1;
 }
@@ -628,7 +656,7 @@
   width: 60%;
 }
 
-/* v1.5.0-inspired trusted HTML helpers; CSS provides presentation only. */
+/* Trusted HTML helpers retained in the v1.6.0 adaptation; CSS provides presentation only. */
 .markdown-body .md-back-top {
   display: inline-flex;
   align-items: center;
@@ -674,7 +702,7 @@
 .markdown-body .md-time-game > time,
 .markdown-body .md-time-game .md-time-clock {
   font-size: 2.5em;
-  letter-spacing: .04em;
+  letter-spacing: 0;
 }
 
 .markdown-body .md-time-game .md-time-divider {

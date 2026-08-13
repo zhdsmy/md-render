@@ -56,6 +56,31 @@
   --md-alert-note-border: #59636e;
   --md-image-radius: 0;
   --md-image-shadow: none;
+  --md-tag-bg: #f6f8fa;
+  --md-tag-fg: #59636e;
+  --md-tag-border: #afb8c1;
+  --md-tag-accent-bg: #ddf4ff;
+  --md-tag-accent-fg: #0969da;
+  --md-tag-danger-bg: #ffebe9;
+  --md-tag-danger-fg: #cf222e;
+  --md-picker-bg: #ffffff;
+  --md-picker-border: #d1d9e0;
+  --md-picker-divider: #d8dee4;
+  --md-picker-shadow: 0 8px 24px rgba(140, 149, 159, .2);
+  --md-picker-radius: 6px;
+  --md-picker-cell-radius: 6px;
+  --md-picker-option-radius: 6px;
+  --md-picker-nav-fg: #59636e;
+  --md-picker-hover-bg: #f6f8fa;
+  --md-picker-hover-fg: #0969da;
+  --md-picker-outside-fg: #8c959f;
+  --md-picker-selected-bg: #0969da;
+  --md-picker-range-bg: #ddf4ff;
+  --md-picker-range-fg: #0969da;
+  --md-picker-range-active-bg: #0969da;
+  --md-picker-action-hover-bg: #f6f8fa;
+  --md-picker-primary-bg: #1f2328;
+  --md-picker-primary-fg: #ffffff;
 }
 
 .markdown-body {

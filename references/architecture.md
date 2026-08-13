@@ -234,19 +234,21 @@ Chrome 使用进程级 lazy singleton：
 主题拆分：
 
 - `_base.css`：通用 Markdown、表格、代码、`mark`、`kbd`、`progress`、键盘焦点、
-  Mermaid、TOC、容器和 details 样式。
+  Mermaid、TOC、容器、details，以及 `.md-tag` / `.md-date-picker` / `.md-time-picker`
+  的结构、状态与响应式样式。
 - `github.css`：默认技术文档。
 - `github-dark.css`：暗色演示/终端风格。
-- `juejin.css`：中文技术博客。
-- `wechat.css`：公众号/社交分享。
-- `academic.css`：研究报告/论文风格。
-- `animal-island.css`：参考 `animal-island-ui v1.5.0` 的温暖圆润笔记风格；额外提供
-  可信 HTML 可用的 `.md-skeleton*`、`.md-back-top` 和 `.md-time-game` 纯 CSS 工具类，
-  以及链接图片的悬停和焦点装饰。它不提供图片预览、滚动监听或动态时钟行为。
+- `juejin.css`：中文技术博客；使用平台蓝标题短线、章节锚点、代码块顶线和浅蓝目录面板。
+- `wechat.css`：公众号/社交分享；使用居中题名、绿色导读线和平面化编辑稿容器。
+- `academic.css`：研究报告/论文风格；使用衬线正文、双横线章节和去卡片化目录。
+- `animal-island.css`：参考 `animal-island-ui v1.6.0` 的温暖圆润笔记风格；为共享
+  tag/picker 结构覆盖奶油面板、圆形日期格和琥珀范围 token，并额外提供可信 HTML 可用的
+  `.md-skeleton*`、`.md-back-top`、`.md-time-game` 与链接图片装饰。
 
 主题边界：
 
-- `_base.css` 拥有组件行为，包括表格收缩/横向滚动、代码块 overflow、TOC/details 结构、图片响应式、Mermaid/KaTeX 容器。
+- `_base.css` 拥有组件行为，包括表格收缩/横向滚动、代码块 overflow、TOC/details、
+  tag/picker 结构和响应式、图片响应式、Mermaid/KaTeX 容器。
 - 主题 CSS 通过 `:root` 覆盖 `--md-*` 语义 token，并只保留必要的字体、标题造型、边框、阴影等视觉装饰。
 - 主题不应直接覆盖 `body`，也不应改写表格的 `display` / `width` / `max-width` / `overflow-x` / `border-collapse` 等行为属性；这类约束由 smoke test 的 theme CSS contract 覆盖。
 

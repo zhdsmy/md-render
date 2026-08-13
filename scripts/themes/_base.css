@@ -67,6 +67,38 @@
   --md-alert-note-border: #59636e;
   --md-image-radius: 6px;
   --md-image-shadow: none;
+  --md-tag-bg: var(--md-color-surface);
+  --md-tag-fg: var(--md-color-muted);
+  --md-tag-border: var(--md-color-border);
+  --md-tag-accent-bg: var(--md-color-surface);
+  --md-tag-accent-fg: var(--md-color-accent);
+  --md-tag-warning-bg: var(--md-mark-bg);
+  --md-tag-warning-fg: var(--md-color-fg);
+  --md-tag-danger-bg: var(--md-alert-danger-bg);
+  --md-tag-danger-fg: var(--md-alert-danger-border);
+  --md-tag-radius: 999px;
+  --md-picker-bg: var(--md-color-surface-alt);
+  --md-picker-border: var(--md-color-border);
+  --md-picker-divider: var(--md-color-border);
+  --md-picker-shadow: none;
+  --md-picker-radius: 8px;
+  --md-picker-cell-radius: 6px;
+  --md-picker-option-radius: 6px;
+  --md-picker-nav-fg: var(--md-color-muted);
+  --md-picker-hover-bg: var(--md-color-surface);
+  --md-picker-hover-fg: var(--md-color-accent);
+  --md-picker-outside-fg: var(--md-color-muted);
+  --md-picker-selected-bg: var(--md-color-accent);
+  --md-picker-selected-fg: #ffffff;
+  --md-picker-range-bg: var(--md-mark-bg);
+  --md-picker-range-fg: var(--md-color-fg);
+  --md-picker-range-active-bg: var(--md-color-accent);
+  --md-picker-range-active-fg: #ffffff;
+  --md-picker-endpoint-ring: var(--md-picker-bg);
+  --md-picker-action-hover-bg: var(--md-color-surface);
+  --md-picker-action-hover-fg: var(--md-color-fg);
+  --md-picker-primary-bg: var(--md-color-strong);
+  --md-picker-primary-fg: var(--md-color-surface-alt);
 }
 
 * { box-sizing: border-box; }
@@ -460,4 +492,290 @@ img:not(.emoji) {
 .github-alert .custom-block-title {
   margin: 0 0 .4em;
   font-size: .95em;
+}
+
+/* Trusted HTML tags and static picker presentations. */
+.markdown-body .md-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 12px;
+  border: 1.5px solid transparent;
+  border-radius: var(--md-tag-radius);
+  background: var(--md-tag-bg);
+  color: var(--md-tag-fg);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.markdown-body .md-tag-small {
+  height: 24px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.markdown-body .md-tag-large {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 16px;
+}
+
+.markdown-body .md-tag-outlined,
+.markdown-body .md-tag-dashed {
+  border-color: var(--md-tag-border);
+  background: transparent;
+}
+
+.markdown-body .md-tag-dashed {
+  border-style: dashed;
+}
+
+.markdown-body .md-tag-teal {
+  background: var(--md-tag-accent-bg);
+  color: var(--md-tag-accent-fg);
+}
+
+.markdown-body .md-tag-yellow {
+  background: var(--md-tag-warning-bg);
+  color: var(--md-tag-warning-fg);
+}
+
+.markdown-body .md-tag-red {
+  background: var(--md-tag-danger-bg);
+  color: var(--md-tag-danger-fg);
+}
+
+.markdown-body .md-date-picker,
+.markdown-body .md-time-picker {
+  width: fit-content;
+  max-width: 100%;
+  margin: 1em 0;
+  padding: 14px;
+  border: 1.5px solid var(--md-picker-border);
+  border-radius: var(--md-picker-radius);
+  background: var(--md-picker-bg);
+  box-shadow: var(--md-picker-shadow);
+  color: var(--md-color-fg);
+  font-size: 14px;
+  line-height: 1;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.markdown-body .md-date-picker {
+  width: min(280px, 100%);
+}
+
+.markdown-body .md-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 32px;
+  margin-bottom: 10px;
+}
+
+.markdown-body .md-picker-label {
+  color: var(--md-color-fg);
+  font-weight: 700;
+}
+
+.markdown-body .md-picker-nav,
+.markdown-body .md-picker-action,
+.markdown-body .md-picker-day,
+.markdown-body .md-time-option {
+  border: 0;
+  font: inherit;
+  cursor: default;
+}
+
+.markdown-body .md-picker-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: var(--md-picker-cell-radius);
+  background: transparent;
+  color: var(--md-picker-nav-fg);
+}
+
+.markdown-body .md-picker-nav:hover {
+  background: var(--md-picker-hover-bg);
+  color: var(--md-picker-hover-fg);
+}
+
+.markdown-body .md-picker-week,
+.markdown-body .md-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.markdown-body .md-picker-week {
+  margin-bottom: 4px;
+}
+
+.markdown-body .md-picker-week > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  color: var(--md-color-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.markdown-body .md-picker-day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  justify-self: center;
+  padding: 0;
+  border-radius: var(--md-picker-cell-radius);
+  background: transparent;
+  color: var(--md-color-fg);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.markdown-body .md-picker-day:hover {
+  background: var(--md-picker-hover-bg);
+  color: var(--md-picker-hover-fg);
+}
+
+.markdown-body .md-picker-day-outside {
+  color: var(--md-picker-outside-fg);
+}
+
+.markdown-body .md-picker-day-today {
+  color: var(--md-color-accent);
+  box-shadow: inset 0 0 0 1.5px var(--md-color-accent);
+  font-weight: 700;
+}
+
+.markdown-body .md-picker-day-selected,
+.markdown-body .md-picker-day-selected:hover {
+  background: var(--md-picker-selected-bg);
+  color: var(--md-picker-selected-fg);
+  font-weight: 700;
+}
+
+.markdown-body .md-picker-day-range,
+.markdown-body .md-picker-day-range:hover {
+  background: var(--md-picker-range-bg);
+  color: var(--md-picker-range-fg);
+  font-weight: 600;
+}
+
+.markdown-body .md-picker-day-range-start,
+.markdown-body .md-picker-day-range-end {
+  background: var(--md-picker-range-active-bg);
+  color: var(--md-picker-range-active-fg);
+  box-shadow: inset 0 0 0 1px var(--md-picker-endpoint-ring);
+}
+
+.markdown-body .md-picker-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--md-picker-divider);
+}
+
+.markdown-body .md-picker-action {
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: var(--md-picker-cell-radius);
+  background: transparent;
+  color: var(--md-color-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.markdown-body .md-picker-action:hover {
+  background: var(--md-picker-action-hover-bg);
+  color: var(--md-picker-action-hover-fg);
+}
+
+.markdown-body .md-picker-action-primary:hover {
+  background: var(--md-picker-primary-bg);
+  color: var(--md-picker-primary-fg);
+}
+
+.markdown-body .md-time-picker {
+  width: min(248px, 100%);
+}
+
+.markdown-body .md-time-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.markdown-body .md-time-column {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.markdown-body .md-time-column > strong {
+  margin-bottom: 4px;
+  color: var(--md-color-muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.markdown-body .md-time-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0;
+  border-radius: var(--md-picker-option-radius);
+  background: transparent;
+  color: var(--md-color-fg);
+  font-size: 13px;
+}
+
+.markdown-body .md-time-option:hover {
+  background: var(--md-picker-range-bg);
+  color: var(--md-picker-range-fg);
+}
+
+.markdown-body .md-time-option-selected,
+.markdown-body .md-time-option-selected:hover {
+  background: var(--md-picker-range-active-bg);
+  color: var(--md-picker-range-active-fg);
+  font-weight: 700;
+}
+
+.markdown-body .md-picker-nav:focus-visible,
+.markdown-body .md-picker-action:focus-visible,
+.markdown-body .md-picker-day:focus-visible,
+.markdown-body .md-time-option:focus-visible {
+  outline: 3px solid var(--md-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 420px) {
+  .markdown-body .md-date-picker,
+  .markdown-body .md-time-picker {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .markdown-body .md-picker-day {
+    width: min(32px, 100%);
+    aspect-ratio: 1;
+    height: auto;
+  }
 }

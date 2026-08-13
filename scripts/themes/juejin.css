@@ -57,6 +57,31 @@
   --md-alert-note-border: #8a919f;
   --md-image-radius: 4px;
   --md-image-shadow: none;
+  --md-tag-bg: #f2f3f5;
+  --md-tag-fg: #515767;
+  --md-tag-border: #c8ccd3;
+  --md-tag-accent-bg: #eaf2ff;
+  --md-tag-accent-fg: #1e80ff;
+  --md-tag-danger-bg: #fff0f0;
+  --md-tag-danger-fg: #f64242;
+  --md-picker-bg: #ffffff;
+  --md-picker-border: #e4e6eb;
+  --md-picker-divider: #e4e6eb;
+  --md-picker-shadow: 0 8px 24px rgba(37, 41, 51, .1);
+  --md-picker-radius: 8px;
+  --md-picker-cell-radius: 8px;
+  --md-picker-option-radius: 8px;
+  --md-picker-nav-fg: #8a919f;
+  --md-picker-hover-bg: #f2f6ff;
+  --md-picker-hover-fg: #1e80ff;
+  --md-picker-outside-fg: #abb0ba;
+  --md-picker-selected-bg: #1e80ff;
+  --md-picker-range-bg: #eaf2ff;
+  --md-picker-range-fg: #1e80ff;
+  --md-picker-range-active-bg: #1e80ff;
+  --md-picker-action-hover-bg: #f2f3f5;
+  --md-picker-primary-bg: #1e80ff;
+  --md-picker-primary-fg: #ffffff;
 }
 
 .markdown-body {
@@ -92,23 +117,50 @@
 }
 
 .markdown-body h1 {
+  position: relative;
   font-size: 1.8em;
-  margin: 1.1em 0 .8em;
+  margin: 1.1em 0 1em;
   border-bottom: 0;
-  padding-bottom: 0;
+  padding-bottom: .5em;
   display: block;
 }
 
+.markdown-body h1::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 2.6em;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--md-color-accent);
+}
+
 .markdown-body h2 {
+  position: relative;
   font-size: 1.45em;
   padding-left: 0;
   border-left: 0;
-  margin: 2em 0 .85em;
+  margin: 2em 0 1em;
+  padding-bottom: .45em;
+  border-bottom: 1px solid #dce9ff;
+}
+
+.markdown-body h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 3.2em;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--md-color-accent);
 }
 
 .markdown-body h3 {
   font-size: 1.22em;
   margin: 1.65em 0 .75em;
+  color: var(--md-color-accent);
 }
 
 .markdown-body h4 {
@@ -151,7 +203,8 @@
 .markdown-body pre,
 .markdown-body .shiki {
   padding: 16px;
-  border-radius: 4px;
+  border-top: 3px solid var(--md-color-accent);
+  border-radius: 0 0 6px 6px;
   font-size: .88em;
   line-height: 1.65;
 }
@@ -179,7 +232,22 @@
 
 .markdown-body .md-toc,
 .markdown-body .md-details {
-  border-radius: 4px;
+  border-color: #dce9ff;
+  border-radius: 6px;
+  background: #f5f8ff;
+}
+
+.markdown-body .md-toc .md-toc-title {
+  color: var(--md-color-accent);
+}
+
+.markdown-body .tip,
+.markdown-body .warning,
+.markdown-body .danger,
+.markdown-body .info,
+.markdown-body .note {
+  border-left-width: 4px;
+  border-radius: 0 6px 6px 0;
 }
 
 .markdown-body .footnotes {

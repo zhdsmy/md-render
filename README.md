@@ -182,23 +182,30 @@ node render.js --in input.md --out output.pdf --profile academic-pdf --pdf-mode 
 |---|---|
 | `github` | Technical documentation, README files, API notes |
 | `github-dark` | Dark themed screenshots or presentation assets |
-| `juejin` | Chinese technical articles |
-| `wechat` | Social sharing or article-style long screenshots |
-| `academic` | Research notes, reports, and formal documents |
+| `juejin` | Platform-style Chinese technical articles with blue section markers |
+| `wechat` | Editorial social articles with centered titles and green guide rails |
+| `academic` | Serif research notes and formal reports with restrained rules |
 | `animal-island` | Warm, rounded, cozy notes or friendly share images |
 
 All six themes provide their own treatments for highlighted text, keyboard
-keys, visible keyboard focus, and native progress elements. Raw `<kbd>` and
-`<progress>` elements are available in trusted Markdown.
+keys, visible keyboard focus, native progress elements, the normalized
+24/32/40px `.md-tag` scale, and static date/time picker presentations. Raw
+`<kbd>`, `<progress>`, and picker markup are available in trusted Markdown.
+GitHub stays close to repository documentation, Juejin adds platform-blue
+section and code markers, WeChat uses a flatter editorial rhythm, Academic
+removes card-like decoration, and Animal Island keeps the most expressive
+cream, mint, and amber component language.
 
 The `animal-island` theme is a Markdown-oriented CSS adaptation inspired by
 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
-the upstream `v1.5.0` tag and its [demo site](https://guokaigdg.github.io/animal-island-ui/#/).
+the upstream `v1.6.0` tag and its [demo site](https://guokaigdg.github.io/animal-island-ui/#/).
 It borrows the visual direction, token palette, soft pill-tag language, and
 feedback-card depth cues. Its native progress treatment uses the upstream
 striped progress language. Trusted Markdown can also use the no-script
 Skeleton, back-top, and game-time helpers introduced for this adaptation.
-Linked images also use the v1.5.0 warm framed hover and focus treatment:
+Linked images use the warm framed hover and focus treatment. Animal Island
+also supplies the upstream-inspired cream panels, circular date cells, and
+amber range treatment for the shared tag and picker structures:
 
 ```html
 <div role="status" aria-busy="true" aria-label="Loading preview">
@@ -226,6 +233,20 @@ These helpers provide presentation only; they do not add scroll listeners,
 image preview dialogs, or a live clock. The theme
 does not bundle the React component library, its assets, or Nintendo-owned
 materials.
+
+```html
+<span class="md-tag md-tag-small">Small</span>
+<span class="md-tag md-tag-teal">Medium</span>
+<span class="md-tag md-tag-large md-tag-dashed">Large</span>
+
+<section class="md-date-picker">...</section>
+<section class="md-time-picker">...</section>
+```
+
+Across every theme, picker helpers style trusted HTML state classes such as
+`md-picker-day-today`, `md-picker-day-selected`, `md-picker-day-range`, and
+`md-time-option-selected`. They do not calculate dates, open popovers, scroll
+columns, or submit values.
 
 ## Security notes
 

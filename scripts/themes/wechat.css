@@ -58,6 +58,31 @@
   --md-alert-note-border: #8c8c8c;
   --md-image-radius: 0;
   --md-image-shadow: none;
+  --md-tag-bg: #f7f7f7;
+  --md-tag-fg: #666666;
+  --md-tag-border: #d9d9d9;
+  --md-tag-accent-bg: #e8f8ef;
+  --md-tag-accent-fg: #07c160;
+  --md-tag-danger-bg: #fff1f0;
+  --md-tag-danger-fg: #ff4d4f;
+  --md-picker-bg: #ffffff;
+  --md-picker-border: #e5e5e5;
+  --md-picker-divider: #ededed;
+  --md-picker-shadow: 0 8px 24px rgba(63, 63, 63, .1);
+  --md-picker-radius: 8px;
+  --md-picker-cell-radius: 8px;
+  --md-picker-option-radius: 8px;
+  --md-picker-nav-fg: #8c8c8c;
+  --md-picker-hover-bg: #f2fbf6;
+  --md-picker-hover-fg: #07c160;
+  --md-picker-outside-fg: #b2b2b2;
+  --md-picker-selected-bg: #07c160;
+  --md-picker-range-bg: #e8f8ef;
+  --md-picker-range-fg: #07994d;
+  --md-picker-range-active-bg: #07c160;
+  --md-picker-action-hover-bg: #f7f7f7;
+  --md-picker-primary-bg: #07c160;
+  --md-picker-primary-fg: #ffffff;
 }
 
 .markdown-body {
@@ -79,14 +104,27 @@
 }
 
 .markdown-body h1 {
+  position: relative;
   font-size: 1.5em;
   line-height: 1.35;
-  text-align: left;
-  margin: 1.2em 0 .9em;
-  padding: 0;
+  text-align: center;
+  margin: 1.2em 0 1.35em;
+  padding: 0 0 .75em;
   border-bottom: 0;
   color: #1f1f1f;
   font-weight: 600;
+}
+
+.markdown-body h1::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 42px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--md-color-accent);
+  transform: translateX(-50%);
 }
 
 .markdown-body h2 {
@@ -141,6 +179,7 @@
   margin: 1.2em 0;
   font-size: .94em;
   border-left-width: 3px;
+  border-left-color: var(--md-color-accent);
   border-radius: 0;
 }
 
@@ -208,4 +247,25 @@
 
 .markdown-body .footnotes {
   font-size: .86em;
+}
+
+.markdown-body .md-toc,
+.markdown-body .md-details {
+  border: 0;
+  border-left: 3px solid var(--md-color-accent);
+  border-radius: 0;
+  background: #f7faf8;
+  box-shadow: none;
+}
+
+.markdown-body .md-toc .md-toc-title {
+  color: #07994d;
+}
+
+.markdown-body .tip,
+.markdown-body .info,
+.markdown-body .note,
+.markdown-body .warning,
+.markdown-body .danger {
+  border-radius: 0;
 }

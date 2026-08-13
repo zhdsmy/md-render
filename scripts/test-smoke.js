@@ -195,7 +195,7 @@ server.listen(0, '127.0.0.1', () => {
     '<progress value="66" max="100">66%</progress>',
   ].join('\n'));
   fs.writeFileSync(animalIslandInput, [
-    '# Animal Island v1.5 smoke',
+    '# Animal Island v1.6 smoke',
     '',
     '> [!TIP]',
     '> Soft tag treatment.',
@@ -217,6 +217,19 @@ server.listen(0, '127.0.0.1', () => {
     '</div>',
     '',
     '<a href="https://example.com/image"><img src="data:image/png;base64,iVBORw0KGgo=" alt="Tiny preview"></a>',
+    '',
+    '<p><span class="md-tag md-tag-small">Small</span> <span class="md-tag md-tag-teal">Medium</span> <span class="md-tag md-tag-large md-tag-dashed">Large</span></p>',
+    '',
+    '<section class="md-date-picker" aria-label="June 2026 calendar">',
+    '  <div class="md-picker-header"><button class="md-picker-nav" type="button" aria-label="Previous month">‹</button><strong class="md-picker-label">2026年6月</strong><button class="md-picker-nav" type="button" aria-label="Next month">›</button></div>',
+    '  <div class="md-picker-week" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>',
+    '  <div class="md-picker-grid"><button class="md-picker-day md-picker-day-outside" type="button">25</button><button class="md-picker-day" type="button">1</button><button class="md-picker-day md-picker-day-today" type="button">2</button><button class="md-picker-day md-picker-day-range md-picker-day-range-start" type="button">3</button><button class="md-picker-day md-picker-day-range" type="button">4</button><button class="md-picker-day md-picker-day-range md-picker-day-range-end" type="button">5</button><button class="md-picker-day md-picker-day-selected" type="button">6</button></div>',
+    '  <div class="md-picker-footer"><button class="md-picker-action" type="button">Today</button><button class="md-picker-action md-picker-action-primary" type="button">Confirm</button></div>',
+    '</section>',
+    '',
+    '<section class="md-time-picker" aria-label="09:30:00 time picker">',
+    '  <div class="md-time-columns"><div class="md-time-column"><strong>Hour</strong><button class="md-time-option" type="button">08</button><button class="md-time-option md-time-option-selected" type="button">09</button><button class="md-time-option" type="button">10</button></div><div class="md-time-column"><strong>Minute</strong><button class="md-time-option" type="button">15</button><button class="md-time-option md-time-option-selected" type="button">30</button><button class="md-time-option" type="button">45</button></div><div class="md-time-column"><strong>Second</strong><button class="md-time-option md-time-option-selected" type="button">00</button><button class="md-time-option" type="button">30</button><button class="md-time-option" type="button">59</button></div></div>',
+    '</section>',
     '',
     '<progress value="66" max="100">66%</progress>',
   ].join('\n'));
@@ -251,14 +264,31 @@ server.listen(0, '127.0.0.1', () => {
   assertIncludes(baseCss, '--md-color-bg', 'base CSS should define semantic theme tokens');
   assertIncludes(baseCss, 'width: max-content;', 'base CSS should own table shrink-to-content behavior');
   assertIncludes(baseCss, 'overflow-x: auto;', 'base CSS should own overflow behavior for wide content');
+  assertIncludes(baseCss, '.markdown-body .md-tag', 'base CSS should own trusted tag structure');
+  assertIncludes(baseCss, '.markdown-body .md-date-picker', 'base CSS should own trusted date picker structure');
+  assertIncludes(baseCss, '.markdown-body .md-time-picker', 'base CSS should own trusted time picker structure');
   for (const themeFile of ['github.css', 'github-dark.css', 'juejin.css', 'wechat.css', 'academic.css', 'animal-island.css']) {
     const css = read(path.join(root, 'themes', themeFile));
     assertIncludes(css, ':root', `${themeFile} should expose token overrides`);
     assertIncludes(css, '--md-color-bg', `${themeFile} should set base color tokens`);
+    assertIncludes(css, '--md-picker-bg', `${themeFile} should set shared picker tokens`);
     assertNotMatches(css, /(^|\n)body\s*\{/m, `${themeFile} should not override body layout/background directly`);
     assertNotMatches(css, /\.markdown-body\s+table\s*\{[^}]*\b(display|width|max-width|overflow-x|border-collapse)\s*:/s, `${themeFile} should not override table behavior`);
   }
   console.log('ok - theme CSS contract');
+
+  const juejinCss = read(path.join(root, 'themes', 'juejin.css'));
+  assertIncludes(juejinCss, '.markdown-body h1::after', 'juejin should retain its blue title marker');
+  assertIncludes(juejinCss, 'border-top: 3px solid var(--md-color-accent);', 'juejin should retain its technical code-block rule');
+
+  const wechatCss = read(path.join(root, 'themes', 'wechat.css'));
+  assertIncludes(wechatCss, 'text-align: center;', 'wechat should retain its centered editorial title');
+  assertIncludes(wechatCss, 'border-left: 3px solid var(--md-color-accent);', 'wechat should retain its green editorial guide rail');
+
+  const academicCss = read(path.join(root, 'themes', 'academic.css'));
+  assertIncludes(academicCss, 'border-bottom: 3px double var(--md-color-border);', 'academic should retain its formal double-rule headings');
+  assertIncludes(academicCss, 'border-width: 1px 0;', 'academic should retain its unboxed table of contents');
+  console.log('ok - theme visual signatures');
 
   expectFail('unknown option validation', ['--check-env', '--unknown-option'], 'unknown option(s): --unknown-option');
   expectFail('removed input alias validation', ['--input', input, '--out', safeHtml], 'unknown option(s): --input');
@@ -328,6 +358,9 @@ server.listen(0, '127.0.0.1', () => {
       `--md-progress-fill: ${themeProgressFills[themeName]};`,
       `${themeName} should define its progress fill`,
     );
+    assertIncludes(html, '.markdown-body .md-tag', `${themeName} should include shared tag structure`);
+    assertIncludes(html, '.markdown-body .md-date-picker', `${themeName} should include shared date picker structure`);
+    assertIncludes(html, '.markdown-body .md-time-picker', `${themeName} should include shared time picker structure`);
   }
 
   run('profile default png without extension', ['--in', profileSimpleInput, '--out', profilePngNoExt, '--profile', 'dark-slide'], { timeout: 180000 });
@@ -349,6 +382,11 @@ server.listen(0, '127.0.0.1', () => {
   assertIncludes(animalIsland, '.markdown-body .md-back-top', 'animal-island should style the trusted back-top helper');
   assertIncludes(animalIsland, '.markdown-body .md-time-game', 'animal-island should style the trusted game time helper');
   assertIncludes(animalIsland, 'class="md-time-divider"', 'animal-island should preserve the game time divider markup');
+  assertIncludes(animalIsland, '.markdown-body .md-tag', 'animal-island should include the v1.6 tag scale');
+  assertIncludes(animalIsland, '.markdown-body .md-date-picker', 'animal-island should style the trusted date picker presentation');
+  assertIncludes(animalIsland, '.markdown-body .md-time-picker', 'animal-island should style the trusted time picker presentation');
+  assertIncludes(animalIsland, 'class="md-picker-day md-picker-day-today"', 'animal-island should preserve date picker state classes');
+  assertIncludes(animalIsland, 'class="md-time-option md-time-option-selected"', 'animal-island should preserve time picker state classes');
   assertNotMatches(
     animalIsland,
     /progress::-webkit-progress-value,\s*\.markdown-body progress::-moz-progress-bar/,
